@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Basic -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="public/assets/img/logo.jpg">
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!-- Site Metas -->
+    <title>Afri-Gebeta</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Site Icons -->
+    <!-- <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png"> -->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="public/css/bootstrap.min.css">
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="public/css/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="public/css/responsive.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="public/css/custom.css">
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+        let storeid = localStorage.getItem('storeid');
+        let t = ""
+        let cartData = {};
+        let displayedItems = [];
+
+        function searchcat(cathname) {
+
+            //let url = "http://localhost:3000/api/user/returnproductfromcategory/5fbe36ae1463fe8fb344f7c0/" + cathname + "/1"
+            let url = 'http://localhost:3000/api/user/returnproductfromcategory/' + storeid + '/' + cathname + '/1/' + localStorage.getItem('token');
+
+            //search here
+            $.get(url,
+                function(data, status) {
+                    displayedItems.length = 0
+                    let images = []
+                    let counter = 0;
+                    $(".addproduct").empty();
+
+                    let t = "<div class=\"row product-categorie-box\">"
+
+                    t = t + "<div class=\"tab-content\">"
+
+                    t = t + "<div role=\"tabpanel\" class=\"tab-pane fade show active\" id=\"grid-view\">"
+                    t = t + " <div class=\"row\">"
+
+                    for (let i = 0; i < data.data.length; i++) {
+                        displayedItems.push(data.data[i]._id)
+
+                        images.push(data.data[i]._id.imgId)
+                        t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
+                        t = t + "    <div class=\"products-single fix\">"
+                        t = t + "       <div class=\"box-img-hover\">"
+                        t = t + "           <div class=\"type-lb\">"
+                        t = t + "                <p class=\"sale\">Sale</p>"
+                        t = t + "           </div>"
+                        t = t + "           <img src=\"\" id = \"" + data.data[i]._id.imgId + "\"class=\"img-fluid\" alt=\"Image\">"
+                        t = t + "           <div class=\"mask-icon\">"
+                        t = t + "               <ul>"
+                        t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                        t = t + "                   <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li>"
+                        t = t + "               </ul>"
+                        t = t + "               <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
+                        t = t + "           </div>"
+                        t = t + "       </div>"
+                        t = t + "       <div class=\"why-text\">"
+                        t = t + "   <h4 id=\"productname" + counter + "\">" + data.data[i]._id.name + "</h4>"
+                        t = t + "           <h4 id =\"printthis\">" + data.data[i]._id.Description + "</h4>"
+                        t = t + "           <h5 id=\"productprice" + i + "\"> " + data.data[i]._id.price + " $</h5>"
+                        t = t + "       </div>"
+                        t = t + "   </div>"
+                        t = t + "</div>"
+                        counter = counter + 1;
+                    }
+
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    $(".addproduct").append(t);
+
+
+                    for (let i = 0; i < images.length; i++) {
+
+                        $.get('http://localhost:3000/api/store/loadImage/' + images[i], function(data, success) {
+
+                            let id = '#' + images[i];
+                            $(id).attr('src', `data:image/jpg;base64,${data}`);
+
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                            console.log(jqXHR)
+                        });
+                    }
+                })
+
+
+            // return cathagory here
+        }
+
+        function loaddata() {
+
+            $("#cartdata").empty();
+            $('#orderData').empty();
+            let t = "<div class=\"table-main table-responsive\">"
+
+            t = t + " <table class=\"table\">"
+            t = t + "<thead>"
+            t = t + "<tr>"
+            t = t + "<th>Images</th>"
+            t = t + "<th>Product Name</th>"
+            t = t + "<th>Price</th>"
+            t = t + "<th>Quantity</th>"
+            t = t + "<th>Total</th>"
+            t = t + "<th>Remove</th>"
+
+
+
+            t = t + "<tr>"
+            t = t + "</thead>"
+            t = t + "<tbody>"
+
+
+            let total = 0;
+            for (let i in cartData) {
+                t = t + "<tr>"
+                t = t + "<td class=\"thumbnail-img\">"
+
+                t = t + "<a href=\"#\">"
+                t = t + "<img class=\"img-fluid\" id = \"" + cartData[i].imgId + "\" src=\"\" alt=\"\" />"
+                t = t + "</a>"
+                t = t + "</td>"
+                t = t + "<td class=\"name-pr\">"
+                t = t + "<a href=\"#\">"
+                t = t + cartData[i].name
+                t = t + "</a>"
+                t = t + "</td>"
+                t = t + "<td class=\"price-pr\">"
+                t = t + "<p>" + cartData[i].price + "</p>"
+                t = t + "</td>"
+                t = t + "<td class=\"quantity-box\"><input type=\"number\" id=\"" + i + "\" onclick = \" updateCart('" + i + "')\" size=\"4\" value=\"" + cartData[i].quantity + "\" min=\"0\" step=\"1\" class=\"c-input-text qty text\"></td>"
+                t = t + "<td class=\"total-pr\">"
+                t = t + "<p>" + cartData[i].quantity * cartData[i].price + "</p>"
+                t = t + "</td>"
+                t = t + "<td class=\"remove-pr\">"
+                t = t + "<a href=\"#\" onclick = \" removeFromCart('" + i + "')\" >"
+                t = t + "<i class=\"fas fa-times\"></i>"
+                t = t + "</a>"
+                t = t + " </td>"
+                t = t + "</tr>"
+                total = total + cartData[i].quantity * cartData[i].price;
+            }
+            t = t + " </tbody>"
+            t = t + " </table>"
+            t = t + " </div>"
+
+            let p = "<div class=\"order-box\">"
+            p = p + "               <h3>Order summary</h3>"
+            p = p + "      <div class=\"d-flex\">"
+            p = p + "          <h4>Sub Total</h4>"
+            p = p + "       <div class=\"ml-auto font-weight-bold\"> $ 130 </div>"
+            p = p + "   </div>"
+            p = p + "   <div class=\"d-flex\">"
+            p = p + "       <h4>Discount</h4>"
+            p = p + "   <div class=\"ml-auto font-weight-bold\"> $ 40 </div>"
+            p = p + "</div>"
+            p = p + "<hr class=\"my-1\">"
+
+            p = p + "<div class=\"d-flex gr-total\">"
+            p = p + "   <h5>Grand Total</h5>"
+            p = p + "<div class=\"ml-auto h5\">  $" + total + "  </div>"
+            p = p + " </div>"
+            p = p + "<hr> "
+            p = p + "</div>"
+            $('#orderData').append(p);
+            $('#cartdata').append(t);
+
+            for (let i in cartData) {
+
+                $.get('http://localhost:3000/api/store/loadImage/' + cartData[i].imgId, function(data, success) {
+
+                    let id = '#' + cartData[i].imgId;
+                    $(id).attr('src', `data:image/jpg;base64,${data}`);
+
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                    console.log(jqXHR)
+                });
+            }
+        }
+
+        function updateCart(i) {
+            //let id = "#" + i;
+            //get the value from the input box
+            let value = $('#' + i).val();
+
+            for (let s in cartData) {
+                if (s == i) {
+
+                    if (cartData[s].quantity != value) {
+                        cartData[s].quantity = value
+                        loaddata()
+                    }
+                }
+
+            }
+
+        }
+
+        function removeFromCart(id) {
+
+            delete cartData[id]
+                //remove the item and reload
+            loaddata();
+        }
+
+        function addtocart(i) {
+
+
+            let name = $('#productname' + i).text();
+
+            let price = $('#productprice' + i).text();
+
+            for (let i = 0; i < displayedItems.length; i++) {
+                if (displayedItems[i].name == name) {
+                    let id = null;
+                    if (displayedItems[i]._id == undefined) {
+
+                        id = displayedItems[i].id;
+                    } else {
+                        id = id = displayedItems[i]._id;
+                    }
+
+                    cartData[id] = {
+                        id: id,
+                        name: displayedItems[i].name,
+                        imgId: displayedItems[i].imgId,
+                        price: displayedItems[i].price,
+                        quantity: 1
+                    }
+                }
+
+            }
+
+            //Object.keys(cartData).length + 1
+            // console.log(name)
+            // console.log(displayedItems)
+            //console.log(cartData)
+            //console.log(name)
+
+
+        }
+
+        function searchsubcath(cathname, subcathname) {
+
+
+            let url = 'http://localhost:3000/api/user/filterbysubcath/' + storeid + '/' + cathname + '/' + subcathname + '/1/' + localStorage.getItem('token');
+
+            //search here
+            $.get(url,
+                function(data, status) {
+                    displayedItems.length = 0
+                    let images = []
+                    let counter = 0;
+                    $(".addproduct").empty();
+
+                    let t = "<div class=\"row product-categorie-box\">"
+
+                    t = t + "<div class=\"tab-content\">"
+
+                    t = t + "<div role=\"tabpanel\" class=\"tab-pane fade show active\" id=\"grid-view\">"
+                    t = t + " <div class=\"row\">"
+
+                    for (let i = 0; i < data.data.length; i++) {
+                        displayedItems.push(data.data[i])
+                        images.push(data.data[i].imgId)
+                        console.log(data.data[i])
+                        t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
+                        t = t + "    <div class=\"products-single fix\">"
+                        t = t + "       <div class=\"box-img-hover\">"
+                        t = t + "           <div class=\"type-lb\">"
+                        t = t + "                <p class=\"sale\">Sale</p>"
+                        t = t + "           </div>"
+                        t = t + "           <img src=\"\" id = \"" + data.data[i].imgId + "\" class=\"img-fluid\" alt=\"Image\">"
+                        t = t + "           <div class=\"mask-icon\">"
+                        t = t + "               <ul>"
+                        t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                        t = t + "                   <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li>"
+                        t = t + "               </ul>"
+                        t = t + "               <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
+                        t = t + "           </div>"
+                        t = t + "       </div>"
+                        t = t + "       <div class=\"why-text\">"
+                        t = t + "   <h4 id=\"productname" + counter + "\">" + data.data[i].name + "</h4>"
+                        t = t + "           <h4>" + data.data[i].Description + "</h4>"
+                        t = t + "           <h5 id=\"productprice" + i + "\"> " + data.data[i].price + " $</h5>"
+                        t = t + "       </div>"
+                        t = t + "   </div>"
+                        t = t + "</div>"
+                        counter = counter + 1;
+                    }
+
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    $(".addproduct").append(t);
+
+
+                    for (let i = 0; i < images.length; i++) {
+
+                        $.get('http://localhost:3000/api/store/loadImage/' + images[i], function(data, success) {
+
+                            let id = '#' + images[i];
+                            $(id).attr('src', `data:image/jpg;base64,${data}`);
+
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                            console.log(jqXHR)
+                        });
+                    }
+                })
+        }
+
+        function callbrand(brand) {
+            let url = 'http://localhost:3000/api/user/filterbybrand/' + storeid + '/' + brand + '/1/' + localStorage.getItem('token');
+
+            //search here
+            $.get(url,
+                function(data, status) {
+                    displayedItems.length = 0
+                    let images = []
+                    let counter = 0;
+                    $(".addproduct").empty();
+
+                    let t = "<div class=\"row product-categorie-box\">"
+
+                    t = t + "<div class=\"tab-content\">"
+
+                    t = t + "<div role=\"tabpanel\" class=\"tab-pane fade show active\" id=\"grid-view\">"
+                    t = t + " <div class=\"row\">"
+
+                    for (let i = 0; i < data.data.length; i++) {
+                        displayedItems.push(data.data[i])
+                        images.push(data.data[i].imgId)
+                        t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
+                        t = t + "    <div class=\"products-single fix\">"
+                        t = t + "       <div class=\"box-img-hover\">"
+                        t = t + "           <div class=\"type-lb\">"
+                        t = t + "                <p class=\"sale\">Sale</p>"
+                        t = t + "           </div>"
+                        t = t + "           <img src=\"\" id = \"" + data.data[i].imgId + "\" class=\"img-fluid\" alt=\"Image\">"
+                        t = t + "           <div class=\"mask-icon\">"
+                        t = t + "               <ul>"
+                        t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                        t = t + "                   <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li>"
+                        t = t + "                   </ul>"
+                        t = t + "               <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
+                        t = t + "           </div>"
+                        t = t + "       </div>"
+                        t = t + "       <div class=\"why-text\">"
+                        t = t + "   <h4 id=\"productname" + counter + "\">" + data.data[i].name + "</h4>"
+                        t = t + "           <h4>" + data.data[i].Description + "</h4>"
+                        t = t + "           <h5 id=\"productprice" + i + "\"> " + data.data[i].price + " $</h5>"
+                        t = t + "       </div>"
+                        t = t + "   </div>"
+                        t = t + "</div>"
+
+                        counter = counter + 1
+
+                    }
+
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    $(".addproduct").append(t);
+
+                    for (let i = 0; i < images.length; i++) {
+
+                        $.get('http://localhost:3000/api/store/loadImage/' + images[i], function(data, success) {
+
+                            let id = '#' + images[i];
+                            $(id).attr('src', `data:image/jpg;base64,${data}`);
+
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                            console.log(jqXHR)
+                        });
+                    }
+                })
+        }
+        $(document).ready(function() {
+
+            var url = 'http://localhost:3000/api/user/returncathagory/' + storeid;
+            $.get(url,
+                function(data, status) {
+
+                    let t = ""
+
+                    for (let i = 0; i < data.length; i++) {
+
+                        t = t + "<div class=\"list-group-collapse sub-men\">"
+
+                        t = t + " <a onclick = \" searchcat('" + data[i]._id.name + "')\"  aria-expanded=\"false\" class=\"list-group-item  list-group-item-action\" href=\"#sub-men" + i + "\" data-toggle=\"collapse\" aria-expanded=\"true\" aria-controls=\"sub-men1\"> " + data[i]._id.name + "<small class=\"text-muted\">(100)</small></a>"
+
+                        t = t + "<div class=\"collapse show\" id=\"sub-men" + i + "\" data-parent=\"#list-group-men\">"
+                        t = t + " <div class=\"list-group\">"
+                        for (let j = 0; j < data[i]._id.subcategory.length; j++) {
+                            t = t + "     <a href=\"#\" onclick = \" searchsubcath('" + data[i]._id.name + "','" + data[i]._id.subcategory[j] + "')\" class=\"list-group-item list-group-item-action active\"> " + data[i]._id.subcategory[j] + "<small class=\"text-muted\">(50)</small></a>"
+
+                        }
+                        t = t + "   </div>"
+                        t = t + "</div>"
+                        t = t + "</div>"
+
+                    }
+
+                    $(".addstore").append(t);
+
+                });
+
+
+
+            var url = 'http://localhost:3000/api/user/returnsomeproductsfromcath/' + storeid + '/' + localStorage.getItem('token');;
+            $.get(url,
+                function(data, status) {
+
+
+                    let images = []
+                    let counter = 0;
+                    // let brand = ""
+                    // // for (let j = 0; j < data.Brand.length; j++) {
+                    // //     brand = brand + "<li>"
+                    // //     brand = brand + " <div class=\"radio radio-danger\">"
+                    // //     brand = brand + "<input onclick=\"callbrand('" + data.Brand[j] + "')\" name=\"survey\" id=\"Radios10\" value=\"declater\" type=\"radio\">"
+                    // //     brand = brand + "<label for=\"Radios10\"> " + data.Brand[j] + " </label>"
+                    // //     brand = brand + " </div>"
+                    // //     brand = brand + "</li>"
+                    // // }
+                    // // $(".addbrand").append(brand);
+
+
+                    let t = "<div class=\"row product-categorie-box\">"
+
+                    t = t + "<div class=\"tab-content\">"
+
+                    t = t + "<div role=\"tabpanel\" class=\"tab-pane fade show active\" id=\"grid-view\">"
+                    t = t + " <div class=\"row\">"
+
+                    for (let i = 0; i < data.Categorys.length; i++) {
+                        for (let j = 0; j < data.Categorys[i].product.length; j++) {
+                            displayedItems.push(data.Categorys[i].product[j])
+                                //set id of the image here
+
+                            images.push(data.Categorys[i].product[j].imgId)
+                            t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
+                            t = t + "    <div class=\"products-single fix\">"
+                            t = t + "       <div class=\"box-img-hover\">"
+                            t = t + "           <div class=\"type-lb\">"
+                            t = t + "                <p class=\"sale\">Sale</p>"
+                            t = t + "           </div>"
+
+                            t = t + "           <img src=\"\" id = \"" + data.Categorys[i].product[j].imgId + "\" class=\"img-fluid\" alt=\"Image\">"
+                            t = t + "           <div class=\"mask-icon\">"
+                            t = t + "               <ul>"
+                            t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                            t = t + "                   <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li>"
+                            t = t + "               </ul>"
+                            t = t + "               <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
+                            t = t + "           </div>"
+                            t = t + "       </div>"
+                            t = t + "       <div class=\"why-text\">"
+                            t = t + "   <h4 id=\"productname" + counter + "\">" + data.Categorys[i].product[j].name + "</h4>"
+                            t = t + "           <h4>" + data.Categorys[i].product[j].Description + "</h4>"
+                            t = t + "           <h5 id=\"productprice" + counter + "\"> " + data.Categorys[i].product[j].price + " $</h5>"
+                            t = t + "       </div>"
+                            t = t + "   </div>"
+                            t = t + "</div>"
+
+                            counter = counter + 1
+
+                        }
+                    }
+
+
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    $(".addproduct").append(t);
+
+
+                    //now use for loop to get the images 
+                    for (let i = 0; i < images.length; i++) {
+
+                        $.get('http://localhost:3000/api/store/loadImage/' + images[i], function(data, success) {
+
+                            let id = '#' + images[i];
+                            $(id).attr('src', `data:image/jpg;base64,${data}`);
+
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                            console.log(jqXHR)
+                        });
+                        /*
+                                                let buf = []
+                                                var last_response_len = false;
+                                                $.ajax('http://localhost:3000/api/store/loadImage', {
+                                                        xhrFields: {
+                                                            onprogress: function(e) {
+
+                                                                buf.push()
+                                                                // var this_response, response = e.currentTarget.response;
+                                                                // if (last_response_len === false) {
+                                                                //     this_response = response;
+                                                                //     last_response_len = response.length;
+                                                                // } else {
+                                                                //     this_response = response.substring(last_response_len);
+                                                                //     last_response_len = response.length;
+                                                                // }
+
+                                                            }
+                                                        }
+                                                    })
+                                                    .done(function(data) {
+
+
+                                                        function _arrayBufferToBase64(buffer) {
+                                                            var binary = '';
+                                                            var bytes = new Uint8Array(buffer);
+                                                            var len = bytes.byteLength;
+                                                            for (var i = 0; i < len; i++) {
+                                                                binary += String.fromCharCode(bytes[i]);
+                                                            }
+                                                            return window.btoa(binary);
+                                                        }
+
+                                                        $('#imageplace').attr('src', `data:image/jpg;base64,${_arrayBufferToBase64(data)}`);
+
+
+
+
+                                                    })
+                                                    .fail(function(data) {
+
+                                                        //console.log('Error: ', data);
+                                                    });
+                                            */
+                    }
+
+
+
+
+                });
+
+            // function toBase64(file) {
+            //     const reader = new FileReader();
+            //     reader.readAsDataURL(file);
+            //     return reader.result;
+
+            // }
+
+            function removewhite(string) {
+                let t = ''
+                for (let i = 0; i < string.length; i++) {
+                    if (string[i] != ' ') t = t + string[i]
+                }
+                return t
+
+            }
+
+            document.addEventListener('click', function(e) {
+                e.preventDefault()
+
+
+                if (e.target && e.target.id == 'searchhere') {
+
+
+                    let inputvalue = removewhite($('#inputsearchhere').val())
+                    $(".addproduct").empty();
+
+                    let url = "http://localhost:3000/api/user/searchproduct/" + storeid + "/" + inputvalue + '/' + localStorage.getItem('token');
+                    if (inputvalue.length > 0) {
+                        ////search here
+                        $.get(url,
+                            function(data, status) {
+                                displayedItems.length = 0
+
+                                let images = []
+                                let counter = 0;
+                                let t = "<div class=\"row product-categorie-box\">"
+
+                                t = t + "<div class=\"tab-content\">"
+
+                                t = t + "<div role=\"tabpanel\" class=\"tab-pane fade show active\" id=\"grid-view\">"
+                                t = t + " <div class=\"row\">"
+                                for (let i = 0; i < data.length; i++) {
+                                    displayedItems.push(data[i]._id)
+
+                                    images.push(data[i]._id.imgId)
+                                    t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
+                                    t = t + "    <div class=\"products-single fix\">"
+                                    t = t + "       <div class=\"box-img-hover\">"
+                                    t = t + "           <div class=\"type-lb\">"
+                                    t = t + "                <p class=\"sale\">Sale</p>"
+                                    t = t + "           </div>"
+                                    t = t + "           <img src=\"\" id = \"" + data[i]._id.imgId + "\"class=\"img-fluid\" alt=\"Image\">"
+                                    t = t + "           <div class=\"mask-icon\">"
+                                    t = t + "               <ul>"
+                                    t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                                    t = t + "                   <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li>"
+                                    t = t + "               </ul>"
+                                    t = t + "               <a class=\"cart\" onclick = \"addtocart('" + counter + "')\" href=\"#\">Add to Cart</a>"
+                                    t = t + "           </div>"
+                                    t = t + "       </div>"
+                                    t = t + "       <div class=\"why-text\">"
+                                    t = t + "   <h4  id=\"productname" + i + "\">" + data[i]._id.name + "</h4>"
+                                    t = t + "           <h4>" + data[i]._id.Description + "</h4>"
+                                    t = t + "           <h5 id=\"productprice" + i + "\"> " + data[i]._id.price + " $</h5>"
+                                    t = t + "       </div>"
+                                    t = t + "   </div>"
+                                    t = t + "</div>"
+
+                                    counter = counter + 1
+
+                                }
+
+
+
+                                t = t + "</div>"
+                                t = t + "</div>"
+                                t = t + "</div>"
+                                t = t + "</div>"
+                                $(".addproduct").append(t);
+
+
+                                for (let i = 0; i < images.length; i++) {
+
+                                    $.get('http://localhost:3000/api/store/loadImage/' + images[i], function(data, success) {
+
+                                        let id = '#' + images[i];
+                                        $(id).attr('src', `data:image/jpg;base64,${data}`);
+
+                                    }).fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                                        console.log(jqXHR)
+                                    });
+                                }
+                            })
+                    }
+
+
+
+
+
+                }
+
+            });
+
+
+        })
+
+
+        function orderCheckOut() {
+
+            if (Object.keys(cartData).length == 0) {
+                alert("Please select items")
+                return
+            }
+            let totalPrice = 0;
+            let orders = [];
+            for (let s in cartData) {
+                totalPrice = totalPrice + (cartData[s].price * cartData[s].quantity)
+                let t = {
+                    "productid": cartData[s].id,
+                    "amount": cartData[s].quantity
+                }
+                orders.push(t)
+            }
+            let json = {
+                    "totalmoney": totalPrice,
+                    "orders": orders
+                }
+                // now make post request 
+
+            $.post("http://localhost:3000/api/user/makeorder", {
+                    storeid: storeid,
+                    ordereddata: json,
+                    token: localStorage.getItem('token')
+                })
+                .done(function(data, textStatus, jqXHR) {
+                    alert("Success")
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+
+                    if (jqXHR.responseJSON.message != undefined) {
+                        alert(jqXHR.responseJSON.message)
+                    } else {
+                        alert("Error occured")
+                    }
+
+
+                });
+        }
+
+        function url_redirect(options) {
+            var $form = $("<form />");
+
+            $form.attr("action", options.url);
+            $form.attr("method", options.method);
+
+            for (var data in options.data)
+                $form.append('<input type="hidden" name="' + data + '" value="' + options.data[data] + '" />');
+
+            $("body").append($form);
+            $form.submit();
+        }
+
+        function returnHome() {
+            window.location.href = "markets.html";
+
+
+        }
+
+
+
+        function returnMyAccount() {
+
+            const url = new URL(window.location);
+            url.searchParams.set('foo', 'bar');
+            window.history.pushState({}, '', url);
+            window.location.href = "my-account.html";
+
+        }
+    </script>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Start Cart  -->
+                    <div class="cart-box-main">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="cartdata">
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="row my-5">
+                                <div class="col-lg-8 col-sm-12"></div>
+                                <div class="col-lg-4 col-sm-12">
+                                    <div id="orderData">
+
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex shopping-box"><a href="#" onclick="orderCheckOut()" class="ml-auto btn hvr-hover">Checkout</a> </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</head>
+
+<body>
+
+    <!-- Start Main Top -->
+    <div class="main-top">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="text-slid-box">
+                        <div id="offer-box" class="carouselTicker">
+                            <ul class="offer-box">
+                                <li>
+                                    <i class="fab fa-opencart"></i> Off 10%! Shop Now Man
+                                </li>
+                                <li>
+                                    <i class="fab fa-opencart"></i> 50% - 80% off on Fashion
+                                </li>
+                                <li>
+                                    <i class="fab fa-opencart"></i> 20% off Entire Purchase Promo code: offT20
+                                </li>
+                                <li>
+                                    <i class="fab fa-opencart"></i> Off 50%! Shop Now
+                                </li>
+                                <li>
+                                    <i class="fab fa-opencart"></i> Off 10%! Shop Now Man
+                                </li>
+                                <li>
+                                    <i class="fab fa-opencart"></i> 50% - 80% off on Fashion
+                                </li>
+                                <li>
+                                    <i class="fab fa-opencart"></i> 20% off Entire Purchase Promo code: offT20
+                                </li>
+                                <li>
+                                    <i class="fab fa-opencart"></i> Off 50%! Shop Now
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="custom-select-box">
+                        <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ ETB">
+						<option>$ ETB</option>
+						<option>$ USD</option>
+						
+					</select>
+                    </div>
+                    <div class="right-phone-box">
+                        <p>Call US :- <a href="#"> +251 900 800 100</a></p>
+                    </div>
+                    <div class="our-link">
+                        <ul>
+                            <li><a href="my-account.html">My Account</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Main Top -->
+
+    <!-- Start Main Top -->
+    <header class="main-header">
+        <!-- Start Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-default bootsnav">
+
+
+
+            <div class="container">
+
+                <!-- Start Header Navigation -->
+                <div class="navbar-header">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+                    <!-- <a class="navbar-brand" href="index.html"><img src="images/logo.jpg" class="logo" alt=""></a> -->
+                </div>
+                <!-- End Header Navigation -->
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
+                        <!-- <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>-->
+                        <li class="nav-item"><a class="nav-link" href="nearby.html">Nearby Markets</a></li>
+                        <li class="dropdown megamenu-fw">
+                            <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Products</a>
+                            <ul class="dropdown-menu megamenu-content" role="menu">
+                                <li>
+                                    <div class="row">
+                                        <div class="col-menu col-md-3">
+                                            <h6 class="title">Drinks</h6>
+                                            <div class="content">
+                                                <ul class="menu-col">
+                                                    <li><a href="shop.html">Soft Drink</a></li>
+                                                    <li><a href="shop.html">Alcohol</a></li>
+                                                    <li><a href="shop.html">Water</a></li>
+                                                    <li><a href="shop.html">Juice</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- end col-3 -->
+                                        <div class="col-menu col-md-3">
+                                            <h6 class="title">Sweets</h6>
+                                            <div class="content">
+                                                <ul class="menu-col">
+                                                    <li><a href="shop.html">Chips</a></li>
+                                                    <li><a href="shop.html">Cookies</a></li>
+                                                    <li><a href="shop.html">Chocolates</a></li>
+                                                    <li><a href="shop.html">Candy</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- end col-3 -->
+                                        <div class="col-menu col-md-3">
+                                            <h6 class="title">Clothing</h6>
+                                            <div class="content">
+                                                <ul class="menu-col">
+                                                    <li><a href="shop.html">Top Wear</a></li>
+                                                    <li><a href="shop.html">Party wear</a></li>
+                                                    <li><a href="shop.html">Bottom Wear</a></li>
+                                                    <li><a href="shop.html">Indian Wear</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-menu col-md-3">
+                                            <h6 class="title">Beauty Products</h6>
+                                            <div class="content">
+                                                <ul class="menu-col">
+                                                    <li><a href="shop.html">Makeup</a></li>
+                                                    <li><a href="shop.html">Lotion</a></li>
+                                                    <li><a href="shop.html">Oil</a></li>
+                                                    <li><a href="shop.html">Human Hair</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- end col-3 -->
+                                    </div>
+                                    <!-- end row -->
+                                </li>
+                            </ul>
+                        </li>
+
+
+
+                        <!-- <li class="nav-item"><a class="nav-link" href="service.html">Our Service</a></li> -->
+                        <!-- <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li> -->
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+
+                <!-- Start Atribute Navigation -->
+                <div class="attr-nav">
+                    <ul>
+                        <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
+                        <li class="side-menu">
+                            <a href="#" onclick="loaddata()" data-toggle="modal" data-target="#exampleModal">
+                                <i class="fa fa-shopping-bag"></i>
+                                <span class="badge">3</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- End Atribute Navigation -->
+            </div>
+
+
+            <!-- Start Side Menu -->
+            <div class="side">
+                <a href="#" class="close-side" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-times"></i></a>
+                <li class="cart-box">
+                    <ul class="cart-list">
+                        <li>
+                            <h6><a href="#">Delica omtantur </a></h6>
+                            <p>1x - <span class="price">$80.00</span></p>
+                        </li>
+                        <li>
+                            <a href="#" class="photo"><img src="/images/img-pro-02.jpg" class="cart-thumb" alt="" /></a>
+                            <h6><a href="#">Omnes ocurreret</a></h6>
+                            <p>1x - <span class="price">$60.00</span></p>
+                        </li>
+                        <li>
+                            <a href="#" class="photo"><img src="/images/img-pro-03.jpg" class="cart-thumb" alt="" /></a>
+                            <h6><a href="#">Agam facilisis</a></h6>
+                            <p>1x - <span class="price">$40.00</span></p>
+                        </li>
+                        <li class="total">
+                            <a href="cart.html" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
+                            <span class="float-right"><strong>Total</strong>: $180.00</span>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+
+
+
+
+            <!-- End Side Menu -->
+            <li class="dropdown">
+                <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Henok</a>
+                <ul class="dropdown-menu">
+                    <li><a href="index.html">Logout</a></li>
+                </ul>
+            </li>
+        </nav>
+        <!-- End Navigation -->
+    </header>
+    <!-- End Main Top -->
+
+    <!-- Start Top Search -->
+    <div class="top-search">
+        <div class="container">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input type="text" class="form-control" placeholder="Search Market">
+                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
+            </div>
+        </div>
+    </div>
+    <!-- End Top Search -->
+
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Shop</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a onclick="returnHome()" href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Shop</li>
+                        <li class="breadcrumb-item"><a onclick="returnMyAccount()">My Account</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+    <!-- Start Shop Page  -->
+    <div class="shop-box-inner">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12 sidebar-shop-left">
+                    <div class="product-categori">
+
+                        <div class="filter-sidebar-left">
+                            <div class="title-left">
+                                <h3>Categories</h3>
+                            </div>
+
+
+
+                            <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
+
+                                <div class="addstore">
+
+                                </div>
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+                        <div class="filter-price-left">
+                            <div class="title-left">
+                                <h3>Price</h3>
+                            </div>
+                            <div class="price-box-slider">
+                                <div id="slider-range"></div>
+                                <p>
+                                    <input type="text" id="amount" readonly style="border:0; color:#fbb714; font-weight:bold;">
+                                    <button class="btn hvr-hover" type="submit">Filter</button>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- <div class="filter-brand-left">
+                            <div class="title-left">
+                                <h3>Brand</h3>
+                            </div>
+                            <div class="brand-box">
+                                <ul class="addbrand">
+
+
+                                </ul>
+                            </div>
+                        </div> -->
+
+                    </div>
+                </div>
+
+                <div class="col-xl-9 col-lg-9 col-sm-12 col-xs-12 shop-content-right">
+                    <div class="right-product-box">
+                        <div class="product-item-filter row">
+                            <div class="col-12 col-sm-8 text-center text-sm-left">
+                                <div class="search-product">
+                                    <form action="#">
+                                        <input id="inputsearchhere" class="form-control" placeholder="Search here..." type="text">
+                                        <button id="searchhere" type="submit"> <i class="fa fa-search"></i> </button>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-sm-4 text-center text-sm-right">
+                                <ul class="nav nav-tabs ml-auto">
+                                    <li>
+                                        <a class="nav-link active" href="#grid-view" data-toggle="tab"> <i class="fa fa-th"></i> </a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link" href="#list-view" data-toggle="tab"> <i class="fa fa-list-ul"></i> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="addproduct">
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- End Shop Page -->
+
+
+    <!-- Start copyright  -->
+    <div class="footer-copyright">
+        <p class="footer-company">All Rights Reserved. &copy; 2020 <a href="#">Afri-Gebeta</p>
+    </div>
+    <!-- End copyright  -->
+
+    <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+            <!-- ALL JS FILES -->
+            <script src="public/js/jquery-3.2.1.min.js"></script>
+            <script src="public/js/popper.min.js"></script>
+            <script src="public/js/bootstrap.min.js"></script>
+            <!-- ALL PLUGINS -->
+            <script src="public/js/jquery.superslides.min.js"></script>
+            <script src="public/js/bootstrap-select.js"></script>
+            <script src="public/js/inewsticker.js"></script>
+            <script src="public/js/bootsnav.js."></script>
+            <script src="public/js/images-loded.min.js"></script>
+            <script src="public/js/isotope.min.js"></script>
+            <script src="public/js/owl.carousel.min.js"></script>
+            <script src="public/js/baguetteBox.min.js"></script>
+            <script src="public/js/jquery-ui.js"></script>
+            <script src="public/js/jquery.nicescroll.min.js"></script>
+            <script src="public/js/form-validator.min.js"></script>
+            <script src="public/js/contact-form-script.js"></script>
+            <script src="public/js/custom.js"></script>
+</body>
+
+</html>

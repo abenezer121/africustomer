@@ -1,0 +1,404 @@
+<!--
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/logo.jpg">
+
+    <title>Afri Gebeta</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
+
+
+    <meta property="og:title" content="" />
+    <meta property="og:image" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:site_name" content="" />
+    <meta property="og:description" content="" />
+    <meta name="twitter:title" content="" />
+    <meta name="twitter:image" content="" />
+    <meta name="twitter:url" content="" />
+    <meta name="twitter:card" content="" />
+
+   
+    <link rel="stylesheet" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/css/owl.carousel.css">
+    <link rel="stylesheet" href="/assets/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/assets/css/animate.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script>
+        //loginbutton
+
+
+        function removewhite(string) {
+            let t = ''
+            for (let i = 0; i < string.length; i++) {
+                if (string[i] != ' ') t = t + string[i]
+            }
+            return t
+
+        }
+        $(document).ready(function() {
+
+
+
+            function url_redirect(options) {
+                var $form = $("<form />");
+
+                $form.attr("action", options.url);
+                $form.attr("method", options.method);
+
+                for (var data in options.data)
+                    $form.append('<input type="hidden" name="' + data + '" value="' + options.data[data] + '" />');
+
+                $("body").append($form);
+                $form.submit();
+            }
+
+
+
+
+
+            //userregister
+            document.addEventListener('click', function(e) {
+                e.preventDefault()
+                if (e.target && e.target.id == 'loginbutton') {
+                    // get values here
+                    //username
+                    //value
+                    let username = $('#username').val()
+                    let password = $('#password').val()
+                    if (removewhite(username).length == 0 || removewhite(password).length == 0) {
+                        alert("Please Enter")
+                    } else {
+
+                        $.post("http://localhost:3000/api/user/login", {
+                            username: username,
+                            password: password
+                        }, function(data, status) {
+
+                            if (status === 'success') {
+                                url_redirect({
+                                    url: "http://localhost:3000/api/user/selectstore",
+                                    method: "get",
+
+                                });
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            if (jqXHR.status == 404) {
+                                alert("adsf")
+                            } else {
+
+                                console.log(jqXHR)
+
+                            }
+                        });
+
+                    }
+
+                }
+            })
+
+
+        });
+    </script>
+</head>
+
+<body>
+    <style>
+        .icheck-primary>input:first-child:not(:checked):not(:disabled):hover+label::before,
+        .icheck-primary>input:first-child:not(:checked):not(:disabled):hover+input[type="hidden"]+label::before {
+            border-color: #007bff;
+        }
+        
+        .icheck-primary>input:first-child:not(:checked):not(:disabled):focus+label::before,
+        .icheck-primary>input:first-child:not(:checked):not(:disabled):focus+input[type="hidden"]+label::before {
+            border-color: #007bff;
+        }
+        
+        .icheck-primary>input:first-child:checked+label::before,
+        .icheck-primary>input:first-child:checked+input[type="hidden"]+label::before {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    </style>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="subscribe">
+                    <div class="subs" style="border-radius: 10% !important; z-index: 5;">
+
+                        <form action="post" id="contact">
+                            <ul>
+                                <li style="border: 1px solid #ddd;
+              margin-top: 20%; /* Prevent double borders */
+              background-color: #f6f6f6;
+              padding: 12px;
+              text-decoration: none;
+              font-size: 18px;
+      
+              color: black;
+              display: block;
+              position: relative;">Login</li>
+
+                            </ul>
+                            <div style="margin-left:10%; margin-top: 5%;">
+
+                                <div class="col-md-8 mb-3 mb-md-0">
+                                    <label class="text-black" for="fname">Username</label>
+                                    <input name="username" type="text" id="username" class="form-control" placeholder="Email/ Phone number" required autofocus>
+
+                                </div>
+                                <br>
+                                <div class="col-md-8 mb-3 mb-md-0">
+                                    <label class="text-black" for="email">Password</label>
+                                    <input type="password" id="password" name="password" placeholder="Enter your password" class="form-control" required>
+
+                                </div><br>
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="icheck-primary">
+                                            <input type="checkbox" id="remember">
+                                            <label for="remember">
+                      remember me
+                    </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-3 mb-4 mb-md-0">
+                                        <a name="submit" id="loginbutton" href="#" style="background-color: #fd8000 !important;" class="btn btn-primary btn-md text-white">Login</a>
+                                        <p class="mb-1">
+                                            <a href="register.html">Sign up with Phone number?</a>
+                                        </p>
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+
+
+                        </form>
+
+                        <p class="mb-1">
+                            <a href="forgot-password.html">Forgot password?</a>
+                        </p>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/owl.carousel.js"></script>
+    <script src="/assets/js/wow.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+</body>
+
+</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/png" sizes="16x16" href="public/assets/img/logo.jpg">
+
+    <title>Afri Gebeta</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/css/util.css">
+    <link rel="stylesheet" type="text/css" href="public/css/main.css">
+    <!--===============================================================================================-->
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <script>
+        function removewhite(string) {
+            let t = ''
+            for (let i = 0; i < string.length; i++) {
+                if (string[i] != ' ') t = t + string[i]
+            }
+            return t
+
+        }
+
+        function url_redirect(options) {
+            var $form = $("<form />");
+
+            $form.attr("action", options.url);
+            $form.attr("method", options.method);
+
+            for (var data in options.data)
+                $form.append('<input type="hidden" name="' + data + '" value="' + options.data[data] + '" />');
+
+            $("body").append($form);
+            $form.submit();
+        };
+
+
+        $(document).ready(function() {
+
+            //userregister
+            document.addEventListener('click', function(e) {
+                e.preventDefault()
+                if (e.target && e.target.id == 'loginbutton') {
+                    // get values here
+                    //username
+                    //value
+
+                    let username = $('#username').val()
+                    let password = $('#password').val()
+
+                    if (removewhite(username).length == 0 || removewhite(password).length == 0) {
+                        alert("Please Enter")
+                    } else {
+
+
+                        $.post("http://localhost:3000/api/user/login", {
+                            username: username,
+                            password: password
+                        }, function(data, status) {
+
+                            if (status === 'success') {
+                                //{ user: user._id, name: user.username }
+                                let userid = localStorage.setItem('userid', data.user);
+                                let username = localStorage.setItem('username', data.name)
+                                let token = localStorage.setItem('token', data.token);
+                                window.location.href = "markets.html";
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                            if (jqXHR.responseJSON != undefined) {
+                                alert(jqXHR.responseJSON.message)
+                            }
+                        });
+
+                    }
+
+                }
+            })
+
+
+        });
+
+
+        function callRegister() {
+            window.location.href = "register.html";
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="public//images/afrigebeta.jpg" alt="IMG">
+                </div>
+
+                <form class="login100-form validate-form">
+                    <span class="login100-form-title">
+						Member Login
+					</span>
+
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                        <input class="input100" id="username" type="text" name="email" placeholder="Email">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <input class="input100" id="password" type="password" name="pass" placeholder="Password">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button id="loginbutton" class="login100-form-btn">
+							Login
+						</button>
+                    </div>
+
+                    <div class="text-center p-t-12">
+                        <span class="txt1">
+							Forgot
+						</span>
+                        <a class="txt2" href="#">
+							Username / Password?
+						</a>
+                    </div>
+
+                    <div class="text-center p-t-136">
+                        <a class="txt2" onclick="callRegister()" href="#">
+							Create your Account
+							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+						</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--===============================================================================================-->
+    <script src="public/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="public/vendor/bootstrap/js/popper.js"></script>
+    <script src="public/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="public/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="public/vendor/tilt/tilt.jquery.min.js"></script>
+    <script>
+        $('.js-tilt').tilt({
+            scale: 1.1
+        })
+    </script>
+    <!--===============================================================================================-->
+    <script src="public/js/main.js"></script>
+
+</body>
+
+</html>

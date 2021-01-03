@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/png" sizes="16x16" href="public/assets/img/logo.jpg">
+
+    <title>Afri Gebeta</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="public/css/util.css">
+    <link rel="stylesheet" type="text/css" href="public/css/main.css">
+    <!--===============================================================================================-->
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            //get profile here 
+            // let url = "http://localhost:3000/api/user/getUserProfile"
+            // $.get(url, function(data, status) {
+            // })
+            let userData = null;
+
+            function removewhite(string) {
+                let t = ''
+                for (let i = 0; i < string.length; i++) {
+                    if (string[i] != ' ') t = t + string[i]
+                }
+                return t
+            }
+
+            $(".form").empty()
+            let t = "<form class=\"login100-form validate-form\">"
+            t = t + "<span class=\"login100-form-title\">"
+            t = t + "</span>"
+            t = t + "<div class=\"wrap-input100 validate-input\" data-validate=\"First name is required\">"
+            t = t + " <input class=\"input100\" id=\"fName\" type=\"text\" name=\"fullname\" placeholder=\"First Name\">"
+            t = t + " <span class=\"focus-input100\"></span>"
+            t = t + " <span class=\"symbol-input100\">"
+            t = t + "	<i class=\"fa fa-user\" aria-hidden=\"true\"></i>"
+            t = t + "</span>"
+            t = t + " </div>"
+            t = t + " <div class=\"wrap-input100 validate-input\" data-validate=\"Last name is required\">"
+            t = t + " <input class=\"input100\" id=\"lName\" type=\"text\" name=\"fullname\" placeholder=\"Last name\">"
+            t = t + "<span class=\"focus-input100\"></span>"
+            t = t + "<span class=\"symbol-input100\">"
+            t = t + "	<i class=\"fa fa-user\" aria-hidden=\"true\"></i>"
+            t = t + "</span>"
+            t = t + "</div>"
+            t = t + "<div class=\"wrap-input100 validate-input\" data-validate=\"Age is required\">"
+            t = t + "<input class=\"input100\" id=\"age\" type=\"number\" name=\"age\" placeholder=\"Age\">"
+            t = t + "<span class=\"focus-input100\"></span>"
+            t = t + "<span class=\"symbol-input100\">"
+            t = t + "<i class=\"fa fa-age\" aria-hidden=\"true\"></i>"
+            t = t + "</span>"
+            t = t + "</div>"
+            t = t + "<div class=\"wrap-input100 validate-input\" data-validate=\"City is required\">"
+            t = t + " <input class=\"input100\" id=\"city\" type=\"text\" name=\"city\" placeholder=\"City\">"
+            t = t + "<span class=\"focus-input100\"></span>"
+            t = t + "<span class=\"symbol-input100\">"
+            t = t + "<i class=\"fa fa-city\" aria-hidden=\"true\"></i>"
+            t = t + "</span>"
+            t = t + "</div>"
+            t = t + "<div class=\"wrap-input100 validate-input\" data-validate=\"Phone number is required\">"
+            t = t + "   <input class=\"input100\" id=\"phone\" type=\"tel\" name=\"pno\" placeholder=\"Phone Number\">"
+            t = t + "   <span class=\"focus-input100\"></span>"
+            t = t + "   <span class=\"symbol-input100\">"
+            t = t + "		<i class=\"fa fa-city\" aria-hidden=\"true\"></i>"
+            t = t + "	</span>"
+            t = t + " </div>"
+            t = t + "<div class=\"wrap-input100 validate-input\" data-validate=\"Valid email is required: ex@abc.xyz\">"
+            t = t + "<input class=\"input100\" id=\"email\" type=\"text\" name=\"email\" placeholder=\"Email\">"
+            t = t + "<span class=\"focus-input100\"></span>"
+            t = t + "<span class=\"symbol-input100\">"
+            t = t + "<i "
+            t = t + "class=\"fa fa-envelope\" aria-hidden=\"true\"></i>"
+            t = t + "</span>"
+            t = t + "</div>"
+            t = t + "<div class=\"wrap-input100 validate-input\" data-validate=\"Username is required\">"
+            t = t + "  <input class=\"input100\" id=\"username\" type=\"text\" name=\"Username\" placeholder=\"Username\">"
+            t = t + "   <span class=\"focus-input100\"></span>"
+            t = t + "   <span class=\"symbol-input100\">"
+            t = t + "		<i class=\"fa fa-user\" aria-hidden=\"true\"></i>"
+            t = t + "	</span>"
+            t = t + "  </div>"
+
+            t = t + "<div class=\"container-login100-form-btn\">"
+            t = t + "<button class=\"login100-form-btn\" id=\"updateButton\">"
+            t = t + "	Update profile"
+            t = t + "</button>"
+            t = t + "</div>"
+            t = t + "<div class=\"text-center p-t-12\">"
+            t = t + "</div>"
+            t = t + "</form>"
+
+            $(".form").append(t)
+
+            $.get('http://localhost:3000/api/user/getUserProfile/' + localStorage.getItem('token'), function(data, success) {
+                userData = data;
+            })
+
+            function removefromfirst(string) {
+                for (let i = 0; i < string.length; i++) {
+                    if (string[i] != ' ') {
+                        return string;
+                    } else {
+                        string = string.substring(1);
+                    }
+                }
+            }
+            //userregister
+            document.addEventListener('click', function(e) {
+                e.preventDefault()
+                if (e.target && e.target.id == 'updateButton') {
+
+                    let fName = null;
+                    let lName = null;
+                    let age = null;
+                    let city = null;
+                    let phone = null;
+                    let email = null;
+                    let username = null;
+
+                    console.log(fName)
+
+                    if (removefromfirst($('#fName').val())) fName = (userData.firstName == removefromfirst($('#fName').val())) ? null : removefromfirst($('#fName').val());
+
+                    if (removefromfirst($('#lName').val())) lName = (userData.lastName == removefromfirst($('#lName').val())) ? null : removefromfirst($('#fName').val());
+
+                    if (removewhite($('#age').val())) age = (userData.age == removewhite($('#age').val())) ? null : removefromfirst($('#fName').val());
+
+                    if (removefromfirst($('#city').val())) city = (userData.city == removefromfirst($('#city').val())) ? null : removefromfirst($('#city').val());
+
+                    if (removewhite($('#phone').val())) phone = (userData.phone == removewhite($('#phone').val())) ? null : removewhite($('#phone').val());
+
+                    if (removewhite($('#email').val())) email = (userData.email == removewhite($('#email').val())) ? null : removewhite($('#email').val());
+
+                    if (removefromfirst($('#username').val())) username = (userData.username == removefromfirst($('#username').val())) ? null : removefromfirst($('#username').val());
+
+
+
+                    let url = "http://localhost:3000/api/user/updateprofile"
+
+                    $.ajax({
+                        url: url,
+                        type: 'PATCH',
+                        data: {
+                            username: username,
+                            phone: phone,
+                            city: city,
+                            email: email,
+                            firstName: fName,
+                            lastName: lName,
+                            age: age,
+                            token: localStorage.getItem('token')
+
+                        },
+
+                        success: function(data, status, xhr) { // success callback function
+                            alert(removefromfirst($('#username').val()))
+                        },
+                        error: function(jqXhr, textStatus, errorMessage) { // error callback 
+                            console.log(jqXhr)
+                        }
+                    });
+
+                }
+
+
+            })
+
+        })
+
+        function url_redirect(options) {
+            var $form = $("<form />");
+
+            $form.attr("action", options.url);
+            $form.attr("method", options.method);
+
+            for (var data in options.data)
+                $form.append('<input type="hidden" name="' + data + '" value="' + options.data[data] + '" />');
+
+            $("body").append($form);
+            $form.submit();
+        };
+
+
+        function callLogin() {
+
+            window.location.href = "login.html";
+
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="public/images/afrigebeta.jpg" alt="IMG">
+                    <div style="align-self: center; align-content: center;">
+                        <h2 style="font-family: cursive;text-align: center;">Update your profile </h2>
+                        <ul style="text-align: center;margin: 2px; padding: 5px;">
+
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--===============================================================================================-->
+    <script src="public/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="public/vendor/bootstrap/js/popper.js"></script>
+    <script src="public/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="public/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="public/vendor/tilt/tilt.jquery.min.js"></script>
+    <script>
+        $('.js-tilt').tilt({
+            scale: 1.1
+        })
+    </script>
+    <!--===============================================================================================-->
+    <script src="public/js/main.js"></script>
+
+</body>
+
+</html>

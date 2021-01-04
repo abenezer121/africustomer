@@ -412,7 +412,7 @@
         }
         $(document).ready(function() {
 
-            var url = 'https://afrigebeta.herokuapp.com/api/user/returncathagory/' + storeid;
+            var url = 'https://afrigebeta.herokuapp.com/api/user/returncathagory/' + storeid + '/' + localStorage.getItem('token');
             $.get(url,
                 function(data, status) {
 

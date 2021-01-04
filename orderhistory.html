@@ -71,7 +71,7 @@
 
         function clicked(page) {
 
-            let url = 'http://localhost:3000/api/user/listOrderForCustomer/all/' + userid + '/' + page + '/' + localStorage.getItem('token')
+            let url = 'https://afrigebeta.herokuapp.com/api/user/listOrderForCustomer/all/' + userid + '/' + page + '/' + localStorage.getItem('token')
 
 
             $.get(url,

@@ -43,8 +43,7 @@
 
         function searchcat(cathname) {
 
-            //let url = "http://localhost:3000/api/user/returnproductfromcategory/5fbe36ae1463fe8fb344f7c0/" + cathname + "/1"
-            let url = 'http://localhost:3000/api/user/returnproductfromcategory/' + storeid + '/' + cathname + '/1/' + localStorage.getItem('token');
+            let url = 'https://afrigebeta.herokuapp.com/api/user/returnproductfromcategory/' + storeid + '/' + cathname + '/1/' + localStorage.getItem('token');
 
             //search here
             $.get(url,
@@ -99,7 +98,7 @@
 
                     for (let i = 0; i < images.length; i++) {
 
-                        $.get('http://localhost:3000/api/store/loadImage/' + images[i], function(data, success) {
+                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
 
                             let id = '#' + images[i];
                             $(id).attr('src', `data:image/jpg;base64,${data}`);
@@ -195,7 +194,7 @@
 
             for (let i in cartData) {
 
-                $.get('http://localhost:3000/api/store/loadImage/' + cartData[i].imgId, function(data, success) {
+                $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + cartData[i].imgId, function(data, success) {
 
                     let id = '#' + cartData[i].imgId;
                     $(id).attr('src', `data:image/jpg;base64,${data}`);
@@ -273,7 +272,7 @@
         function searchsubcath(cathname, subcathname) {
 
 
-            let url = 'http://localhost:3000/api/user/filterbysubcath/' + storeid + '/' + cathname + '/' + subcathname + '/1/' + localStorage.getItem('token');
+            let url = 'https://afrigebeta.herokuapp.com/api/user/filterbysubcath/' + storeid + '/' + cathname + '/' + subcathname + '/1/' + localStorage.getItem('token');
 
             //search here
             $.get(url,
@@ -328,7 +327,7 @@
 
                     for (let i = 0; i < images.length; i++) {
 
-                        $.get('http://localhost:3000/api/store/loadImage/' + images[i], function(data, success) {
+                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
 
                             let id = '#' + images[i];
                             $(id).attr('src', `data:image/jpg;base64,${data}`);
@@ -343,7 +342,7 @@
         }
 
         function callbrand(brand) {
-            let url = 'http://localhost:3000/api/user/filterbybrand/' + storeid + '/' + brand + '/1/' + localStorage.getItem('token');
+            let url = 'https://afrigebeta.herokuapp.com/api/user/filterbybrand/' + storeid + '/' + brand + '/1/' + localStorage.getItem('token');
 
             //search here
             $.get(url,
@@ -398,7 +397,7 @@
 
                     for (let i = 0; i < images.length; i++) {
 
-                        $.get('http://localhost:3000/api/store/loadImage/' + images[i], function(data, success) {
+                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
 
                             let id = '#' + images[i];
                             $(id).attr('src', `data:image/jpg;base64,${data}`);
@@ -413,7 +412,7 @@
         }
         $(document).ready(function() {
 
-            var url = 'http://localhost:3000/api/user/returncathagory/' + storeid;
+            var url = 'https://afrigebeta.herokuapp.com/api/user/returncathagory/' + storeid;
             $.get(url,
                 function(data, status) {
 
@@ -443,7 +442,7 @@
 
 
 
-            var url = 'http://localhost:3000/api/user/returnsomeproductsfromcath/' + storeid + '/' + localStorage.getItem('token');;
+            var url = 'https://afrigebeta.herokuapp.com/api/user/returnsomeproductsfromcath/' + storeid + '/' + localStorage.getItem('token');;
             $.get(url,
                 function(data, status) {
 
@@ -515,7 +514,7 @@
                     //now use for loop to get the images 
                     for (let i = 0; i < images.length; i++) {
 
-                        $.get('http://localhost:3000/api/store/loadImage/' + images[i], function(data, success) {
+                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
 
                             let id = '#' + images[i];
                             $(id).attr('src', `data:image/jpg;base64,${data}`);
@@ -602,7 +601,7 @@
                     let inputvalue = removewhite($('#inputsearchhere').val())
                     $(".addproduct").empty();
 
-                    let url = "http://localhost:3000/api/user/searchproduct/" + storeid + "/" + inputvalue + '/' + localStorage.getItem('token');
+                    let url = "https://afrigebeta.herokuapp.com/api/user/searchproduct/" + storeid + "/" + inputvalue + '/' + localStorage.getItem('token');
                     if (inputvalue.length > 0) {
                         ////search here
                         $.get(url,
@@ -659,7 +658,7 @@
 
                                 for (let i = 0; i < images.length; i++) {
 
-                                    $.get('http://localhost:3000/api/store/loadImage/' + images[i], function(data, success) {
+                                    $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
 
                                         let id = '#' + images[i];
                                         $(id).attr('src', `data:image/jpg;base64,${data}`);
@@ -707,7 +706,7 @@
                 }
                 // now make post request 
 
-            $.post("http://localhost:3000/api/user/makeorder", {
+            $.post("https://afrigebeta.herokuapp.com/api/user/makeorder", {
                     storeid: storeid,
                     ordereddata: json,
                     token: localStorage.getItem('token')

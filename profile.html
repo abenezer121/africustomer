@@ -107,7 +107,7 @@
 
             $(".form").append(t)
 
-            $.get('http://localhost:3000/api/user/getUserProfile/' + localStorage.getItem('token'), function(data, success) {
+            $.get('https://afrigebeta.herokuapp.com/api/user/getUserProfile/' + localStorage.getItem('token'), function(data, success) {
                 userData = data;
             })
 
@@ -151,7 +151,7 @@
 
 
 
-                    let url = "http://localhost:3000/api/user/updateprofile"
+                    let url = "https://afrigebeta.herokuapp.com/api/user/updateprofile"
 
                     $.ajax({
                         url: url,

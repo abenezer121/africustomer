@@ -275,11 +275,11 @@
 
         function searchsubcath(cathname, subcathname, page) {
             let url = 'https://afrigebeta.herokuapp.com/api/user/filterbysubcath/' + storeid + '/' + cathname + '/' + subcathname + '/' + page + '/' + localStorage.getItem('token');
-            alert(cathname)
-                //search here
+
+            //search here
             $.get(url,
                     function(data, status) {
-
+                        console.log(data)
                         displayedItems.length = 0
                         let images = []
                         let counter = 0;
@@ -317,7 +317,7 @@
                             t = t + "       </div>"
                             t = t + "       <div class=\"why-text\">"
                             t = t + "   <h4 id=\"productname" + counter + "\">" + data.data[i].name + "</h4>"
-                            t = t + "           <h4>" + data.data[i].Description + "</h4>"
+                            t = t + "           <h4>" + data.data[i].subCategory + "</h4>"
                             t = t + "           <h5 id=\"productprice" + i + "\"> " + data.data[i].price + " $</h5>"
                             t = t + "       </div>"
                             t = t + "   </div>"
@@ -520,7 +520,7 @@
                             t = t + "       </div>"
                             t = t + "       <div class=\"why-text\">"
                             t = t + "   <h4 id=\"productname" + counter + "\">" + data.Categorys[i].product[j].name + "</h4>"
-                            t = t + "           <h4>" + data.Categorys[i].product[j].Description + "</h4>"
+                            t = t + "           <h4>" + data.Categorys[i].product[j].subCategory + "</h4>"
                             t = t + "           <h5 id=\"productprice" + counter + "\"> " + data.Categorys[i].product[j].price + " $</h5>"
                             t = t + "       </div>"
                             t = t + "   </div>"
@@ -584,7 +584,7 @@
 
 
                     let inputvalue = removewhite($('#inputsearchhere').val())
-                    alert(inputvalue)
+
                     $(".addproduct").empty();
 
                     let url = "https://afrigebeta.herokuapp.com/api/user/searchproduct/" + storeid + "/" + inputvalue + '/' + localStorage.getItem('token');

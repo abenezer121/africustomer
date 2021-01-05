@@ -153,7 +153,7 @@
                     if (returnNow) return;
 
                     let url = 'https://afrigebeta.herokuapp.com/api/user/register'
-                    alert("sending")
+
                     $.post(url, {
                         username: username,
                         phone: phone,
@@ -167,7 +167,9 @@
                     }, function(data, status) {
                         console.log(status)
                         if (status === 'success') {
-
+                            let userid = localStorage.setItem('userid', data.user);
+                            let username = localStorage.setItem('username', data.name)
+                            let token = localStorage.setItem('token', data.token);
                             window.location.href = "markets.html";
                         }
                     }).fail(function(jqXHR, textStatus, errorThrown) {

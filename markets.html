@@ -85,8 +85,8 @@
 
 
 
-
-            // test if it works
+            alert(localStorage.getItem('userid'))
+                // test if it works
             var url = 'https://afrigebeta.herokuapp.com/api/user/returnliststores/12.123/11.232/' + localStorage.getItem('token');
             $.get(url,
                 function(data, status) {

@@ -273,14 +273,13 @@
 
         }
 
-        function searchsubcath(cathname, subcathname) {
-
-            let url = 'https://afrigebeta.herokuapp.com/api/user/filterbysubcath/' + storeid + '/' + cathname + '/' + subcathname + '/1/' + localStorage.getItem('token');
-            console.log(url)
+        function searchsubcath(cathname, subcathname, page) {
+            let url = 'https://afrigebeta.herokuapp.com/api/user/filterbysubcath/' + storeid + '/' + cathname + '/' + subcathname + '/' + page + '/' + localStorage.getItem('token');
+            alert(cathname)
                 //search here
             $.get(url,
                     function(data, status) {
-                        console.log(data)
+
                         displayedItems.length = 0
                         let images = []
                         let counter = 0;
@@ -326,10 +325,26 @@
                             counter = counter + 1;
                         }
 
+
+
                         t = t + "</div>"
                         t = t + "</div>"
                         t = t + "</div>"
                         t = t + "</div>"
+
+                        for (let i = 0; i < data.totalpage; i++) {
+                            let number = i + 1
+
+                            if (page == i + 1) {
+
+                                t = t + "<button   disabled onclick = \" searchsubcath('" + cathname + "','" + subcathname + "','" + number + "')\">" + number + "</button>"
+
+                            } else {
+                                t = t + "<button    onclick = \" searchsubcath('" + cathname + "','" + subcathname + "','" + number + "')\">" + number + "</button>"
+
+                            }
+
+                        }
                         $(".addproduct").append(t);
 
 
@@ -434,7 +449,7 @@
                 function(data, status) {
 
                     let t = ""
-                    console.log(data)
+
 
                     for (let i = 0; i < data.length; i++) {
 
@@ -445,7 +460,7 @@
                         t = t + "<div class=\"collapse show\" id=\"sub-men" + i + "\" data-parent=\"#list-group-men\">"
                         t = t + " <div class=\"list-group\">"
                         for (let j = 0; j < data[i]._id.subcategory.length; j++) {
-                            t = t + "     <a href=\"#\" onclick = \" searchsubcath('" + data[i]._id.name + "','" + data[i]._id.subcategory[j] + "')\" class=\"list-group-item list-group-item-action active\"> " + data[i]._id.subcategory[j] + "<small class=\"text-muted\">(50)</small></a>"
+                            t = t + "     <a href=\"#\" onclick = \" searchsubcath('" + data[i]._id.name + "','" + data[i]._id.subcategory[j] + "','" + 1 + "')\" class=\"list-group-item list-group-item-action active\"> " + data[i]._id.subcategory[j] + "<small class=\"text-muted\">(50)</small></a>"
 
                         }
                         t = t + "   </div>"
@@ -569,6 +584,7 @@
 
 
                     let inputvalue = removewhite($('#inputsearchhere').val())
+                    alert(inputvalue)
                     $(".addproduct").empty();
 
                     let url = "https://afrigebeta.herokuapp.com/api/user/searchproduct/" + storeid + "/" + inputvalue + '/' + localStorage.getItem('token');

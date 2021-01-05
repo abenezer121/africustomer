@@ -63,14 +63,18 @@
                     for (let i = 0; i < data.data.length; i++) {
                         displayedItems.push(data.data[i]._id)
 
-                        images.push(data.data[i]._id.imgId)
+                        images.push({
+                            images: data.data[i]._id.imgId,
+                            number: i
+                        })
+
                         t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
                         t = t + "    <div class=\"products-single fix\">"
                         t = t + "       <div class=\"box-img-hover\">"
                         t = t + "           <div class=\"type-lb\">"
                         t = t + "                <p class=\"sale\">Sale</p>"
                         t = t + "           </div>"
-                        t = t + "           <img src=\"\" id = \"" + data.data[i]._id.imgId + "\"class=\"img-fluid\" alt=\"Image\">"
+                        t = t + "           <img src=\"\" id = \"" + data.data[i]._id.imgId + '-' + i + "\"class=\"img-fluid\" alt=\"Image\">"
                         t = t + "           <div class=\"mask-icon\">"
                         t = t + "               <ul>"
                         t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
@@ -98,9 +102,9 @@
 
                     for (let i = 0; i < images.length; i++) {
 
-                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
+                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i].images, function(data, success) {
 
-                            let id = '#' + images[i];
+                            let id = '#' + images[i].images + '-' + images[i].number;
                             $(id).attr('src', `data:image/jpg;base64,${data}`);
 
                         }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -144,7 +148,7 @@
                 t = t + "<td class=\"thumbnail-img\">"
 
                 t = t + "<a href=\"#\">"
-                t = t + "<img class=\"img-fluid\" id = \"" + cartData[i].imgId + "\" src=\"\" alt=\"\" />"
+                t = t + "<img class=\"img-fluid\" id = \"" + cartData[i].imgId + '-' + i + "\" src=\"\" alt=\"\" />"
                 t = t + "</a>"
                 t = t + "</td>"
                 t = t + "<td class=\"name-pr\">"
@@ -196,7 +200,7 @@
 
                 $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + cartData[i].imgId, function(data, success) {
 
-                    let id = '#' + cartData[i].imgId;
+                    let id = '#' + cartData[i].imgId + '-' + i;
                     $(id).attr('src', `data:image/jpg;base64,${data}`);
 
                 }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -271,7 +275,6 @@
 
         function searchsubcath(cathname, subcathname) {
 
-
             let url = 'https://afrigebeta.herokuapp.com/api/user/filterbysubcath/' + storeid + '/' + cathname + '/' + subcathname + '/1/' + localStorage.getItem('token');
             console.log(url)
                 //search here
@@ -292,7 +295,10 @@
 
                         for (let i = 0; i < data.data.length; i++) {
                             displayedItems.push(data.data[i])
-                            images.push(data.data[i].imgId)
+                            images.push({
+                                images: data.data[i].imgId,
+                                number: i
+                            })
 
                             t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
                             t = t + "    <div class=\"products-single fix\">"
@@ -300,7 +306,8 @@
                             t = t + "           <div class=\"type-lb\">"
                             t = t + "                <p class=\"sale\">Sale</p>"
                             t = t + "           </div>"
-                            t = t + "           <img src=\"\" id = \"" + data.data[i].imgId + "\" class=\"img-fluid\" alt=\"Image\">"
+
+                            t = t + "           <img src=\"\" id = \"" + data.data[i].imgId + '-' + i + "\" class=\"img-fluid\" alt=\"Image\">"
                             t = t + "           <div class=\"mask-icon\">"
                             t = t + "               <ul>"
                             t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
@@ -328,9 +335,10 @@
 
                         for (let i = 0; i < images.length; i++) {
 
-                            $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
+                            $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i].images, function(data, success) {
 
-                                let id = '#' + images[i];
+                                let id = '#' + images[i].images + '-' + images[i].number;
+
                                 $(id).attr('src', `data:image/jpg;base64,${data}`);
 
                             }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -367,7 +375,10 @@
 
                     for (let i = 0; i < data.data.length; i++) {
                         displayedItems.push(data.data[i])
-                        images.push(data.data[i].imgId)
+                        images.push({
+                            images: data.data[i].imgId,
+                            number: i
+                        })
                         t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
                         t = t + "    <div class=\"products-single fix\">"
                         t = t + "       <div class=\"box-img-hover\">"
@@ -403,9 +414,9 @@
 
                     for (let i = 0; i < images.length; i++) {
 
-                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
+                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i].images, function(data, success) {
 
-                            let id = '#' + images[i];
+                            let id = '#' + images[i].images + '-' + images[i].number;
                             $(id).attr('src', `data:image/jpg;base64,${data}`);
 
                         }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -456,16 +467,7 @@
 
                     let images = []
                     let counter = 0;
-                    // let brand = ""
-                    // // for (let j = 0; j < data.Brand.length; j++) {
-                    // //     brand = brand + "<li>"
-                    // //     brand = brand + " <div class=\"radio radio-danger\">"
-                    // //     brand = brand + "<input onclick=\"callbrand('" + data.Brand[j] + "')\" name=\"survey\" id=\"Radios10\" value=\"declater\" type=\"radio\">"
-                    // //     brand = brand + "<label for=\"Radios10\"> " + data.Brand[j] + " </label>"
-                    // //     brand = brand + " </div>"
-                    // //     brand = brand + "</li>"
-                    // // }
-                    // // $(".addbrand").append(brand);
+
 
 
                     let t = "<div class=\"row product-categorie-box\">"
@@ -480,7 +482,10 @@
                             displayedItems.push(data.Categorys[i].product[j])
                                 //set id of the image here
 
-                            images.push(data.Categorys[i].product[j].imgId)
+                            images.push({
+                                images: data.Categorys[i].product[j].imgId,
+                                number: j
+                            })
                             t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
                             t = t + "    <div class=\"products-single fix\">"
                             t = t + "       <div class=\"box-img-hover\">"
@@ -488,7 +493,8 @@
                             t = t + "                <p class=\"sale\">Sale</p>"
                             t = t + "           </div>"
 
-                            t = t + "           <img src=\"\" id = \"" + data.Categorys[i].product[j] + "\" class=\"img-fluid\" alt=\"Image\">"
+
+                            t = t + "           <img src=\"\" id = \"" + data.Categorys[i].product[j].imgId + '-' + j + "\" class=\"img-fluid\" alt=\"Image\">"
                             t = t + "           <div class=\"mask-icon\">"
                             t = t + "               <ul>"
                             t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
@@ -517,13 +523,18 @@
                     t = t + "</div>"
                     $(".addproduct").append(t);
 
-
+                    // images.push({
+                    //         images: data.Categorys[i].product[j].imgId,
+                    //         number: j
+                    //     })
                     //now use for loop to get the images 
+
                     for (let i = 0; i < images.length; i++) {
 
-                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
+                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i].images, function(data, success) {
 
-                            let id = '#' + images[i];
+                            let id = '#' + images[i].images + '-' + images[i].number;
+                            console.log(id)
                             $(id).attr('src', `data:image/jpg;base64,${data}`);
 
                         }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -531,50 +542,7 @@
 
                             console.log(jqXHR)
                         });
-                        /*
-                                                let buf = []
-                                                var last_response_len = false;
-                                                $.ajax('http://localhost:3000/api/store/loadImage', {
-                                                        xhrFields: {
-                                                            onprogress: function(e) {
 
-                                                                buf.push()
-                                                                // var this_response, response = e.currentTarget.response;
-                                                                // if (last_response_len === false) {
-                                                                //     this_response = response;
-                                                                //     last_response_len = response.length;
-                                                                // } else {
-                                                                //     this_response = response.substring(last_response_len);
-                                                                //     last_response_len = response.length;
-                                                                // }
-
-                                                            }
-                                                        }
-                                                    })
-                                                    .done(function(data) {
-
-
-                                                        function _arrayBufferToBase64(buffer) {
-                                                            var binary = '';
-                                                            var bytes = new Uint8Array(buffer);
-                                                            var len = bytes.byteLength;
-                                                            for (var i = 0; i < len; i++) {
-                                                                binary += String.fromCharCode(bytes[i]);
-                                                            }
-                                                            return window.btoa(binary);
-                                                        }
-
-                                                        $('#imageplace').attr('src', `data:image/jpg;base64,${_arrayBufferToBase64(data)}`);
-
-
-
-
-                                                    })
-                                                    .fail(function(data) {
-
-                                                        //console.log('Error: ', data);
-                                                    });
-                                            */
                     }
 
 
@@ -582,12 +550,7 @@
 
                 });
 
-            // function toBase64(file) {
-            //     const reader = new FileReader();
-            //     reader.readAsDataURL(file);
-            //     return reader.result;
 
-            // }
 
             function removewhite(string) {
                 let t = ''
@@ -626,14 +589,19 @@
                                 for (let i = 0; i < data.length; i++) {
                                     displayedItems.push(data[i]._id)
 
-                                    images.push(data[i]._id.imgId)
+
+
+                                    images.push({
+                                        images: data[i]._id.imgId,
+                                        number: i
+                                    })
                                     t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
                                     t = t + "    <div class=\"products-single fix\">"
                                     t = t + "       <div class=\"box-img-hover\">"
                                     t = t + "           <div class=\"type-lb\">"
                                     t = t + "                <p class=\"sale\">Sale</p>"
                                     t = t + "           </div>"
-                                    t = t + "           <img src=\"\" id = \"" + data[i]._id.imgId + "\"class=\"img-fluid\" alt=\"Image\">"
+                                    t = t + "           <img src=\"\" id = \"" + data[i]._id.imgId + '-' + i + "\"class=\"img-fluid\" alt=\"Image\">"
                                     t = t + "           <div class=\"mask-icon\">"
                                     t = t + "               <ul>"
                                     t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
@@ -665,9 +633,9 @@
 
                                 for (let i = 0; i < images.length; i++) {
 
-                                    $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
+                                    $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i].images, function(data, success) {
 
-                                        let id = '#' + images[i];
+                                        let id = '#' + images[i].images + '-' + images[i].number;
                                         $(id).attr('src', `data:image/jpg;base64,${data}`);
 
                                     }).fail(function(jqXHR, textStatus, errorThrown) {

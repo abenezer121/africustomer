@@ -273,72 +273,78 @@
 
 
             let url = 'https://afrigebeta.herokuapp.com/api/user/filterbysubcath/' + storeid + '/' + cathname + '/' + subcathname + '/1/' + localStorage.getItem('token');
-
-            //search here
+            console.log(url)
+                //search here
             $.get(url,
-                function(data, status) {
-                    displayedItems.length = 0
-                    let images = []
-                    let counter = 0;
-                    $(".addproduct").empty();
+                    function(data, status) {
+                        console.log(data)
+                        displayedItems.length = 0
+                        let images = []
+                        let counter = 0;
+                        $(".addproduct").empty();
 
-                    let t = "<div class=\"row product-categorie-box\">"
+                        let t = "<div class=\"row product-categorie-box\">"
 
-                    t = t + "<div class=\"tab-content\">"
+                        t = t + "<div class=\"tab-content\">"
 
-                    t = t + "<div role=\"tabpanel\" class=\"tab-pane fade show active\" id=\"grid-view\">"
-                    t = t + " <div class=\"row\">"
+                        t = t + "<div role=\"tabpanel\" class=\"tab-pane fade show active\" id=\"grid-view\">"
+                        t = t + " <div class=\"row\">"
 
-                    for (let i = 0; i < data.data.length; i++) {
-                        displayedItems.push(data.data[i])
-                        images.push(data.data[i].imgId)
-                        console.log(data.data[i])
-                        t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
-                        t = t + "    <div class=\"products-single fix\">"
-                        t = t + "       <div class=\"box-img-hover\">"
-                        t = t + "           <div class=\"type-lb\">"
-                        t = t + "                <p class=\"sale\">Sale</p>"
-                        t = t + "           </div>"
-                        t = t + "           <img src=\"\" id = \"" + data.data[i].imgId + "\" class=\"img-fluid\" alt=\"Image\">"
-                        t = t + "           <div class=\"mask-icon\">"
-                        t = t + "               <ul>"
-                        t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
-                        t = t + "                   <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li>"
-                        t = t + "               </ul>"
-                        t = t + "               <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
-                        t = t + "           </div>"
-                        t = t + "       </div>"
-                        t = t + "       <div class=\"why-text\">"
-                        t = t + "   <h4 id=\"productname" + counter + "\">" + data.data[i].name + "</h4>"
-                        t = t + "           <h4>" + data.data[i].Description + "</h4>"
-                        t = t + "           <h5 id=\"productprice" + i + "\"> " + data.data[i].price + " $</h5>"
-                        t = t + "       </div>"
-                        t = t + "   </div>"
+                        for (let i = 0; i < data.data.length; i++) {
+                            displayedItems.push(data.data[i])
+                            images.push(data.data[i].imgId)
+
+                            t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
+                            t = t + "    <div class=\"products-single fix\">"
+                            t = t + "       <div class=\"box-img-hover\">"
+                            t = t + "           <div class=\"type-lb\">"
+                            t = t + "                <p class=\"sale\">Sale</p>"
+                            t = t + "           </div>"
+                            t = t + "           <img src=\"\" id = \"" + data.data[i].imgId + "\" class=\"img-fluid\" alt=\"Image\">"
+                            t = t + "           <div class=\"mask-icon\">"
+                            t = t + "               <ul>"
+                            t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                            t = t + "                   <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li>"
+                            t = t + "               </ul>"
+                            t = t + "               <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
+                            t = t + "           </div>"
+                            t = t + "       </div>"
+                            t = t + "       <div class=\"why-text\">"
+                            t = t + "   <h4 id=\"productname" + counter + "\">" + data.data[i].name + "</h4>"
+                            t = t + "           <h4>" + data.data[i].Description + "</h4>"
+                            t = t + "           <h5 id=\"productprice" + i + "\"> " + data.data[i].price + " $</h5>"
+                            t = t + "       </div>"
+                            t = t + "   </div>"
+                            t = t + "</div>"
+                            counter = counter + 1;
+                        }
+
                         t = t + "</div>"
-                        counter = counter + 1;
-                    }
-
-                    t = t + "</div>"
-                    t = t + "</div>"
-                    t = t + "</div>"
-                    t = t + "</div>"
-                    $(".addproduct").append(t);
+                        t = t + "</div>"
+                        t = t + "</div>"
+                        t = t + "</div>"
+                        $(".addproduct").append(t);
 
 
-                    for (let i = 0; i < images.length; i++) {
+                        for (let i = 0; i < images.length; i++) {
 
-                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
+                            $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i], function(data, success) {
 
-                            let id = '#' + images[i];
-                            $(id).attr('src', `data:image/jpg;base64,${data}`);
+                                let id = '#' + images[i];
+                                $(id).attr('src', `data:image/jpg;base64,${data}`);
 
-                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
 
 
-                            console.log(jqXHR)
-                        });
-                    }
-                })
+                                console.log(jqXHR)
+                            });
+                        }
+                    })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                    console.log(jqXHR)
+                });
         }
 
         function callbrand(brand) {
@@ -417,6 +423,7 @@
                 function(data, status) {
 
                     let t = ""
+                    console.log(data)
 
                     for (let i = 0; i < data.length; i++) {
 
@@ -481,7 +488,7 @@
                             t = t + "                <p class=\"sale\">Sale</p>"
                             t = t + "           </div>"
 
-                            t = t + "           <img src=\"\" id = \"" + data.Categorys[i].product[j].imgId + "\" class=\"img-fluid\" alt=\"Image\">"
+                            t = t + "           <img src=\"\" id = \"" + data.Categorys[i].product[j] + "\" class=\"img-fluid\" alt=\"Image\">"
                             t = t + "           <div class=\"mask-icon\">"
                             t = t + "               <ul>"
                             t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"

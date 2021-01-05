@@ -157,6 +157,7 @@
 
 
         $(document).ready(function() {
+            $('#username').text(localStorage.getItem('username'));
             clicked(1)
         });
 
@@ -378,7 +379,7 @@
             </div>
             <!-- End Side Menu -->
             <li class="dropdown">
-                <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Henok</a>
+                <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown" id="username"></a>
                 <ul class="dropdown-menu">
                     <li><a href="index.html">Logout</a></li>
                 </ul>

@@ -85,8 +85,9 @@
 
 
 
-            alert(localStorage.getItem('userid'))
-                // test if it works
+            //username here
+            $('#username').text(localStorage.getItem('username'));
+            // test if it works
             var url = 'https://afrigebeta.herokuapp.com/api/user/returnliststores/12.123/11.232/' + localStorage.getItem('token');
             $.get(url,
                 function(data, status) {
@@ -122,8 +123,6 @@
                         t = t + "     </div>"
                         t = t + "  </div>"
                         t = t + "  </div>"
-
-
                     }
                     t = t + "</div>"
                     $(".addstore").append(t);
@@ -346,7 +345,7 @@
             </div>
             <!-- End Side Menu -->
             <li class="dropdown">
-                <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Henok</a>
+                <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown" id="username"></a>
                 <ul class="dropdown-menu">
                     <li><a href="index.html">Logout</a></li>
                 </ul>

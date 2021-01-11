@@ -238,16 +238,15 @@
 
         function addtocart(i) {
 
-
             let name = $('#productname' + i).text();
-
+            let subcath = $("#productsubcath" + i).text()
             let price = $('#productprice' + i).text();
-
+            console.log(subcath)
             for (let i = 0; i < displayedItems.length; i++) {
-                if (displayedItems[i].name == name) {
+
+                if (displayedItems[i].name == name && displayedItems[i].subCategory == subcath) {
                     let id = null;
                     if (displayedItems[i]._id == undefined) {
-
                         id = displayedItems[i].id;
                     } else {
                         id = id = displayedItems[i]._id;
@@ -258,6 +257,7 @@
                         name: displayedItems[i].name,
                         imgId: displayedItems[i].imgId,
                         price: displayedItems[i].price,
+                        subcath: subcath,
                         quantity: 1
                     }
                 }
@@ -279,7 +279,7 @@
             //search here
             $.get(url,
                     function(data, status) {
-                        console.log(data)
+
                         displayedItems.length = 0
                         let images = []
                         let counter = 0;
@@ -317,8 +317,8 @@
                             t = t + "       </div>"
                             t = t + "       <div class=\"why-text\">"
                             t = t + "   <h4 id=\"productname" + counter + "\">" + data.data[i].name + "</h4>"
-                            t = t + "           <h4>" + data.data[i].subCategory + "</h4>"
-                            t = t + "           <h5 id=\"productprice" + i + "\"> " + data.data[i].price + " $</h5>"
+                            t = t + "           <h4 id =\"productsubcath" + counter + "\" >" + data.data[i].subCategory + "</h4>"
+                            t = t + "           <h5 id=\"productprice" + counter + "\"> " + data.data[i].price + " $</h5>"
                             t = t + "       </div>"
                             t = t + "   </div>"
                             t = t + "</div>"
@@ -520,7 +520,8 @@
                             t = t + "       </div>"
                             t = t + "       <div class=\"why-text\">"
                             t = t + "   <h4 id=\"productname" + counter + "\">" + data.Categorys[i].product[j].name + "</h4>"
-                            t = t + "           <h4>" + data.Categorys[i].product[j].subCategory + "</h4>"
+
+                            t = t + "           <h4 id = \"productsubcath" + counter + "\">" + data.Categorys[i].product[j].subCategory + "</h4>"
                             t = t + "           <h5 id=\"productprice" + counter + "\"> " + data.Categorys[i].product[j].price + " $</h5>"
                             t = t + "       </div>"
                             t = t + "   </div>"
@@ -617,7 +618,7 @@
                                     t = t + "           <div class=\"type-lb\">"
                                     t = t + "                <p class=\"sale\">Sale</p>"
                                     t = t + "           </div>"
-                                    t = t + "           <img src=\"\" id = \"" + data[i]._id.imgId + '-' + i + "\"class=\"img-fluid\" alt=\"Image\">"
+                                    t = t + "           <img src=\"\" id = \"" + data[i]._id.imgId + '-' + i + "\" class=\"img-fluid\" alt=\"Image\">"
                                     t = t + "           <div class=\"mask-icon\">"
                                     t = t + "               <ul>"
                                     t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
@@ -628,9 +629,10 @@
                                     t = t + "       </div>"
                                     t = t + "       <div class=\"why-text\">"
                                     t = t + "   <h4  id=\"productname" + i + "\">" + data[i]._id.name + "</h4>"
-                                    t = t + "           <h4>" + data[i]._id.Description + "</h4>"
+                                    t = t + "           <h4 id = \"productsubcath" + +i + "\">" + data[i]._id.Description + "</h4>"
                                     t = t + "           <h5 id=\"productprice" + i + "\"> " + data[i]._id.price + " $</h5>"
                                     t = t + "       </div>"
+
                                     t = t + "   </div>"
                                     t = t + "</div>"
 

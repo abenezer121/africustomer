@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Basic -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Site Metas -->
+    <title>Afri-Gebeta</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <style>
+        .searchbar {
+            margin-bottom: auto;
+            margin-top: auto;
+            height: 60px;
+            background-color: #353b48;
+            border-radius: 30px;
+            padding: 10px;
+        }
+        
+        .search_input {
+            color: white;
+            border: 0;
+            outline: 0;
+            background: none;
+            width: 0;
+            caret-color: transparent;
+            line-height: 40px;
+            transition: width 0.4s linear;
+        }
+        
+        .searchbar:hover>.search_input {
+            padding: 0 10px;
+            width: 450px;
+            caret-color: red;
+            transition: width 0.4s linear;
+        }
+        
+        .searchbar:hover>.search_icon {
+            background: white;
+            color: #e74c3c;
+        }
+        
+        .search_icon {
+            height: 40px;
+            width: 40px;
+            float: right;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+
+    <script>
+        let storeid = localStorage.getItem('storeid');
+        let t = ""
+        let cartData = {};
+        let displayedItems = [];
+
+        function searchcat(cathname) {
+
+            let url = 'https://afrigebeta.herokuapp.com/api/user/returnproductfromcategory/' + storeid + '/' + cathname + '/1/' + localStorage.getItem('token');
+
+            //search here
+            $.get(url,
+                function(data, status) {
+                    displayedItems.length = 0
+                    let images = []
+                    let counter = 0;
+                    $(".addproduct").empty();
+
+                    let t = "<div class=\"row product-categorie-box\">"
+
+                    t = t + "<div class=\"tab-content\">"
+
+                    t = t + "<div role=\"tabpanel\" class=\"tab-pane fade show active\" id=\"grid-view\">"
+                    t = t + " <div class=\"row\">"
+
+                    for (let i = 0; i < data.data.length; i++) {
+                        displayedItems.push(data.data[i]._id)
+
+                        images.push({
+                            images: data.data[i]._id.imgId,
+                            number: i
+                        })
+
+                        t = t + "<div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">"
+                        t = t + "    <div class=\"products-single fix\">"
+                        t = t + "       <div class=\"box-img-hover\">"
+                        t = t + "           <div class=\"type-lb\">"
+                        t = t + "                <p class=\"sale\">Sale</p>"
+                        t = t + "           </div>"
+                        t = t + "           <img src=\"\" id = \"" + data.data[i]._id.imgId + '-' + i + "\"class=\"img-fluid\" alt=\"Image\">"
+                        t = t + "           <div class=\"mask-icon\">"
+                        t = t + "               <ul>"
+                        t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                        t = t + "                   <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li>"
+                        t = t + "               </ul>"
+                        t = t + "               <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
+                        t = t + "           </div>"
+                        t = t + "       </div>"
+                        t = t + "       <div class=\"why-text\">"
+                        t = t + "   <h4 id=\"productname" + counter + "\">" + data.data[i]._id.name + "</h4>"
+                        t = t + "           <h4 id =\"printthis\">" + data.data[i]._id.Description + "</h4>"
+                        t = t + "           <h5 id=\"productprice" + i + "\"> " + data.data[i]._id.price + " $</h5>"
+                        t = t + "       </div>"
+                        t = t + "   </div>"
+                        t = t + "</div>"
+                        counter = counter + 1;
+                    }
+
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    t = t + "</div>"
+                    $(".addproduct").append(t);
+
+
+                    for (let i = 0; i < images.length; i++) {
+
+                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i].images, function(data, success) {
+
+                            let id = '#' + images[i].images + '-' + images[i].number;
+                            $(id).attr('src', `data:image/jpg;base64,${data}`);
+
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                            console.log(jqXHR)
+                        });
+                    }
+                })
+
+
+            // return cathagory here
+        }
+
+        function loaddata() {
+
+            $("#cartdata").empty();
+            $('#orderData').empty();
+            let t = "<div class=\"table-main table-responsive\">"
+
+            t = t + " <table class=\"table\">"
+            t = t + "<thead>"
+            t = t + "<tr>"
+            t = t + "<th>Images</th>"
+            t = t + "<th>Product Name</th>"
+            t = t + "<th>Price</th>"
+            t = t + "<th>Quantity</th>"
+            t = t + "<th>Total</th>"
+            t = t + "<th>Remove</th>"
+
+
+
+            t = t + "<tr>"
+            t = t + "</thead>"
+            t = t + "<tbody>"
+
+
+            let total = 0;
+            for (let i in cartData) {
+                t = t + "<tr>"
+                t = t + "<td class=\"thumbnail-img\">"
+
+                t = t + "<a href=\"#\">"
+                t = t + "<img class=\"img-fluid\" id = \"" + cartData[i].imgId + '-' + i + "\" src=\"\" alt=\"\" />"
+                t = t + "</a>"
+                t = t + "</td>"
+                t = t + "<td class=\"name-pr\">"
+                t = t + "<a href=\"#\">"
+                t = t + cartData[i].name
+                t = t + "</a>"
+                t = t + "</td>"
+                t = t + "<td class=\"price-pr\">"
+                t = t + "<p>" + cartData[i].price + "</p>"
+                t = t + "</td>"
+                t = t + "<td class=\"quantity-box\"><input type=\"number\" id=\"" + i + "\" onclick = \" updateCart('" + i + "')\" size=\"4\" value=\"" + cartData[i].quantity + "\" min=\"0\" step=\"1\" class=\"c-input-text qty text\"></td>"
+                t = t + "<td class=\"total-pr\">"
+                t = t + "<p>" + cartData[i].quantity * cartData[i].price + "</p>"
+                t = t + "</td>"
+                t = t + "<td class=\"remove-pr\">"
+                t = t + "<a href=\"#\" onclick = \" removeFromCart('" + i + "')\" >"
+                t = t + "<i class=\"fas fa-times\"></i>"
+                t = t + "</a>"
+                t = t + " </td>"
+                t = t + "</tr>"
+                total = total + cartData[i].quantity * cartData[i].price;
+            }
+            t = t + " </tbody>"
+            t = t + " </table>"
+            t = t + " </div>"
+
+            let p = "<div class=\"order-box\">"
+            p = p + "               <h3>Order summary</h3>"
+            p = p + "      <div class=\"d-flex\">"
+            p = p + "          <h4>Sub Total</h4>"
+            p = p + "       <div class=\"ml-auto font-weight-bold\"> $ 130 </div>"
+            p = p + "   </div>"
+            p = p + "   <div class=\"d-flex\">"
+            p = p + "       <h4>Discount</h4>"
+            p = p + "   <div class=\"ml-auto font-weight-bold\"> $ 40 </div>"
+            p = p + "</div>"
+            p = p + "<hr class=\"my-1\">"
+
+            p = p + "<div class=\"d-flex gr-total\">"
+            p = p + "   <h5>Grand Total</h5>"
+            p = p + "<div class=\"ml-auto h5\">  $" + total + "  </div>"
+            p = p + " </div>"
+            p = p + "<hr> "
+            p = p + "</div>"
+            $('#orderData').append(p);
+            $('#cartdata').append(t);
+
+            for (let i in cartData) {
+
+                $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + cartData[i].imgId, function(data, success) {
+
+                    let id = '#' + cartData[i].imgId + '-' + i;
+                    $(id).attr('src', `data:image/jpg;base64,${data}`);
+
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                    console.log(jqXHR)
+                });
+            }
+        }
+
+        function updateCart(i) {
+            //let id = "#" + i;
+            //get the value from the input box
+            let value = $('#' + i).val();
+
+            for (let s in cartData) {
+                if (s == i) {
+
+                    if (cartData[s].quantity != value) {
+                        cartData[s].quantity = value
+                        loaddata()
+                    }
+                }
+
+            }
+
+        }
+
+        function removeFromCart(id) {
+
+            delete cartData[id]
+                //remove the item and reload
+            loaddata();
+        }
+
+        function addtocart(i) {
+
+            let name = $('#productname' + i).text();
+            let subcath = $("#productsubcath" + i).text()
+            let price = $('#productprice' + i).text();
+            console.log(subcath)
+            for (let i = 0; i < displayedItems.length; i++) {
+
+                if (displayedItems[i].name == name && displayedItems[i].subCategory == subcath) {
+                    let id = null;
+                    if (displayedItems[i]._id == undefined) {
+                        id = displayedItems[i].id;
+                    } else {
+                        id = id = displayedItems[i]._id;
+                    }
+
+                    cartData[id] = {
+                        id: id,
+                        name: displayedItems[i].name,
+                        imgId: displayedItems[i].imgId,
+                        price: displayedItems[i].price,
+                        subcath: subcath,
+                        quantity: 1
+                    }
+                }
+
+            }
+
+            //Object.keys(cartData).length + 1
+            // console.log(name)
+            // console.log(displayedItems)
+            //console.log(cartData)
+            //console.log(name)
+
+
+
+
+        }
+
+        function openStore(i) {
+            localStorage.setItem('storeid', i);
+            window.location.href = "menu.html";
+        }
+
+        function searchsubcath(cathname, subcathname, page) {
+
+
+            let url = 'https://afrigebeta.herokuapp.com/api/user/filterbysubcath/' + storeid + '/' + cathname + '/' + subcathname + '/' + page + '/' + localStorage.getItem('token');
+
+            //search here
+            $.get(url,
+                    function(data, status) {
+
+                        displayedItems.length = 0
+                        let images = []
+                        let counter = 0;
+                        $(".addproduct").empty();
+
+                        let t = "<div class=\"row special-list \">"
+
+                        for (let i = 0; i < data.data.length; i++) {
+                            displayedItems.push(data.data[i])
+                            images.push({
+                                images: data.data[i].imgId,
+                                number: i
+                            })
+
+
+                            t = t + "<div class=\"col-lg-3 col-md-6 special-grid top-featured\">"
+                            t = t + "<div class=\"products-single fix\">"
+                            t = t + "<div class=\"box-img-hover\">"
+                            t = t + " <div class=\"type-lb\">"
+                            t = t + "   <p class=\"new\">New</p>"
+                            t = t + "</div>"
+                            t = t + "           <img src=\"\" id = \"" + data.data[i].imgId + '-' + i + "\" class=\"img-fluid\" alt=\"Image\">"
+
+                            t = t + "<div class=\"mask-icon\">"
+                            t = t + " <ul>"
+                            t = t + "    <!-- <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                            t = t + "    <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Compare\"><i class=\"fas fa-sync-alt\"></i></a></li>"
+                            t = t + " <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li> -->"
+                            t = t + "</ul>"
+                            t = t + "  <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
+
+                            t = t + " </div>"
+                            t = t + " </div>"
+                            t = t + " <div class=\"why-text\">"
+                            t = t + " <h4>Safeway Supermarket</h4>"
+                            t = t + "     <!-- <h5> $9.79</h5> -->"
+                            t = t + "  </div>"
+                            t = t + "<div class=\"bottominfo\">"
+                            t = t + "   <h4 id=\"productname" + counter + "\">" + data.data[i].name + "</h4>"
+                            t = t + "           <h4 id =\"productsubcath" + counter + "\" >" + data.data[i].subCategory + "</h4>"
+                            t = t + "           <h5 id=\"productprice" + counter + "\"> " + data.data[i].price + " $</h5>"
+
+                            t = t + "</div>"
+                            t = t + " </div>"
+                            t = t + " </div>"
+
+
+                            counter = counter + 1;
+                        }
+
+
+
+
+                        t = t + "</div>"
+
+                        for (let i = 0; i < data.totalpage; i++) {
+                            let number = i + 1
+
+                            if (page == i + 1) {
+
+                                t = t + "<button   disabled onclick = \" searchsubcath('" + cathname + "','" + subcathname + "','" + number + "')\">" + number + "</button>"
+
+                            } else {
+                                t = t + "<button    onclick = \" searchsubcath('" + cathname + "','" + subcathname + "','" + number + "')\">" + number + "</button>"
+
+                            }
+
+                        }
+                        $(".addproduct").append(t);
+
+
+                        for (let i = 0; i < images.length; i++) {
+
+                            $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i].images, function(data, success) {
+
+                                let id = '#' + images[i].images + '-' + images[i].number;
+
+                                $(id).attr('src', `data:image/jpg;base64,${data}`);
+
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                                console.log(jqXHR)
+                            });
+                        }
+                    })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                    console.log(jqXHR)
+                });
+        }
+
+        $(document).ready(function() {
+
+            $('#username').text(localStorage.getItem('username'));
+            let t = ""
+            t = t + " <div class=\"dropdown-menu\" aria-labelledby=\"dropdown-a\">"
+
+            let names = JSON.parse(localStorage.getItem('stores'));
+            for (let i = 0; i < names.length; i++) {
+                t = t + " <a class=\"dropdown-item\" onclick=\"openStore('" + names[i].id + "')\" href=\"#\">" + names[i].name + "</a>"
+            }
+            t = t + "</div>"
+
+            $("#storehere").append(t);
+
+            var url = 'https://afrigebeta.herokuapp.com/api/user/returncathagory/' + storeid + '/' + localStorage.getItem('token');
+
+
+            $.get(url,
+                function(data, status) {
+                    let t = ""
+
+                    for (let i = 0; i < data.length; i++) {
+
+                        t = t + "<div class=\"button-group filter-button-group\"> "
+                        t = t + "<div class=\"dropdown\" style=\"display:inline;\">"
+                        t = t + " <button class=\"dropdown-toggle active\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">"
+                        t = t + data[i]._id.name
+                        t = t + "</button>"
+                        t = t + " <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">"
+
+                        for (let j = 0; j < data[i]._id.subcategory.length; j++) {
+                            t = t + "     <a class=\"dropdown-item\" onclick = \" searchsubcath('" + data[i]._id.name + "','" + data[i]._id.subcategory[j] + "','" + 1 + "')\" href=\"#\">" + data[i]._id.subcategory[j] + "</a>"
+                        }
+
+                        t = t + " </div>"
+                        t = t + " </div>"
+
+                    }
+
+                    $(".category").append(t);
+
+                });
+
+
+
+            var url = 'https://afrigebeta.herokuapp.com/api/user/returnsomeproductsfromcath/' + storeid + '/' + localStorage.getItem('token');;
+            $.get(url,
+                function(data, status) {
+
+
+                    let images = []
+                    let counter = 0;
+
+
+                    let t = "<div class=\"row special-list \">"
+
+                    for (let i = 0; i < data.Categorys.length; i++) {
+                        for (let j = 0; j < data.Categorys[i].product.length; j++) {
+                            displayedItems.push(data.Categorys[i].product[j])
+                                //set id of the image here
+
+                            images.push({
+                                images: data.Categorys[i].product[j].imgId,
+                                number: j
+                            })
+
+
+                            t = t + "<div class=\"col-lg-3 col-md-6 special-grid top-featured\">"
+                            t = t + "<div class=\"products-single fix\">"
+                            t = t + "<div class=\"box-img-hover\">"
+                            t = t + " <div class=\"type-lb\">"
+                            t = t + "   <p class=\"new\">New</p>"
+                            t = t + "</div>"
+                            t = t + "  <img src=\"\" id = \"" + data.Categorys[i].product[j].imgId + '-' + j + "\" class=\"img-fluid\" alt=\"Image\">"
+
+                            t = t + "<div class=\"mask-icon\">"
+                            t = t + " <ul>"
+                            t = t + "    <!-- <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                            t = t + "    <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Compare\"><i class=\"fas fa-sync-alt\"></i></a></li>"
+                            t = t + " <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li> -->"
+                            t = t + "</ul>"
+                            t = t + "  <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
+
+                            t = t + " </div>"
+                            t = t + " </div>"
+                            t = t + " <div class=\"why-text\">"
+                            t = t + " <h4>Safeway Supermarket</h4>"
+                            t = t + "     <!-- <h5> $9.79</h5> -->"
+                            t = t + "  </div>"
+                            t = t + "<div class=\"bottominfo\">"
+                            t = t + "   <h4 id=\"productname" + counter + "\">" + data.Categorys[i].product[j].name + "</h4>"
+                            t = t + "           <h4 id = \"productsubcath" + counter + "\">" + data.Categorys[i].product[j].subCategory + "</h4>"
+                            t = t + "           <h5 id=\"productprice" + counter + "\"> " + data.Categorys[i].product[j].price + " $</h5>"
+
+                            t = t + "</div>"
+                            t = t + " </div>"
+                            t = t + " </div>"
+
+                            counter = counter + 1
+
+                        }
+                    }
+
+
+                    t = t + " </div>"
+                    $(".addproduct").append(t);
+
+                    // images.push({
+                    //         images: data.Categorys[i].product[j].imgId,
+                    //         number: j
+                    //     })
+                    //now use for loop to get the images 
+
+                    for (let i = 0; i < images.length; i++) {
+
+                        $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i].images, function(data, success) {
+
+                            let id = '#' + images[i].images + '-' + images[i].number;
+                            console.log(id)
+                            $(id).attr('src', `data:image/jpg;base64,${data}`);
+
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                            console.log(jqXHR)
+                        });
+
+                    }
+
+
+
+
+                });
+
+
+
+
+
+
+        })
+
+
+        function orderCheckOut() {
+
+            if (Object.keys(cartData).length == 0) {
+                alert("Please select items")
+                return
+            }
+            let totalPrice = 0;
+            let orders = [];
+            for (let s in cartData) {
+                totalPrice = totalPrice + (cartData[s].price * cartData[s].quantity)
+                let t = {
+                    "productid": cartData[s].id,
+                    "amount": cartData[s].quantity
+                }
+                orders.push(t)
+            }
+            let json = {
+                    "totalmoney": totalPrice,
+                    "orders": orders
+                }
+                // now make post request 
+
+            $.post("https://afrigebeta.herokuapp.com/api/user/makeorder", {
+                    storeid: storeid,
+                    ordereddata: json,
+                    token: localStorage.getItem('token')
+                })
+                .done(function(data, textStatus, jqXHR) {
+                    alert("Success")
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+
+                    if (jqXHR.responseJSON.message != undefined) {
+                        alert(jqXHR.responseJSON.message)
+                    } else {
+                        alert("Error occured")
+                    }
+
+
+                });
+        }
+
+        function url_redirect(options) {
+            var $form = $("<form />");
+
+            $form.attr("action", options.url);
+            $form.attr("method", options.method);
+
+            for (var data in options.data)
+                $form.append('<input type="hidden" name="' + data + '" value="' + options.data[data] + '" />');
+
+            $("body").append($form);
+            $form.submit();
+        }
+
+        function returnHome() {
+            window.location.href = "markets.html";
+
+
+        }
+
+        function returnMyAccount() {
+
+            const url = new URL(window.location);
+            url.searchParams.set('foo', 'bar');
+            window.history.pushState({}, '', url);
+            window.location.href = "my-account.html";
+
+        }
+
+
+        function removewhite(string) {
+            let t = ''
+            for (let i = 0; i < string.length; i++) {
+                if (string[i] != ' ') t = t + string[i]
+            }
+            return t
+
+        }
+
+
+        function searchthis() {
+
+
+
+
+            let inputvalue = removewhite($('#inputsearchhere').val())
+
+
+            $(".addproduct").empty();
+
+            let url = "https://afrigebeta.herokuapp.com/api/user/searchproduct/" + storeid + "/" + inputvalue + '/' + localStorage.getItem('token');
+            if (inputvalue.length > 0) {
+                ////search here
+                $.get(url,
+                    function(data, status) {
+                        displayedItems.length = 0
+
+                        let images = []
+                        let counter = 0;
+                        let t = "<div class=\"row special-list \">"
+                        for (let i = 0; i < data.length; i++) {
+                            displayedItems.push(data[i]._id)
+
+
+
+                            images.push({
+                                images: data[i]._id.imgId,
+                                number: i
+                            })
+
+
+
+
+
+
+
+                            t = t + "<div class=\"col-lg-3 col-md-6 special-grid top-featured\">"
+                            t = t + "<div class=\"products-single fix\">"
+                            t = t + "<div class=\"box-img-hover\">"
+                            t = t + " <div class=\"type-lb\">"
+                            t = t + "   <p class=\"new\">New</p>"
+                            t = t + "</div>"
+                            t = t + "           <img src=\"\" id = \"" + data[i]._id.imgId + '-' + i + "\" class=\"img-fluid\" alt=\"Image\">"
+
+                            t = t + "<div class=\"mask-icon\">"
+                            t = t + " <ul>"
+                            t = t + "    <!-- <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                            t = t + "    <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Compare\"><i class=\"fas fa-sync-alt\"></i></a></li>"
+                            t = t + " <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li> -->"
+                            t = t + "</ul>"
+                            t = t + "  <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
+
+                            t = t + " </div>"
+                            t = t + " </div>"
+                            t = t + " <div class=\"why-text\">"
+                            t = t + " <h4>Safeway Supermarket</h4>"
+                            t = t + "     <!-- <h5> $9.79</h5> -->"
+                            t = t + "  </div>"
+                            t = t + "<div class=\"bottominfo\">"
+                            t = t + "   <h4  id=\"productname" + i + "\">" + data[i]._id.name + "</h4>"
+                            t = t + "           <h4 id = \"productsubcath" + +i + "\">" + data[i]._id.Description + "</h4>"
+                            t = t + "           <h5 id=\"productprice" + i + "\"> " + data[i]._id.price + " $</h5>"
+
+                            t = t + "</div>"
+                            t = t + " </div>"
+                            t = t + " </div>"
+
+
+
+                            counter = counter + 1
+
+                        }
+
+
+
+                        t = t + "</div>"
+
+                        $(".addproduct").append(t);
+
+
+                        for (let i = 0; i < images.length; i++) {
+
+                            $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i].images, function(data, success) {
+
+                                let id = '#' + images[i].images + '-' + images[i].number;
+                                $(id).attr('src', `data:image/jpg;base64,${data}`);
+
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+
+
+                                console.log(jqXHR)
+                            });
+                        }
+                    })
+
+            }
+
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Site Icons -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/logo.jpg">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" zhref="css/custom.css">
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+
+
+</head>
+
+<body>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Start Cart  -->
+                    <div class="cart-box-main">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="cartdata">
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="row my-5">
+                                <div class="col-lg-8 col-sm-12"></div>
+                                <div class="col-lg-4 col-sm-12">
+                                    <div id="orderData">
+
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex shopping-box"><a href="#" onclick="orderCheckOut()" class="ml-auto btn hvr-hover">Checkout</a> </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Start header -->
+    <header class="top-navbar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <p><img src="images/logo.png" width="70px" height="70px" alt="" />Afri-Gebeta</p>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-rs-food" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+				  <span class="navbar-toggler-icon"></span>
+				</button>
+                <div class="collapse navbar-collapse" id="navbars-rs-food">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" href="menu.html">Menu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+
+                        <li class="nav-item dropdown" id="storehere">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">stores</a>
+
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown" id="username"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown-a">
+
+                                <a class="dropdown-item" href="profile.html">Profile</a>
+                                <a class="dropdown-item" href="Orders.html">Orders</a>
+                                <a class="dropdown-item" href="stuff.html">logout</a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="menu.html">
+                                <a href="#" onclick="loaddata()" data-toggle="modal" data-target="#exampleModal" style="font-size:24px"> <i class="fa fa-shopping-cart"></i></button>
+                                </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- End header -->
+
+
+    <!-- Start All Pages -->
+    <div class="all-page-title page-breadcrumb">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Special Menu</h1>
+                    <div class="container h-100">
+                        <div class="d-flex justify-content-center h-100">
+                            <div class="searchbar">
+                                <input class="search_input" id="inputsearchhere" type="text" name="" placeholder="Search...">
+                                <a href="#" class="search_icon" onclick="searchthis()"><i class="fas fa-search"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Pages -->
+
+    <!-- Start Menu -->
+    <div class="menu-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="heading-title text-center">
+                        <h2>Special Menu</h2>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="special-menu text-center">
+                        <div class="category">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="addproduct">
+
+            </div>
+
+        </div>
+    </div>
+    <!-- End Menu -->
+
+
+    <div class="contact-imfo-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <i class="fa fa-volume-control-phone"></i>
+                    <div class="overflow-hidden">
+                        <h4>Phone</h4>
+                        <p class="lead">
+                            +01 123-456-4590
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <i class="fa fa-envelope"></i>
+                    <div class="overflow-hidden">
+                        <h4>Email</h4>
+                        <p class="lead">
+                            yourmail@gmail.com
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <i class="fa fa-map-marker"></i>
+                    <div class="overflow-hidden">
+                        <h4>Location</h4>
+                        <p class="lead">
+                            800, Lorem Street, US
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Contact info -->
+
+    <!-- Start Footer -->
+    <footer class="footer-area bg-f">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <h3>About Us</h3>
+                    <p>Integer cursus scelerisque ipsum id efficitur. Donec a dui fringilla, gravida lorem ac, semper magna. Aenean rhoncus ac lectus a interdum. Vivamus semper posuere dui, at ornare turpis ultrices sit amet. Nulla cursus lorem ut nisi porta,
+                        ac eleifend arcu ultrices.</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3>Opening hours</h3>
+                    <p><span class="text-color">Monday: </span>Closed</p>
+                    <p><span class="text-color">Tue-Wed :</span> 9:Am - 10PM</p>
+                    <p><span class="text-color">Thu-Fri :</span> 9:Am - 10PM</p>
+                    <p><span class="text-color">Sat-Sun :</span> 5:PM - 10PM</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3>Contact information</h3>
+                    <p class="lead">Ipsum Street, Lorem Tower, MO, Columbia, 508000</p>
+                    <p class="lead"><a href="#">+01 2000 800 9999</a></p>
+                    <p><a href="#"> info@admin.com</a></p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3>Subscribe</h3>
+                    <div class="subscribe_form">
+                        <form class="subscribe_form">
+                            <input name="EMAIL" id="subs-email" class="form_input" placeholder="Email Address..." type="email">
+                            <button type="submit" class="submit">SUBSCRIBE</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                    <ul class="list-inline f-social">
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="company-name">Afri-Gebeta | All Rights Reserved. &copy; 2020</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- End Footer -->
+
+    <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+    <!-- ALL JS FILES -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- ALL PLUGINS -->
+    <script src="js/jquery.superslides.min.js"></script>
+    <script src="js/images-loded.min.js"></script>
+    <script src="js/isotope.min.js"></script>
+    <script src="js/baguetteBox.min.js"></script>
+    <script src="js/form-validator.min.js"></script>
+    <script src="js/contact-form-script.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+
+</html>
+
+
+<!--
+	<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>jQuery slideLeft and slideRight Effect</title>
+    <style>
+        .box {
+            float: left;
+            overflow: hidden;
+            background: #f0e68c;
+        }
+        /* Add padding and border to inner content
+    for better animation effect */
+        
+        .box-inner {
+            width: 400px;
+            padding: 10px;
+            border: 1px solid #a29415;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var boxWidth = $(".box").width();
+            $(".slide-left").click(function() {
+                $(".box").animate({
+                    width: 0
+                });
+            });
+            $(".slide-right").click(function() {
+                $(".box").animate({
+                    width: boxWidth
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <button type="button" class="slide-left">Slide Left</button>
+    <button type="button" class="slide-right">Slide Right</button>
+    <hr>
+    <div class="box">
+        <div class="box-inner">Lorem ipsum dolor sit amet...</div>
+    </div>
+
+    sdfsdfsdf
+</body>
+
+</html>
+-->

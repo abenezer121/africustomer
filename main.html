@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Basic -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Site Metas -->
+    <title>Afri-Gebeta</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+        let supermarkets = []
+
+        function url_redirect(options) {
+            var $form = $("<form />");
+
+            $form.attr("action", options.url);
+            $form.attr("method", options.method);
+
+            for (var data in options.data)
+                $form.append('<input type="hidden" name="' + data + '" value="' + options.data[data] + '" />');
+
+            $("body").append($form);
+            $form.submit();
+        }
+
+        function getCookie(name) {
+            var cookieName = name + "="
+            var docCookie = document.cookie
+            var cookieStart
+            var end
+
+            if (docCookie.length > 0) {
+                cookieStart = docCookie.indexOf(cookieName)
+                if (cookieStart != -1) {
+                    cookieStart = cookieStart + cookieName.length
+                    end = docCookie.indexOf(";", cookieStart)
+                    if (end == -1) {
+                        end = docCookie.length
+                    }
+                    return unescape(docCookie.substring(cookieStart, end))
+                }
+            }
+            return false
+        }
+
+        function setCookie(name, value, days) {
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                var expires = "; expires=" + date.toGMTString();
+            } else var expires = "";
+            document.cookie = name + "=" + value + expires + ";";
+        }
+        $(document).ready(function() {
+
+
+
+            //username here
+            $('#username').text(localStorage.getItem('username'));
+            // test if it works
+            var url = 'https://afrigebeta.herokuapp.com/api/user/returnliststores/12.123/11.232/' + localStorage.getItem('token');
+            $.get(url,
+                function(data, status) {
+
+                    let t = "<div class=\"row special-list \">"
+
+
+
+                    for (let i = 0; i < data.length; i++) {
+
+                        t = t + "<div class=\"col-lg-3 col-md-6 special-grid top-featured\">"
+                        t = t + "<div class=\"products-single fix\">"
+                        t = t + "<div class=\"box-img-hover\">"
+                        t = t + " <div class=\"type-lb\">"
+                        t = t + "   <p class=\"new\">New</p>"
+                        t = t + "</div>"
+                        t = t + "<img src=\"images/blog-img-01.jpg\" class=\"img-fluid\" alt=\"Image\">"
+                        t = t + "<div class=\"mask-icon\">"
+                        t = t + " <ul>"
+                        t = t + "    <!-- <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                        t = t + "    <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Compare\"><i class=\"fas fa-sync-alt\"></i></a></li>"
+                        t = t + " <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li> -->"
+                        t = t + "</ul>"
+                        t = t + "   <a  class=\"cart\"  onclick=\"openStore('" + data[i].id + "')\"  href=\"#\">Visit Store</a>"
+
+                        t = t + " </div>"
+                        t = t + " </div>"
+                        t = t + " <div class=\"why-text\">"
+                        t = t + " <h4>Safeway Supermarket</h4>"
+                        t = t + "     <!-- <h5> $9.79</h5> -->"
+                        t = t + "  </div>"
+                        t = t + "<div class=\"bottominfo\">"
+                        t = t + " <h4>" + data[i].name + "</h4>"
+                        t = t + "</div>"
+                        t = t + " </div>"
+                        t = t + " </div>"
+
+                        supermarkets.push({
+                            name: data[i].name,
+                            id: data[i].id
+                        })
+                    }
+
+                    console.log(supermarkets.length)
+                    localStorage.setItem('stores', JSON.stringify(supermarkets));
+                    t = t + " </div>"
+                    $(".addstore").append(t);
+                    t = "";
+
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR)
+            });
+
+
+
+
+
+
+
+        })
+
+        function openStore(i) {
+            localStorage.setItem('storeid', i);
+            window.location.href = "menu.html";
+        }
+    </script>
+
+
+
+</head>
+
+<body>
+    <!-- Start header -->
+    <header class="top-navbar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <p><img src="images/logo.png" width="70px" height="70px" alt="" />Afri-Gebeta</p>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-rs-food" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+				  <span class="navbar-toggler-icon"></span>
+				</button>
+                <div class="collapse navbar-collapse" id="navbars-rs-food">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item "><a class="nav-link" href="menu.html">Menu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">username</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown-a">
+                                <a class="dropdown-item" href="reservation.html">My Account</a>
+                                <a class="dropdown-item" href="myaccount.html">Profile</a>
+                                <a class="dropdown-item" href="myaccount.html">Orders</a>
+                                <a class="dropdown-item" href="stuff.html">logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- End header -->
+
+    <!-- Start All Pages -->
+    <div class="all-page-title page-breadcrumb">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Shopping Places</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="products-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="title-all text-center">
+                        <h1>Shopping Places</h1>
+                        <p>Here are some of the many market places you can shop from.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="special-menu text-center">
+                        <div class="button-group filter-button-group">
+                            <button class="active" data-filter="*">All</button>
+                            <button data-filter=".top-featured">Nearby</button>
+                            <button data-filter=".best-seller">Best seller</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="addstore">
+
+            </div>
+
+        </div>
+    </div>
+    <!-- End Products  -->
+
+
+    <div class="contact-imfo-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <i class="fa fa-volume-control-phone"></i>
+                    <div class="overflow-hidden">
+                        <h4>Phone</h4>
+                        <p class="lead">
+                            +01 123-456-4590
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <i class="fa fa-envelope"></i>
+                    <div class="overflow-hidden">
+                        <h4>Email</h4>
+                        <p class="lead">
+                            yourmail@gmail.com
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <i class="fa fa-map-marker"></i>
+                    <div class="overflow-hidden">
+                        <h4>Location</h4>
+                        <p class="lead">
+                            800, Lorem Street, US
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Contact info -->
+
+    <!-- Start Footer -->
+    <footer class="footer-area bg-f">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <h3>About Us</h3>
+                    <p>Integer cursus scelerisque ipsum id efficitur. Donec a dui fringilla, gravida lorem ac, semper magna. Aenean rhoncus ac lectus a interdum. Vivamus semper posuere dui, at ornare turpis ultrices sit amet. Nulla cursus lorem ut nisi porta,
+                        ac eleifend arcu ultrices.</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3>Opening hours</h3>
+                    <p><span class="text-color">Monday: </span>Closed</p>
+                    <p><span class="text-color">Tue-Wed :</span> 9:Am - 10PM</p>
+                    <p><span class="text-color">Thu-Fri :</span> 9:Am - 10PM</p>
+                    <p><span class="text-color">Sat-Sun :</span> 5:PM - 10PM</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3>Contact information</h3>
+                    <p class="lead">Ipsum Street, Lorem Tower, MO, Columbia, 508000</p>
+                    <p class="lead"><a href="#">+01 2000 800 9999</a></p>
+                    <p><a href="#"> info@admin.com</a></p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3>Subscribe</h3>
+                    <div class="subscribe_form">
+                        <form class="subscribe_form">
+                            <input name="EMAIL" id="subs-email" class="form_input" placeholder="Email Address..." type="email">
+                            <button type="submit" class="submit">SUBSCRIBE</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                    <ul class="list-inline f-social">
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="company-name">Afri-Gebeta | All Rights Reserved. &copy; 2020</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- End Footer -->
+
+    <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+    <!-- ALL JS FILES -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- ALL PLUGINS -->
+    <script src="js/jquery.superslides.min.js"></script>
+    <script src="js/images-loded.min.js"></script>
+    <script src="js/isotope.min.js"></script>
+    <script src="js/baguetteBox.min.js"></script>
+    <script src="js/form-validator.min.js"></script>
+    <script src="js/contact-form-script.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+
+</html>

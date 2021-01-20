@@ -1,36 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Basic -->
 
 <head>
-    <link rel="icon" type="image/png" sizes="16x16" href="public/assets/img/logo.jpg">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Afri Gebeta</title>
-    <meta charset="UTF-8">
+    <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Site Metas -->
+    <title>Afri-Gebeta</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Site Icons -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/logo.jpg">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="public/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="public/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="public/vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="public/vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/register.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="public/vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="public/css/util.css">
-    <link rel="stylesheet" type="text/css" href="public/css/main.css">
-    <!--===============================================================================================-->
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="public/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!-- <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+
     <script>
+        function openStore(i) {
+            localStorage.setItem('storeid', i);
+            window.location.href = "menu.html";
+        }
+
+
         $(document).ready(function() {
+
+            $('#username').text(localStorage.getItem('username'));
 
             //get profile here 
             // let url = "http://localhost:3000/api/user/getUserProfile"
             // $.get(url, function(data, status) {
             // })
+
+            let f = ""
+            f = f + " <div class=\"dropdown-menu\" aria-labelledby=\"dropdown-a\">"
+
+            let names = JSON.parse(localStorage.getItem('stores'));
+            for (let i = 0; i < names.length; i++) {
+                f = f + " <a class=\"dropdown-item\" onclick=\"openStore('" + names[i].id + "')\" href=\"#\">" + names[i].name + "</a>"
+            }
+            f = f + "</div>"
+
+            $("#storehere").append(f);
+
+
             let userData = null;
 
             function removewhite(string) {
@@ -42,7 +94,17 @@
             }
 
             $(".form").empty()
-            let t = "<form class=\"login100-form validate-form\">"
+
+            let t = "<div class=\"limiter\">"
+            t = t + "<div class=\"container-login100\">"
+            t = t + " <div class=\"wrap-login100\">"
+            t = t + "<div class=\"login100-pic js-tilt\" data-tilt>"
+            t = t + " <img src=\"images/afrigebeta.jpg\" alt=\"IMG\">"
+            t = t + "</div>"
+
+
+            t = t + "<form class=\"login100-form validate-form\">"
+
             t = t + "<span class=\"login100-form-title\">"
             t = t + "</span>"
             t = t + "<div class=\"wrap-input100 validate-input\" data-validate=\"First name is required\">"
@@ -97,13 +159,18 @@
             t = t + "  </div>"
 
             t = t + "<div class=\"container-login100-form-btn\">"
-            t = t + "<button class=\"login100-form-btn\" id=\"updateButton\">"
+            t = t + "<button class=\"login100-form-btn\" id=\"updateButton\" onclick=\"sendprofile()\">"
             t = t + "	Update profile"
             t = t + "</button>"
             t = t + "</div>"
             t = t + "<div class=\"text-center p-t-12\">"
             t = t + "</div>"
             t = t + "</form>"
+
+            t = t + "</div>"
+            t = t + " </div>"
+            t = t + " </div>"
+
 
             $(".form").append(t)
 
@@ -121,67 +188,72 @@
                 }
             }
             //userregister
-            document.addEventListener('click', function(e) {
-                e.preventDefault()
-                if (e.target && e.target.id == 'updateButton') {
 
-                    let fName = null;
-                    let lName = null;
-                    let age = null;
-                    let city = null;
-                    let phone = null;
-                    let email = null;
-                    let username = null;
-
-                    console.log(fName)
-
-                    if (removefromfirst($('#fName').val())) fName = (userData.firstName == removefromfirst($('#fName').val())) ? null : removefromfirst($('#fName').val());
-
-                    if (removefromfirst($('#lName').val())) lName = (userData.lastName == removefromfirst($('#lName').val())) ? null : removefromfirst($('#fName').val());
-
-                    if (removewhite($('#age').val())) age = (userData.age == removewhite($('#age').val())) ? null : removefromfirst($('#fName').val());
-
-                    if (removefromfirst($('#city').val())) city = (userData.city == removefromfirst($('#city').val())) ? null : removefromfirst($('#city').val());
-
-                    if (removewhite($('#phone').val())) phone = (userData.phone == removewhite($('#phone').val())) ? null : removewhite($('#phone').val());
-
-                    if (removewhite($('#email').val())) email = (userData.email == removewhite($('#email').val())) ? null : removewhite($('#email').val());
-
-                    if (removefromfirst($('#username').val())) username = (userData.username == removefromfirst($('#username').val())) ? null : removefromfirst($('#username').val());
+            function sendprofile() {
 
 
+                let fName = null;
+                let lName = null;
+                let age = null;
+                let city = null;
+                let phone = null;
+                let email = null;
+                let username = null;
 
-                    let url = "https://afrigebeta.herokuapp.com/api/user/updateprofile"
+                console.log(fName)
 
-                    $.ajax({
-                        url: url,
-                        type: 'PATCH',
-                        data: {
-                            username: username,
-                            phone: phone,
-                            city: city,
-                            email: email,
-                            firstName: fName,
-                            lastName: lName,
-                            age: age,
-                            token: localStorage.getItem('token')
+                if (removefromfirst($('#fName').val())) fName = (userData.firstName == removefromfirst($('#fName').val())) ? null : removefromfirst($('#fName').val());
 
-                        },
+                if (removefromfirst($('#lName').val())) lName = (userData.lastName == removefromfirst($('#lName').val())) ? null : removefromfirst($('#fName').val());
 
-                        success: function(data, status, xhr) { // success callback function
-                            alert(removefromfirst($('#username').val()))
-                        },
-                        error: function(jqXhr, textStatus, errorMessage) { // error callback 
-                            console.log(jqXhr)
-                        }
-                    });
+                if (removewhite($('#age').val())) age = (userData.age == removewhite($('#age').val())) ? null : removefromfirst($('#fName').val());
 
-                }
+                if (removefromfirst($('#city').val())) city = (userData.city == removefromfirst($('#city').val())) ? null : removefromfirst($('#city').val());
+
+                if (removewhite($('#phone').val())) phone = (userData.phone == removewhite($('#phone').val())) ? null : removewhite($('#phone').val());
+
+                if (removewhite($('#email').val())) email = (userData.email == removewhite($('#email').val())) ? null : removewhite($('#email').val());
+
+                if (removefromfirst($('#username').val())) username = (userData.username == removefromfirst($('#username').val())) ? null : removefromfirst($('#username').val());
 
 
-            })
+
+                let url = "https://afrigebeta.herokuapp.com/api/user/updateprofile"
+
+                $.ajax({
+                    url: url,
+                    type: 'PATCH',
+                    data: {
+                        username: username,
+                        phone: phone,
+                        city: city,
+                        email: email,
+                        firstName: fName,
+                        lastName: lName,
+                        age: age,
+                        token: localStorage.getItem('token')
+
+                    },
+
+                    success: function(data, status, xhr) { // success callback function
+                        alert(removefromfirst($('#username').val()))
+                    },
+                    error: function(jqXhr, textStatus, errorMessage) { // error callback 
+                        console.log(jqXhr)
+                    }
+                });
+
+
+
+
+
+            }
+
+
 
         })
+
+
 
         function url_redirect(options) {
             var $form = $("<form />");
@@ -203,45 +275,189 @@
 
         }
     </script>
+
 </head>
 
 <body>
+    <!-- Start header -->
+    <header class="top-navbar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <p><img src="images/logo.png" width="70px" height="70px" alt="" />Afri-Gebeta</p>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-rs-food" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+				  <span class="navbar-toggler-icon"></span>
+				</button>
+                <div class="collapse navbar-collapse" id="navbars-rs-food">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item "><a class="nav-link" href="menu.html">Menu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
 
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100">
-                <div class="login100-pic js-tilt" data-tilt>
-                    <img src="public/images/afrigebeta.jpg" alt="IMG">
-                    <div style="align-self: center; align-content: center;">
-                        <h2 style="font-family: cursive;text-align: center;">Update your profile </h2>
-                        <ul style="text-align: center;margin: 2px; padding: 5px;">
+                        <li class="nav-item dropdown" id="storehere">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">stores</a>
+                        </li>
 
-                        </ul>
-                    </div>
+                        <li class="nav-item dropdown active">
+                            <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown" id="username"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown-a">
+
+                                <a class="dropdown-item" href="profile.html">Profile</a>
+                                <a class="dropdown-item" href="myaccount.html">Orders</a>
+                                <a class="dropdown-item" href="stuff.html">logout</a>
+
+                            </div>
+                        </li>
+
+                        <li class="nav-item" style="margin-left: 10px;">
+                            <a class="nav-link" href="menu.html">
+                                <a href="#" style="font-size:24px"> <i class="fa fa-shopping-cart"></i></button>
+                                </a>
+                        </li>
+                    </ul>
                 </div>
+            </div>
+        </nav>
+    </header>
+    <!-- End header -->
 
-                <div class="form">
-
+    <!-- Start All Pages -->
+    <div class="all-page-title page-breadcrumb">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>My Account</h1>
                 </div>
             </div>
         </div>
     </div>
+    <!-- End All Pages -->
 
 
+    <div class="form">
+
+    </div>
+
+    <!-- Start Contact info -->
+    <div class="contact-imfo-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <i class="fa fa-volume-control-phone"></i>
+                    <div class="overflow-hidden">
+                        <h4>Phone</h4>
+                        <p class="lead">
+                            +01 123-456-4590
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <i class="fa fa-envelope"></i>
+                    <div class="overflow-hidden">
+                        <h4>Email</h4>
+                        <p class="lead">
+                            yourmail@gmail.com
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <i class="fa fa-map-marker"></i>
+                    <div class="overflow-hidden">
+                        <h4>Location</h4>
+                        <p class="lead">
+                            800, Lorem Street, US
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Contact info -->
+
+    <!-- Start Footer -->
+    <footer class="footer-area bg-f">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <h3>About Us</h3>
+                    <p>Integer cursus scelerisque ipsum id efficitur. Donec a dui fringilla, gravida lorem ac, semper magna. Aenean rhoncus ac lectus a interdum. Vivamus semper posuere dui, at ornare turpis ultrices sit amet. Nulla cursus lorem ut nisi porta,
+                        ac eleifend arcu ultrices.</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3>Opening hours</h3>
+                    <p><span class="text-color">Monday: </span>Closed</p>
+                    <p><span class="text-color">Tue-Wed :</span> 9:Am - 10PM</p>
+                    <p><span class="text-color">Thu-Fri :</span> 9:Am - 10PM</p>
+                    <p><span class="text-color">Sat-Sun :</span> 5:PM - 10PM</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3>Contact information</h3>
+                    <p class="lead">Ipsum Street, Lorem Tower, MO, Columbia, 508000</p>
+                    <p class="lead"><a href="#">+01 2000 800 9999</a></p>
+                    <p><a href="#"> info@admin.com</a></p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3>Subscribe</h3>
+                    <div class="subscribe_form">
+                        <form class="subscribe_form">
+                            <input name="EMAIL" id="subs-email" class="form_input" placeholder="Email Address..." type="email">
+                            <button type="submit" class="submit">SUBSCRIBE</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                    <ul class="list-inline f-social">
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="company-name">Afri-Gebeta | All Rights Reserved. &copy; 2020</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- End Footer -->
+
+    <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+    <!-- ALL JS FILES -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- ALL PLUGINS -->
+    <script src="js/jquery.superslides.min.js"></script>
+    <script src="js/images-loded.min.js"></script>
+    <script src="js/isotope.min.js"></script>
+    <script src="js/baguetteBox.min.js"></script>
+    <script src="js/form-validator.min.js"></script>
+    <script src="js/contact-form-script.js"></script>
+    <script src="js/custom.js"></script>
+
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <!--===============================================================================================-->
-    <script src="public/vendor/bootstrap/js/popper.js"></script>
-    <script src="public/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
     <!--===============================================================================================-->
-    <script src="public/vendor/select2/select2.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="public/vendor/tilt/tilt.jquery.min.js"></script>
+    <script src="vendor/tilt/tilt.jquery.min.js"></script>
     <script>
         $('.js-tilt').tilt({
             scale: 1.1
         })
     </script>
     <!--===============================================================================================-->
-    <script src="public/js/main.js"></script>
+    <script src="js/main.js"></script>
 
 </body>
 

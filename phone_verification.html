@@ -10,9 +10,7 @@
  <script type="text/javascript" src="https://www.turnjs.com/lib/turn.min.js "></script> 
     <script>
 
-  $(document).ready(function() {
-  	alert("hi")
-  })
+
         var firebaseConfig = {
             apiKey: "AIzaSyBBe_h_aIgSRbT-xwXhlGkSmbUB2zmZGNc",
             authDomain: "huluradiox.firebaseapp.com",
@@ -33,13 +31,10 @@
                     // reCAPTCHA solved, send recaptchaToken and phone number to backend.
                     
                     // a REST call to your backend
-                    console.dir(
-                        { phoneNumber: document.getElementById('phoneNumber').value, recaptchaToken }
-                    )
-
-                    var myHeaders = new Headers();
-                    myHeaders.append('Content-Type', 'application/json');
+                  
+                	console.log("everything allright")
                     
+                    /*
                          $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
                             phoneNumber: document.getElementById('phoneNumber').value,
                                 recaptchaToken: recaptchaToken
@@ -59,7 +54,7 @@
                                 alert(jqXHR.responseJSON.message)
                             }
                         });
-/*
+
                     fetch("https://afrigebeta.herokuapp.com/api/user/sendCode", {
                             method: "post", 
                             headers: {'Content-Type': 'application/json'},

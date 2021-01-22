@@ -34,7 +34,27 @@
 
                     var myHeaders = new Headers();
                     myHeaders.append('Content-Type', 'application/json');
+                    
+                         $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
+                            phoneNumber: document.getElementById('phoneNumber').value,
+                                recaptchaToken: recaptchaToken
+                        }, function(data, status) {
 
+                            if (status === 'success') {
+                                //{ user: user._id, name: user.username }
+                                let userid = localStorage.setItem('userid', data.user);
+                                let username = localStorage.setItem('username', data.name)
+
+                                let token = localStorage.setItem('token', data.token);
+                                window.location.href = "main.html";
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                            if (jqXHR.responseJSON != undefined) {
+                                alert(jqXHR.responseJSON.message)
+                            }
+                        });
+/*
                     fetch("https://afrigebeta.herokuapp.com/api/user/sendCode", {
                             method: "post", 
                             headers: {'Content-Type': 'application/json'},
@@ -51,6 +71,7 @@
                         document.getElementById("otp_input").style.display = "block"
                         document.getElementById("otp_button").style.display = "block"
                     });
+                    */
                 }
             });
 

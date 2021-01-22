@@ -10,7 +10,7 @@
  <script type="text/javascript" src="https://www.turnjs.com/lib/turn.min.js "></script> 
     <script>
 
-
+/*
         var firebaseConfig = {
             apiKey: "AIzaSyBBe_h_aIgSRbT-xwXhlGkSmbUB2zmZGNc",
             authDomain: "huluradiox.firebaseapp.com",
@@ -22,7 +22,19 @@
             measurementId: "G-Y50XR144GX"
         };
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);*/
+        
+          var firebaseConfig = {
+    apiKey: "AIzaSyBHaWNZ3mTKou-bZxsvxZ0fGDY8tx9Qkrw",
+    authDomain: "afriweb-1629e.firebaseapp.com",
+    projectId: "afriweb-1629e",
+    storageBucket: "afriweb-1629e.appspot.com",
+    messagingSenderId: "967453799118",
+    appId: "1:967453799118:web:fc7ca5d9f6723c510ad69f",
+    measurementId: "G-WL785NS1T3"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
 
         function init() {
             window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
@@ -35,7 +47,7 @@
                 	console.log("everything allright")
                     
                
-                         $.post("https://localhost:3000/api/user/sendCode", {
+                         $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
                             phoneNumber: document.getElementById('phoneNumber').value,
                                 recaptchaToken: recaptchaToken
                         }, function(data, status) {
@@ -59,7 +71,7 @@
                             })
                     })
                     .then(response => response.json())
-                    .then(res => {
+                    .then(res => {s
                         window.sessionOTPId = res.sessionInfo
                         document.getElementById("otp_input").style.display = "block"
                         document.getElementById("otp_button").style.display = "block"
@@ -110,3 +122,5 @@
 
 </body>
 </html>
+
+

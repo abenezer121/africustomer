@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<head>
+    <title> Phone verification </title>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+    <script>
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyBBe_h_aIgSRbT-xwXhlGkSmbUB2zmZGNc",
+            authDomain: "huluradiox.firebaseapp.com",
+            databaseURL: "https://huluradiox.firebaseio.com",
+            projectId: "huluradiox",
+            storageBucket: "huluradiox.appspot.com",
+            messagingSenderId: "701196878506",
+            appId: "1:701196878506:web:09e72de08f77c460ac46d3",
+            measurementId: "G-Y50XR144GX"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        function init() {
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
+                'size': 'invisible',
+                'callback': function (recaptchaToken) {
+                    // reCAPTCHA solved, send recaptchaToken and phone number to backend.
+                    
+                    // a REST call to your backend
+                    console.dir(
+                        { phoneNumber: document.getElementById('phoneNumber').value, recaptchaToken }
+                    )
+
+                    var myHeaders = new Headers();
+                    myHeaders.append('Content-Type', 'application/json');
+
+                    fetch("https://afrigebeta.herokuapp.com/api/user/sendCode", {
+                            method: "post", 
+                            headers: {'Content-Type': 'application/json'},
+                            mode: 'cors',
+                            cache: 'no-cache',
+                            body: JSON.stringify({
+                                phoneNumber: document.getElementById('phoneNumber').value,
+                                recaptchaToken: recaptchaToken
+                            })
+                    })
+                    .then(response => response.json())
+                    .then(res => {
+                        window.sessionOTPId = res.sessionInfo
+                        document.getElementById("otp_input").style.display = "block"
+                        document.getElementById("otp_button").style.display = "block"
+                    });
+                }
+            });
+
+            function sendOTP() {
+                const sessionId = window.sessionId
+                const otp = document.getElementById("otp_input").value
+
+                fetch("http://localhost:3000/api/user/acceptOTP", {
+                    method: "post", 
+                    headers: {'Content-Type': 'application/json'},
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    body: JSON.stringify({
+                        code: otp,
+                        sessionInfo: sessionId
+                    })
+                })
+                .then(response => response.json())
+                .then(res => {
+                    console.dir(res)
+                    // TODO: Well some kind of success or error 
+                });
+            }
+
+            // render the rapchaVerifier. 
+            window.recaptchaVerifier.render().then(function (widgetId) {
+                    window.recaptchaWidgetId = widgetId;
+            });
+        }
+    </script>
+</head>
+<body onload="init()" >
+    <div id="re-container"></div>
+    <label>Phone Number</label>
+    <input type=text id="phoneNumber" />
+
+    <button id="sendCode">Send Code</button>
+
+    <br><br>
+    <label>OTP CODE</label>
+    <input type="text" id="otp_input" style="display: none;" />     
+    <button id="otp_button" style="display: none;" onclick="sendOTP()">Send OTP</button>
+
+</body>
+</html>

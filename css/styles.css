@@ -1,0 +1,355 @@
+/*--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+--*/
+/* reset */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,dl,dt,dd,ol,nav ul,nav li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
+article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display: block;}
+ol,ul{list-style:none;margin:0px;padding:0px;}
+blockquote,q{quotes:none;}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
+table{border-collapse:collapse;border-spacing:0;}
+/* start editing from here */
+a{text-decoration:none;}
+.txt-rt{text-align:right;}/* text align right */
+.txt-lt{text-align:left;}/* text align left */
+.txt-center{text-align:center;}/* text align center */
+.float-rt{float:right;}/* float right */
+.float-lt{float:left;}/* float left */
+.clear{clear:both;}/* clear float */
+.pos-relative{position:relative;}/* Position Relative */
+.pos-absolute{position:absolute;}/* Position Absolute */
+.vertical-base{	vertical-align:baseline;}/* vertical align baseline */
+.vertical-top{	vertical-align:top;}/* vertical align top */
+nav.vertical ul li{	display:block;}/* vertical menu */
+nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
+img{max-width:100%;}
+/*end reset*/
+html, body{
+    font-size: 100%;
+    background:#c26202;
+	font-family: 'Signika', sans-serif;
+}
+h1,h2,h3,h4,h5,h6,input,p,a,select{
+	font-family: 'Signika', sans-serif;
+	margin:0;
+}
+ul,label{
+	margin:0;
+	padding:0;
+}
+body a:hover,body a{
+	text-decoration:none;
+}
+/*-- main --*/
+.agileits_copyright{
+	text-align: center;
+}
+.agileits_copyright p{
+	font-size: 14px;
+    color: #fff;
+    margin:8em 0 0;
+    line-height: 1.8em;
+    padding: 0 1em;
+    text-transform: capitalize;
+}
+.agileits_copyright p a{
+	color:#fff;
+	text-decoration:underline;
+}
+.agileits_copyright p a:hover{
+	color:#D2D2D2;
+}
+input[type="submit"],.agileits_copyright p a,input[type="reset"],.simple-form-button{
+	transition:.5s ease-in;
+	-webkit-transition:.5s ease-in;
+	-moz-transition:.5s ease-in;
+	-o-transition:.5s ease-in;
+	-ms-transition:.5s ease-in;
+}
+.main{
+	margin: 3em auto;
+    text-align: center;
+    position: relative;
+    height: 100%;
+}
+	
+.main h1{
+	text-align:center;
+	color:#fff;
+	font-size:2.5em;
+	margin-bottom:2.5em;
+}
+.simple-form-button {
+	color: #fff;
+    cursor: pointer;
+    font-size: 1em;
+    margin: 1em .6em;
+    padding: 7px 45px;
+    width: auto;
+    height: auto;
+    background: #FF8103;
+	outline: none;
+}
+.simple-form-button:hover{
+	background:#fff;
+	color:#212121;
+}
+.submit-button {
+	background:#FF8103;
+    float: right;
+    display: none;
+}
+
+.form-controls {
+    clear: both;
+}
+
+.previous-fieldset {
+	display: none;
+	float: left;
+}
+.next-fieldset {
+	float: right;
+}
+a.next-fieldset,
+a.previous-fieldset {
+	color: #ccc;
+}
+
+.clear {
+	clear: both;
+}
+.progress {
+	border-bottom: 1px solid #EEECE9;
+    border-top: 1px solid #FFFFFF;
+    height: 20px;
+}
+
+.progress-bar {
+        height: 15px;  /* Can be anything */
+        position: relative;
+        background: #e2e2e2;
+        -moz-border-radius: 25px;
+        -webkit-border-radius: 25px;
+        border-radius: 25px;
+        padding: 3px;
+        -webkit-box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+        -moz-box-shadow   : inset 0 -1px 1px rgba(255,255,255,0.3);
+        box-shadow        : inset 0 -1px 1px rgba(255,255,255,0.3);
+        margin: 10px 0;
+        overflow: hidden;
+}
+
+.progress-bar .progress-bg{
+        display: block;
+        height: 100%;
+        -webkit-border-top-right-radius:    20px;
+        -webkit-border-bottom-right-radius: 20px;
+        -moz-border-radius-topright:        20px;
+        -moz-border-radius-bottomright:     20px;
+        border-top-right-radius:            20px;
+        border-bottom-right-radius:         20px;
+        -webkit-border-top-left-radius:     20px;
+        -webkit-border-bottom-left-radius:  20px;
+        -moz-border-radius-topleft:         20px;
+        -moz-border-radius-bottomleft:      20px;
+        border-top-left-radius:             20px;
+        border-bottom-left-radius:          20px;
+        background-color: rgb(43,194,83);
+        background-image: -webkit-gradient(
+			linear,
+			left bottom,
+			left top,
+			color-stop(0, rgb(43,194,83)),
+			color-stop(1, rgb(84,240,84))
+        );
+        background-image: -webkit-linear-gradient(
+			center bottom,
+			rgb(43,194,83) 37%,
+			rgb(84,240,84) 69%
+		);
+        background-image: -moz-linear-gradient(
+			center bottom,
+			rgb(43,194,83) 37%,
+			rgb(84,240,84) 69%
+		);
+        background-image: -ms-linear-gradient(
+			center bottom,
+			rgb(43,194,83) 37%,
+			rgb(84,240,84) 69%
+        );
+        background-image: -o-linear-gradient(
+			center bottom,
+			rgb(43,194,83) 37%,
+			rgb(84,240,84) 69%
+        );
+        -webkit-box-shadow:
+			inset 0 2px 9px  rgba(255,255,255,0.3),
+			inset 0 -2px 6px rgba(0,0,0,0.4);
+        -moz-box-shadow:
+			inset 0 2px 9px  rgba(255,255,255,0.3),
+			inset 0 -2px 6px rgba(0,0,0,0.4);
+        overflow: hidden;
+        width: 0%;
+}
+
+.progress-bar .progress-text {
+/*-- w3layouts --*/
+    position: absolute;
+    left: 50%;
+    top: 2px;
+    z-index: 10;
+}
+#wrapper {
+	width: 550px;
+	margin: 0 auto;
+	position: relative;
+}
+
+form { 
+    border-radius: 10px;
+    border: 3px solid #ccc;
+    box-shadow: 0px 2px 5px 0px #444;
+    background:rgba(46, 46, 46, 0.3);
+    position: relative;
+    padding: 10px;
+    overflow: hidden;
+} 
+form#testform {
+    min-height: 0 !important;
+}
+input, textarea {
+	background: #fff;
+    border: none;
+    color: #403D3A;
+    font-size: 14px;
+    padding: 10px;
+    width: 68%;
+}
+textarea {
+	min-height: 140px;
+    resize: none;
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+}
+label.error, .required {
+    font-size: 12px;
+    color: red;
+}
+label.agileits_label {
+    float: left;
+    width: 25%;
+    font-size: 14px;
+    text-transform: uppercase;
+	margin: .8em 0 0;
+/*-- agileits --*/
+	color: #fff;
+}
+.w3_agileits_field span {
+    display: block;
+    padding: .8em 0;
+}
+/*-- start-responsive-design --*/
+@media (max-width:991px){
+	.main h1 {
+		margin-bottom: 1.5em;
+	}
+	.agileits_copyright p {
+		margin: 5em 0 0;
+	}
+}
+@media (max-width:667px){
+	
+}
+@media (max-width: 600px){
+	.main h1 {
+		margin-bottom: 1.3em;
+		font-size: 2.3em;
+	}
+	#wrapper {
+		width: 465px;
+	}
+	.agileits_copyright p {
+		margin: 3em 0 0;
+	}
+	label.agileits_label {
+		font-size: 12px;
+	}
+}
+@media (max-width: 568px){
+	.main h1 {
+		margin-bottom: 1em;
+		font-size: 2.1em;
+	}
+	.main {
+		margin: 2em auto;
+	}
+}
+@media (max-width: 480px){
+	#wrapper {
+		width: 415px;
+	}
+}
+@media (max-width: 414px){
+	.main h1 {
+/*-- w3layouts --*/
+		font-size: 1.8em;
+	}
+	#wrapper {
+		width: 355px;
+	}
+}
+@media (max-width: 384px){
+	.main h1 {
+		font-size: 1.7em;
+	}
+}
+@media (max-width: 375px){
+	.simple-form-button {
+		margin: 1em 0.2em;
+	}
+}
+@media (max-width: 320px){
+	#wrapper {
+		width: 275px;
+	}
+	.progress-bar {
+		height: 10px;
+	}
+	.progress-bar .progress-text {
+		font-size: 12px;
+		line-height: 1.2;
+	}
+	label.agileits_label {
+		float: none;
+		width: 100%;
+		text-align: left;
+		margin-bottom: .8em;
+		display: block;
+	}
+	input, textarea {
+		width: 91%;
+		font-size: 13px;
+	}
+	.w3_agileits_field span {
+		padding: .8em 0 0;
+	}
+	.simple-form-button {
+		margin: 1em 0.1em;
+		padding: 7px 35px;
+		font-size: 14px;
+	}
+	.agileits_copyright p {
+		margin: 2em 0 0;
+		font-size: 13px;
+/*-- agileits --*/
+	}
+	textarea#comments {
+		width: 100%;
+	}
+}

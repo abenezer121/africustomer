@@ -1,353 +1,181 @@
+
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <link rel="icon" type="image/png" sizes="16x16" href="images/logo.jpg">
+<title>Register to Agri Gebeta</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
 
-    <title>Afri Gebeta</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/register.css">
-    <!--===============================================================================================-->
-    <!-- <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
-    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-    <script>
-        function removefromfirst(string) {
-            for (let i = 0; i < string.length; i++) {
-                if (string[i] != ' ') {
-                    return string;
-                } else {
-                    string = string.substring(1);
-                }
-            }
-        }
-
-
-        function removewhite(string) {
-            let t = ''
-            for (let i = 0; i < string.length; i++) {
-                if (string[i] != ' ') t = t + string[i]
-            }
-            return t
-        }
-
-        function change_placeholder_color(target_class, color_choice) {
-            $("body").append("<style>" + target_class + "::placeholder{color:" + color_choice + "}</style>")
-        }
-
-
-        $(document).ready(function() {
-
-            //userregister
-            document.addEventListener('click', function(e) {
-                e.preventDefault()
-
-
-
-
-
-                if (e.target && e.target.id == 'registerButton') {
-
-                    let fName = "";
-                    let lName = "";
-                    let age = "";
-                    let city = "";
-                    let phone = "";
-                    let email = "";
-                    let password = "";
-                    let username = "";
-                    let returnNow = false;
-                    if (removefromfirst($('#fName').val()) == undefined || removefromfirst($('#fName').val()).length == 0) {
-                        $('#fName').attr('placeholder', 'Please Enter Your First Name');
-                        change_placeholder_color('#fName', 'red')
-                        returnNow = true;
-                    } else {
-                        fName = removefromfirst($('#fName').val());
-
-                    }
-
-
-
-                    if (removefromfirst($('#lName').val()) == undefined || removefromfirst($('#lName').val()).length == 0) {
-                        $('#lName').attr('placeholder', 'Please Enter Your Last Name');
-                        change_placeholder_color('#lName', 'red')
-                        returnNow = true;
-                    } else {
-                        lName = removefromfirst($('#lName').val());
-
-                    }
-
-
-                    if (removefromfirst($('#age').val()) == undefined || removefromfirst($('#age').val()).length == 0) {
-                        $('#age').attr('placeholder', 'Please Enter Your age');
-                        change_placeholder_color('#age', 'red')
-                        returnNow = true;
-                    } else {
-                        age = removefromfirst($('#age').val());
-
-                    }
-
-
-                    if (removefromfirst($('#city').val()) == undefined || removefromfirst($('#city').val()).length == 0) {
-                        $('#city').attr('placeholder', 'Please Enter Your city');
-                        change_placeholder_color('#city', 'red')
-                        returnNow = true;
-                    } else {
-                        city = removefromfirst($('#city').val());
-
-                    }
-
-
-                    if (removewhite($('#phone').val()) == undefined || removewhite($('#phone').val()).length == 0) {
-                        $('#phone').attr('placeholder', 'Please Enter Your Phone');
-                        change_placeholder_color('#phone', 'red')
-                        returnNow = true;
-                    } else {
-
-                        phone = removefromfirst($('#phone').val());
-
-                    }
-
-
-                    if (removewhite($('#email').val()) == undefined || removewhite($('#email').val()).length == 0) {
-                        $('#email').attr('placeholder', 'Please Enter Your email');
-                        change_placeholder_color('#email', 'red')
-                        returnNow = true;
-                    } else {
-                        email = removefromfirst($('#email').val());
-
-                    }
-
-
-                    if (removewhite($('#password').val()) == undefined || removewhite($('#password').val()).length == 0) {
-                        $('#password').attr('placeholder', 'Please Enter password');
-                        change_placeholder_color('#password', 'red')
-                        returnNow = true;
-                    } else {
-                        password = removefromfirst($('#password').val());
-
-                    }
-
-                    if (removefromfirst($('#username').val()) == undefined || removefromfirst($('#username').val()).length == 0) {
-                        $('#username').attr('placeholder', 'Please Enter username');
-                        change_placeholder_color('#username', 'red')
-                        returnNow = true;
-                    } else {
-                        username = removefromfirst($('#username').val());
-
-                    }
-
-                    if (returnNow) return;
-
-                    let url = 'https://afrigebeta.herokuapp.com/api/user/register'
-
-                    $.post(url, {
-                        username: username,
-                        phone: phone,
-                        city: city,
-                        email: email,
-                        firstName: fName,
-                        lastName: lName,
-                        age: age,
-                        password: password
-
-                    }, function(data, status) {
-                        console.log(status)
-                        if (status === 'success') {
-                            let userid = localStorage.setItem('userid', data.user);
-                            let username = localStorage.setItem('username', data.name)
-                            let token = localStorage.setItem('token', data.token);
-                            window.location.href = "markets.html";
-                        }
-                    }).fail(function(jqXHR, textStatus, errorThrown) {
-
-
-                        console.log(jqXHR)
-
-
-                    });
-
-                }
-
-            })
-
-        })
-
-        function url_redirect(options) {
-            var $form = $("<form />");
-
-            $form.attr("action", options.url);
-            $form.attr("method", options.method);
-
-            for (var data in options.data)
-                $form.append('<input type="hidden" name="' + data + '" value="' + options.data[data] + '" />');
-
-            $("body").append($form);
-            $form.submit();
-        };
-
-
-        function callLogin() {
-            window.location.href = "login.html";
-        }
-    </script>
+<link href="css/styles.css" rel="stylesheet" type="text/css" media="all" />
+<!-- <link href='//fonts.googleapis.com/css?family=Signika:400,300,600,700' rel='stylesheet' type='text/css'> -->
 </head>
-
 <body>
+<!-- <script src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script> -->
+<!-- <script src="//m.servedby-buysellads.com/monetization.js" type="text/javascript"></script> -->
+<script>
+(function(){
+	if(typeof _bsa !== 'undefined' && _bsa) {
+  		// format, zoneKey, segment:value, options
+  		_bsa.init('flexbar', 'CKYI627U', 'placement:w3layoutscom');
+  	}
+})();
+</script>
+<script>
+(function(){
+if(typeof _bsa !== 'undefined' && _bsa) {
+	// format, zoneKey, segment:value, options
+	_bsa.init('fancybar', 'CKYDL2JN', 'placement:demo');
+}
+})();
+</script>
+<script>
+(function(){
+	if(typeof _bsa !== 'undefined' && _bsa) {
+  		// format, zoneKey, segment:value, options
+  		_bsa.init('stickybox', 'CKYI653J', 'placement:w3layoutscom');
+  	}
+})();
+</script>
+<!--<script>(function(v,d,o,ai){ai=d.createElement("script");ai.defer=true;ai.async=true;ai.src=v.location.protocol+o;d.head.appendChild(ai);})(window, document, "//a.vdo.ai/core/w3layouts_V2/vdo.ai.js?vdo=34");</script>-->
+<div id="codefund"><!-- fallback content --></div>
+<!-- <script src="https://codefund.io/properties/441/funder.js" async="async"></script> -->
+	
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src='https://www.googletagmanager.com/gtag/js?id=UA-149859901-1'></script> -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100">
-                <div class="login100-pic js-tilt" data-tilt>
-                    <img src="images/afrigebeta.jpg" alt="IMG">
-                    <!-- <div style="align-self: center; align-content: center;">
-                        <h2 style="font-family: cursive;text-align: center;">Benefits of becoming a member </h2>
-                        <ul style="text-align: center;margin: 2px; padding: 5px;">
-                            <li>~~ A free pass to ordering your grocieries online</li>
-                            <li>~~ Customized user experience based on your activities</li>
-                            <li>~~ Notifications on upcoming discounts and more </li>
+  gtag('config', 'UA-149859901-1');
+</script>
 
-                        </ul>
-                    </div> -->
-                </div>
+<script>
+     window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+     ga('create', 'UA-149859901-1', 'demo.w3layouts.com');
+     ga('require', 'eventTracker');
+     ga('require', 'outboundLinkTracker');
+     ga('require', 'urlChangeTracker');
+     ga('send', 'pageview');
+   </script>
+<!-- <script async src='/js/autotrack.js'></script> -->
 
-                <form class="login100-form validate-form">
-                    <!-- <span class="login100-form-title">
-						Member Sign Up
-					</span> -->
-                    <div class="wrap-input100 validate-input" data-validate="First name is required">
-                        <input class="input100" id="fName" type="text" name="fullname" placeholder="First Name">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-							<i class="fa fa-user" aria-hidden="true"></i>
-						</span>
-                    </div>
+<meta name="robots" content="noindex">
+<body><link rel="stylesheet" href="/css/demobar.css">
+	
+	<div class="main">
+<!---728x90--->
+<div class="container">
+	<br><br><br>
+ <img src="./images/logo.png" alt="">
+		<h1>Afri Gebeta</h1>
+<!---728x90--->
+		<div id="wrapper" class="wrapper_w3layouts">
+			<h3 style="color: white;">Register Here</h3><br>
+			<form action="#" class="testform" id="testform" method="post">
+				<fieldset class="personal-data w3_agileits_field">
+					<span class="w3l_personal">
+						<label class="agileits_label" for="name">Full Name: <i class="required">*</i></label>
+						<input type="text" id="name" name="name" placeholder="John Smith" />
+					</span>
+					<span class="wthree_personal">
+						<label class="agileits_label" for="age">Age:</label>
+						<input type="number" id="age" name="age" placeholder="18" />
+					</span>
+					<span class="w3_agileits_personal">
+						<label class="agileits_label" for="address">City:</label>
+						<input type="text" id="address" name="address" placeholder="Address" />
+					</span>
+					<span class="w3ls_personal">
+						<label class="agileits_label" for="email">Email: <i class="required">*</i></label>
+						<input type="email" name="email" id="email" placeholder="example@mail.com" />
+					</span>
+					<span class="agileits_personal">
+						<label class="agileits_label" for="phone">Phone:</label>
+						<input type="tel" name="phone" id="phone" placeholder="09X-XXX-XXXX" />
+					</span>
+				</fieldset>
 
+				<fieldset class="address-data-inputs w3_agileits_field agileinfo_field">
+					
+					<span class="agileits_w3layouts_personal">
+						<label class="agileits_label" for="Username">Username: <i class="required">*</i></label>
+						<input type="text" id="Username" name="Username" placeholder="Enter Username" />
+					</span>
+					<span class="agile_personal">
+						<label class="agileits_label" for="Password">Password:</label>
+						<input type="password" id="Password" name="Password" placeholder="Enter Password"/>
+					</span>
+					
+				</fieldset>
 
-                    <div class="wrap-input100 validate-input" data-validate="Last name is required">
-                        <input class="input100" id="lName" type="text" name="fullname" placeholder="Last name">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-							<i class="fa fa-user" aria-hidden="true"></i>
-						</span>
-                    </div>
-
-                    <div class="wrap-input100 validate-input" data-validate="Age is required">
-                        <input class="input100" id="age" type="number" name="age" placeholder="Age">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-							<i class="fa fa-age" aria-hidden="true"></i>
-						</span>
-                    </div>
-
-                    <div class="wrap-input100 validate-input" data-validate="City is required">
-                        <input class="input100" id="city" type="text" name="city" placeholder="City">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-							<i class="fa fa-city" aria-hidden="true"></i>
-						</span>
-                    </div>
-
-
-
-
-
-                    <div class="wrap-input100 validate-input" data-validate="Phone number is required">
-                        <input class="input100" id="phone" type="tel" name="pno" placeholder="Phone Number">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-							<i class="fa fa-city" aria-hidden="true"></i>
-						</span>
-                    </div>
-
-
-
-                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                        <input class="input100" id="email" type="text" name="email" placeholder="Email">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-							<i 
-							class="fa fa-envelope" aria-hidden="true"></i>
-						</span>
-                    </div>
-
-
-                    <div class="wrap-input100 validate-input" data-validate="Username is required">
-                        <input class="input100" id="username" type="text" name="Username" placeholder="Username">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-							<i class="fa fa-user" aria-hidden="true"></i>
-						</span>
-                    </div>
-
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input class="input100" id="password" type="password" name="pass" placeholder="Password">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-							<i class="fa fa-lock" aria-hidden="true"></i>
-						</span>
-                    </div>
-
-                    <div class="container-login100-form-btn">
-                        <button class="login100-form-btn" id="registerButton">
-							Sign up
-						</button>
-                    </div>
-
-                    <div class="text-center p-t-12">
-                        <span class="txt1">
-							Already have an account?
-						</span>
-                        <a class="txt2" href="#" onclick="callLogin()">
-							Login
-						</a>
-                    </div>
-
-                    <!-- <div class="text-center p-t-136">
-						<a class="txt2" href="#">
-							Log in
-							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-						</a>
-					</div> -->
-                </form>
-            </div>
+				<fieldset class="message-details w3_agileits_field">
+					<span class="w3">
+						<label class="agileits_label" for="firebase-code">Enter Code:</label>
+						<input type="text" id="firebase-code" name="firebase-code" placeholder="Enter 4 digit code sent to your number" />
+					</span>
+				</fieldset>
+				<div class="clear"></div>
+			</form>
         </div>
-    </div>
+        <script src="js/jquery-2.1.3.min.js" type="text/javascript"></script>
+<!-- //js -->
+		<script src="js/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="js/simpleform.min.js"></script>	
+		<script type="text/javascript">
+			$(".testform").simpleform({
+				speed : 500,
+				transition : 'fade',
+				progressBar : true,
+				showProgressText : true,
+				validate: true
+			});
 
+			function validateForm(formID, Obj){
 
-
-
-    <!--===============================================================================================-->
-
-
-    <!--===============================================================================================-->
-    <script src="vendor/bootstrap/js/popper.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="vendor/select2/select2.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="vendor/tilt/tilt.jquery.min.js"></script>
-    <script>
-        $('.js-tilt').tilt({
-            scale: 1.1
-        })
-    </script>
-    <!--===============================================================================================-->
-    <script src="js/main.js"></script>
-
+				switch(formID){
+					case 'testform' :
+						Obj.validate({
+							rules: {
+								email: {
+									required: true,
+									email: true
+								},
+								name: {
+									required: true
+								},
+								street: {
+									required: true
+								}
+							},
+							messages: {
+								email: {
+									required: "Please enter an email address",
+									email: "Not a valid email address"
+								},
+								name: {
+									required: "Please enter your name"
+								},
+								street: {
+									required: "Please enter street name"
+								}
+							}
+						});
+					return Obj.valid();
+					break;
+				}
+			}
+			</script>
+<!---728x90--->
+		<div class="agileits_copyright">
+			<p>All Rights Reserved</p>
+		</div>
+	</div>
+	
+</div>
 </body>
-
 </html>

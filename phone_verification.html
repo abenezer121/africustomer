@@ -35,7 +35,7 @@
                     var myHeaders = new Headers();
                     myHeaders.append('Content-Type', 'application/json');
                     
-                         $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
+                         $.post("https://localhost:3000/api/user/sendCode", {
                             phoneNumber: document.getElementById('phoneNumber').value,
                                 recaptchaToken: recaptchaToken
                         }, function(data, status) {

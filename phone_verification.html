@@ -11,18 +11,18 @@
     <script type="text/javascript" src="https://www.turnjs.com/lib/turn.min.js "></script>
     <script>
         /*
-                                                                                                                var firebaseConfig = {
-                                                                                                                    apiKey: "AIzaSyBBe_h_aIgSRbT-xwXhlGkSmbUB2zmZGNc",
-                                                                                                                    authDomain: "huluradiox.firebaseapp.com",
-                                                                                                                    databaseURL: "https://huluradiox.firebaseio.com",
-                                                                                                                    projectId: "huluradiox",
-                                                                                                                    storageBucket: "huluradiox.appspot.com",
-                                                                                                                    messagingSenderId: "701196878506",
-                                                                                                                    appId: "1:701196878506:web:09e72de08f77c460ac46d3",
-                                                                                                                    measurementId: "G-Y50XR144GX"
-                                                                                                                };
-                                                                                                                // Initialize Firebase
-                                                                                                                firebase.initializeApp(firebaseConfig);*/
+                                                                                var firebaseConfig = {
+                                                                                    apiKey: "AIzaSyBBe_h_aIgSRbT-xwXhlGkSmbUB2zmZGNc",
+                                                                                    authDomain: "huluradiox.firebaseapp.com",
+                                                                                    databaseURL: "https://huluradiox.firebaseio.com",
+                                                                                    projectId: "huluradiox",
+                                                                                    storageBucket: "huluradiox.appspot.com",
+                                                                                    messagingSenderId: "701196878506",
+                                                                                    appId: "1:701196878506:web:09e72de08f77c460ac46d3",
+                                                                                    measurementId: "G-Y50XR144GX"
+                                                                                };
+                                                                                // Initialize Firebase
+                                                                                firebase.initializeApp(firebaseConfig);*/
 
         var firebaseConfig = {
             apiKey: "AIzaSyBHaWNZ3mTKou-bZxsvxZ0fGDY8tx9Qkrw",
@@ -37,53 +37,48 @@
         firebase.initializeApp(firebaseConfig);
 
         function init() {
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
+                'size': 'invisible',
+                'callback': function(recaptchaToken) {
+                    // reCAPTCHA solved, send recaptchaToken and phone number to backend.
 
-            function send() {
-                console.log("called")
-                window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier({
-                    'size': 'invisible',
-                    'callback': function(recaptchaToken) {
-                        // reCAPTCHA solved, send recaptchaToken and phone number to backend.
+                    // a REST call to your backend
 
-                        // a REST call to your backend
-
-                        console.log("everything allright")
+                    console.log("everything allright")
 
 
-                        $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
-                            phoneNumber: document.getElementById('phoneNumber').value,
-                            recaptchaToken: recaptchaToken
-                        }, function(data, status) {
+                    $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
+                        phoneNumber: document.getElementById('phoneNumber').value,
+                        recaptchaToken: recaptchaToken
+                    }, function(data, status) {
 
-                            if (status === 'success') {
-                                alert("hi")
-                            }
-                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                        if (status === 'success') {
+                            alert("hi")
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
 
-                            console.log(jqXHR)
-                        });
-                        /*
-                                       fetch("https://afrigebeta.herokuapp.com/api/user/sendCode", {
-                                               method: "post", 
-                                               headers: {'Content-Type': 'application/json'},
-                                               mode: 'cors',
-                                               cache: 'no-cache',
-                                               body: JSON.stringify({
-                                                   phoneNumber: document.getElementById('phoneNumber').value,
-                                                   recaptchaToken: recaptchaToken
-                                               })
-                                       })
-                                       .then(response => response.json())
-                                       .then(res => {s
-                                           window.sessionOTPId = res.sessionInfo
-                                           document.getElementById("otp_input").style.display = "block"
-                                           document.getElementById("otp_button").style.display = "block"
-                                       });
-                                       */
-                    }
-                });
-
-            }
+                        console.log(jqXHR)
+                    });
+                    /*
+                                   fetch("https://afrigebeta.herokuapp.com/api/user/sendCode", {
+                                           method: "post", 
+                                           headers: {'Content-Type': 'application/json'},
+                                           mode: 'cors',
+                                           cache: 'no-cache',
+                                           body: JSON.stringify({
+                                               phoneNumber: document.getElementById('phoneNumber').value,
+                                               recaptchaToken: recaptchaToken
+                                           })
+                                   })
+                                   .then(response => response.json())
+                                   .then(res => {s
+                                       window.sessionOTPId = res.sessionInfo
+                                       document.getElementById("otp_input").style.display = "block"
+                                       document.getElementById("otp_button").style.display = "block"
+                                   });
+                                   */
+                }
+            });
 
             function sendOTP() {
                 const sessionId = window.sessionId
@@ -121,7 +116,7 @@
     <label>Phone Number</label>
     <input type=text id="phoneNumber" />
 
-    <button id="sendCode" onclick="send()">Send Code</button>
+    <button id="sendCode">Send Code</button>
 
     <br><br>
     <label>OTP CODE</label>

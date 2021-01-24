@@ -44,6 +44,7 @@
         firebase.initializeApp(firebaseConfig);
 
         function init() {
+
             try {
 
 
@@ -58,7 +59,8 @@
                             //     phoneNumber: document.getElementById('phoneNumber').value,
                             //     recaptchaToken
                             // })
-                            console.log("welcome")
+                            console.log(phone)
+
                             var myHeaders = new Headers();
                             myHeaders.append('Content-Type', 'application/json');
 
@@ -157,7 +159,7 @@
                     isEmpty(document.getElementById("age").value) == false) {
                     if (validatePhone(document.getElementById("phoneNumber").value) == true && validateAge(document.getElementById("age").value) == true) {
                         //now disable the button
-
+                        phone = "asdfasdf"
                         document.getElementById("sendCode").style.display = "block"
 
 

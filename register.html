@@ -182,16 +182,15 @@
                     isEmpty(document.getElementById("age").value) == false) {
                     if (validatePhone(document.getElementById("phoneNumber").value) == true && validateAge(document.getElementById("age").value) == true) {
                         //now disable the button
-                        console.log("now")
-                        document.getElementById("sendCode").disabled = false;
+
+                        document.getElementById("sendCode").style.display = "block"
+
 
                     } else {
-
-
-                        document.getElementById("sendCode").disabled = true;
+                        document.getElementById("sendCode").style.display = "none"
                     }
                 } else {
-                    document.getElementById("sendCode").disabled = true;
+                    document.getElementById("sendCode").style.display = "none"
                 }
             });
 
@@ -242,7 +241,7 @@
         <div class="container">
             <h2>Build your profile</h2>
             <div class="formposition"></div>
-            <button id="sendCode" disabled onclick="next()">Next</button>"
+            <button id="sendCode" style="display: none;" onclick="next()">Next</button>"
         </div>
 
     </div>

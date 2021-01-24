@@ -43,88 +43,6 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
 
-        function init() {
-            try {
-
-
-                window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
-                    'size': 'invisible',
-                    'callback': function(recaptchaToken) {
-
-                        return new Promise(function(resolve, reject) {
-
-                            //Your code logic goes here
-                            console.dir({
-                                phoneNumber: document.getElementById('phoneNumber').value,
-                                recaptchaToken
-                            })
-
-                            var myHeaders = new Headers();
-                            myHeaders.append('Content-Type', 'application/json');
-
-                            //Instead of using 'return false', use reject()
-                            //Instead of using 'return' / 'return true', use resolve()
-                            resolve();
-
-                        }); //end promise
-                        // reCAPTCHA solved, send recaptchaToken and phone number to backend.
-
-                        // a REST call to your backend
-
-
-
-
-                        /*
-                                            $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
-                                                phoneNumber: document.getElementById('phoneNumber').value,
-                                                recaptchaToken: recaptchaToken
-                                            }, function(data, status) {
-
-                                                if (status === 'success') {
-                                                    alert("hi")
-                                                }
-                                            }).fail(function(jqXHR, textStatus, errorThrown) {
-
-                                                console.log(jqXHR)
-                                            });
-                                            */
-
-
-                    }
-                });
-            } catch (err) {
-                console.log(err)
-            }
-
-            function sendOTP() {
-                const sessionId = window.sessionId
-                const otp = document.getElementById("otp_input").value
-
-                fetch("http://localhost:3000/api/user/acceptOTP", {
-                        method: "post",
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        mode: 'cors',
-                        cache: 'no-cache',
-                        body: JSON.stringify({
-                            code: otp,
-                            sessionInfo: sessionId
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(res => {
-                        console.dir(res)
-                            // TODO: Well some kind of success or error 
-                    });
-            }
-
-            // render the rapchaVerifier. 
-            window.recaptchaVerifier.render().then(function(widgetId) {
-                window.recaptchaWidgetId = widgetId;
-            });
-        }
-
 
         $(document).ready(function() {
 
@@ -210,6 +128,91 @@
                     document.getElementById("sendCode").style.display = "none"
                 }
             });
+
+
+            function init() {
+                try {
+
+
+                    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
+                        'size': 'invisible',
+                        'callback': function(recaptchaToken) {
+
+                            return new Promise(function(resolve, reject) {
+
+                                //Your code logic goes here
+                                console.dir({
+                                    phoneNumber: document.getElementById('phoneNumber').value,
+                                    recaptchaToken
+                                })
+
+                                var myHeaders = new Headers();
+                                myHeaders.append('Content-Type', 'application/json');
+
+                                //Instead of using 'return false', use reject()
+                                //Instead of using 'return' / 'return true', use resolve()
+                                resolve();
+
+                            }); //end promise
+                            // reCAPTCHA solved, send recaptchaToken and phone number to backend.
+
+                            // a REST call to your backend
+
+
+
+
+                            /*
+                                                $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
+                                                    phoneNumber: document.getElementById('phoneNumber').value,
+                                                    recaptchaToken: recaptchaToken
+                                                }, function(data, status) {
+
+                                                    if (status === 'success') {
+                                                        alert("hi")
+                                                    }
+                                                }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                                                    console.log(jqXHR)
+                                                });
+                                                */
+
+
+                        }
+                    });
+                } catch (err) {
+                    console.log(err)
+                }
+
+                function sendOTP() {
+                    const sessionId = window.sessionId
+                    const otp = document.getElementById("otp_input").value
+
+                    fetch("http://localhost:3000/api/user/acceptOTP", {
+                            method: "post",
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            mode: 'cors',
+                            cache: 'no-cache',
+                            body: JSON.stringify({
+                                code: otp,
+                                sessionInfo: sessionId
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(res => {
+                            console.dir(res)
+                                // TODO: Well some kind of success or error 
+                        });
+                }
+
+                // render the rapchaVerifier. 
+                window.recaptchaVerifier.render().then(function(widgetId) {
+                    window.recaptchaWidgetId = widgetId;
+                });
+            }
+
+
 
 
 

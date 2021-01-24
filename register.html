@@ -44,7 +44,6 @@
         firebase.initializeApp(firebaseConfig);
 
         function init() {
-
             window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
                 'size': 'invisible',
                 'callback': function(recaptchaToken) {
@@ -60,25 +59,23 @@
                     myHeaders.append('Content-Type', 'application/json');
 
 
-                    console.log("this is the file")
-                        // $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
-                        //     phoneNumber: document.getElementById('phoneNumber').value,
-                        //     recaptchaToken: recaptchaToken
-                        // }, function(data, status) {
 
-                    //     if (status === 'success') {
-                    //         alert("hi")
-                    //     }
-                    // }).fail(function(jqXHR, textStatus, errorThrown) {
+                    $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
+                        phoneNumber: document.getElementById('phoneNumber').value,
+                        recaptchaToken: recaptchaToken
+                    }, function(data, status) {
 
-                    //     console.log(jqXHR)
-                    // });
+                        if (status === 'success') {
+                            alert("hi")
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                        console.log(jqXHR)
+                    });
 
 
                 }
             });
-
-
 
             function sendOTP() {
                 const sessionId = window.sessionId

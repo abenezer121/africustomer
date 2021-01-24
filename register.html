@@ -44,40 +44,46 @@
         firebase.initializeApp(firebaseConfig);
 
         function init() {
-            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
-                'size': 'invisible',
-                'callback': function(recaptchaToken) {
-                    // reCAPTCHA solved, send recaptchaToken and phone number to backend.
-
-                    // a REST call to your backend
-                    console.dir({
-                        phoneNumber: document.getElementById('phoneNumber').value,
-                        recaptchaToken
-                    })
-
-                    var myHeaders = new Headers();
-                    myHeaders.append('Content-Type', 'application/json');
+            try {
 
 
+                window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
+                    'size': 'invisible',
+                    'callback': function(recaptchaToken) {
+                        // reCAPTCHA solved, send recaptchaToken and phone number to backend.
 
-                    /*
-                                        $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
-                                            phoneNumber: document.getElementById('phoneNumber').value,
-                                            recaptchaToken: recaptchaToken
-                                        }, function(data, status) {
+                        // a REST call to your backend
+                        console.dir({
+                            phoneNumber: document.getElementById('phoneNumber').value,
+                            recaptchaToken
+                        })
 
-                                            if (status === 'success') {
-                                                alert("hi")
-                                            }
-                                        }).fail(function(jqXHR, textStatus, errorThrown) {
-
-                                            console.log(jqXHR)
-                                        });
-                                        */
+                        var myHeaders = new Headers();
+                        myHeaders.append('Content-Type', 'application/json');
 
 
-                }
-            });
+
+                        /*
+                                            $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
+                                                phoneNumber: document.getElementById('phoneNumber').value,
+                                                recaptchaToken: recaptchaToken
+                                            }, function(data, status) {
+
+                                                if (status === 'success') {
+                                                    alert("hi")
+                                                }
+                                            }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                                                console.log(jqXHR)
+                                            });
+                                            */
+
+
+                    }
+                });
+            } catch (err) {
+                console.log(err)
+            }
 
             function sendOTP() {
                 const sessionId = window.sessionId
@@ -246,7 +252,7 @@
 
     </div>
 
-    <script src="vendor/jquery/jquery.min.js"></script>
+
     <script src="vendor/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="vendor/jquery-validation/dist/additional-methods.min.js"></script>
 

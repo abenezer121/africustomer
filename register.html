@@ -171,22 +171,6 @@
 
 
             $("input[type='text']").on("input", function() {
-
-                // if (currentIndex == 1) {
-
-                //     firstname = document.getElementById("first_name").value;
-                //     lastname = document.getElementById("last_name").value;
-                //     username = document.getElementById("username").value;
-                // } else if (currentIndex == 2) {
-                //     password = document.getElementById("password").value;
-                //     phone = document.getElementById("phoneNumber").value;
-                //     age = document.getElementById("age").value;
-                // }
-                function change_placeholder_color(target_class, color_choice) {
-                    $("body").append("<style>" + target_class + "::placeholder{color:" + color_choice + "}</style>")
-                }
-
-
                 if (isEmpty(document.getElementById("first_name").value) == false &&
                     isEmpty(document.getElementById("last_name").value) == false &&
                     isEmpty(document.getElementById("username").value) == false &&
@@ -196,7 +180,7 @@
                     isEmpty(document.getElementById("age").value) == false) {
                     if (validatePhone(document.getElementById("phoneNumber").value) == true && validateAge(document.getElementById("age").value) == true) {
                         //now disable the button
-
+                        console.log("now")
                         document.getElementById("sendCode").disabled = false;
 
                     } else {

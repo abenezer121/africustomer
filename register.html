@@ -29,6 +29,7 @@
         let password = ""
         let email = ""
         let age = ""
+        let code = ""
 
         var firebaseConfig = {
             apiKey: "AIzaSyBBe_h_aIgSRbT-xwXhlGkSmbUB2zmZGNc",
@@ -56,7 +57,7 @@
 
                             var myHeaders = new Headers();
                             myHeaders.append('Content-Type', 'application/json');
-
+                            /*
                             $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
                                 phoneNumber: phone,
                                 recaptchaToken: recaptchaToken
@@ -69,6 +70,7 @@
 
                                 console.log(jqXHR)
                             });
+                            */
 
                             //Instead of using 'return false', use reject()
                             //Instead of using 'return' / 'return true', use resolve()
@@ -84,25 +86,26 @@
 
             function sendOTP() {
                 const sessionId = window.sessionId
-                const otp = document.getElementById("otp_input").value
 
-                fetch("http://localhost:3000/api/user/acceptOTP", {
-                        method: "post",
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        mode: 'cors',
-                        cache: 'no-cache',
-                        body: JSON.stringify({
-                            code: otp,
-                            sessionInfo: sessionId
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(res => {
-                        console.dir(res)
-                            // TODO: Well some kind of success or error 
-                    });
+                alert("sending")
+
+                // fetch("http://localhost:3000/api/user/acceptOTP", {
+                //         method: "post",
+                //         headers: {
+                //             'Content-Type': 'application/json'
+                //         },
+                //         mode: 'cors',
+                //         cache: 'no-cache',
+                //         body: JSON.stringify({
+                //             code: otp,
+                //             sessionInfo: sessionId
+                //         })
+                //     })
+                //     .then(response => response.json())
+                //     .then(res => {
+                //         console.dir(res)
+                //             // TODO: Well some kind of success or error 
+                //     });
             }
 
             // render the rapchaVerifier. 
@@ -153,9 +156,11 @@
                 } else {
                     document.getElementById("sendCode").style.display = "none"
                 }
+
+                if (isEmpty(document.getElementById("code").value)) {
+                    code = document.getElementById("code").value
+                }
             });
-
-
 
         })
 
@@ -186,7 +191,7 @@
             t = t + "  </div>"
             t = t + "</div>"
             t = t + " </fieldset>"
-            t = t + "<button onclick=\"signup()\">Sign Up</button>"
+            t = t + "<button onclick=\"sendOTP()\">Sign Up</button>"
 
             $('.formposition').append(t)
         }

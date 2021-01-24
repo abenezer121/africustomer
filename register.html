@@ -43,50 +43,90 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
 
+        function init() {
+            try {
+
+
+                window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
+                    'size': 'invisible',
+                    'callback': function(recaptchaToken) {
+
+                        return new Promise(function(resolve, reject) {
+
+                            //Your code logic goes here
+                            console.dir({
+                                phoneNumber: document.getElementById('phoneNumber').value,
+                                recaptchaToken
+                            })
+
+                            var myHeaders = new Headers();
+                            myHeaders.append('Content-Type', 'application/json');
+
+                            //Instead of using 'return false', use reject()
+                            //Instead of using 'return' / 'return true', use resolve()
+                            resolve();
+
+                        }); //end promise
+                        // reCAPTCHA solved, send recaptchaToken and phone number to backend.
+
+                        // a REST call to your backend
+
+
+
+
+                        /*
+                                            $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
+                                                phoneNumber: document.getElementById('phoneNumber').value,
+                                                recaptchaToken: recaptchaToken
+                                            }, function(data, status) {
+
+                                                if (status === 'success') {
+                                                    alert("hi")
+                                                }
+                                            }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                                                console.log(jqXHR)
+                                            });
+                                            */
+
+
+                    }
+                });
+            } catch (err) {
+                console.log(err)
+            }
+
+            function sendOTP() {
+                const sessionId = window.sessionId
+                const otp = document.getElementById("otp_input").value
+
+                fetch("http://localhost:3000/api/user/acceptOTP", {
+                        method: "post",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        mode: 'cors',
+                        cache: 'no-cache',
+                        body: JSON.stringify({
+                            code: otp,
+                            sessionInfo: sessionId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(res => {
+                        console.dir(res)
+                            // TODO: Well some kind of success or error 
+                    });
+            }
+
+            // render the rapchaVerifier. 
+            window.recaptchaVerifier.render().then(function(widgetId) {
+                window.recaptchaWidgetId = widgetId;
+            });
+        }
+
 
         $(document).ready(function() {
-
-            let t = ""
-            t = t + " <fieldset>"
-            t = t + "   <div class=\"form-row\">"
-            t = t + "       <div class=\"form-file\">"
-            t = t + "           <input type=\"file\" class=\"inputfile\" name=\"your_picture\" id=\"your_picture\" onchange=\"readURL(this);\" data-multiple-caption=\"{count} files selected\" multiple />"
-            t = t + "           <label for=\"your_picture\">"
-            t = t + "           <figure>"
-            t = t + "               <img src=\"images/your-picture.png\" alt=\"\" class=\"your_picture_image\">"
-            t = t + "           </figure>"
-
-            t = t + "       </label>"
-            t = t + "   </div>"
-            t = t + " <div class=\"form-group-flex\">"
-            t = t + "     <div class=\"form-group\">"
-            t = t + "         <input type=\"text\" name=\"first_name\" id=\"first_name\" placeholder=\"First Name\" />"
-            t = t + "     </div>"
-            t = t + "    <div class=\"form-group\">"
-            t = t + "        <input type=\"text\" name=\"last_name\" id=\"last_name\" placeholder=\"Last Name\" />"
-            t = t + "    </div>"
-            t = t + "    <div class=\"form-group\">"
-            t = t + "        <input type=\"text\" name=\"username\" id=\"username\" placeholder=\"username\" />"
-            t = t + "    </div>"
-            t = t + " <div class=\"form-group\">"
-            t = t + "     <input type=\"text\" name=\"city\" id=\"city\" placeholder=\"City\" />"
-            t = t + "  </div>"
-            t = t + "  <div class=\"form-group\">"
-            t = t + "      <input type=\"text\" name=\"phone\" id=\"phoneNumber\" placeholder=\"phone\" />"
-            t = t + "   </div>"
-            t = t + "   <div class=\"form-group\">"
-            t = t + "       <input type=\"text\" name=\"age\" id=\"age\" placeholder=\"age\" />"
-            t = t + "   </div>"
-
-            t = t + "   <div class=\"form-group\">"
-            t = t + "       <input type=\"text\" name=\"password\" id=\"password\" placeholder=\"password\" />"
-            t = t + "   </div>"
-            t = t + "  </div>"
-            t = t + "</div>"
-            t = t + " </fieldset>"
-
-
-            $('.formposition').append(t)
 
             function isEmpty(str) {
                 return (!str || /^\s*$/.test(str));
@@ -128,91 +168,6 @@
                     document.getElementById("sendCode").style.display = "none"
                 }
             });
-
-
-            function init() {
-                try {
-
-
-                    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
-                        'size': 'invisible',
-                        'callback': function(recaptchaToken) {
-
-                            return new Promise(function(resolve, reject) {
-
-                                //Your code logic goes here
-                                console.dir({
-                                    phoneNumber: document.getElementById('phoneNumber').value,
-                                    recaptchaToken
-                                })
-
-                                var myHeaders = new Headers();
-                                myHeaders.append('Content-Type', 'application/json');
-
-                                //Instead of using 'return false', use reject()
-                                //Instead of using 'return' / 'return true', use resolve()
-                                resolve();
-
-                            }); //end promise
-                            // reCAPTCHA solved, send recaptchaToken and phone number to backend.
-
-                            // a REST call to your backend
-
-
-
-
-                            /*
-                                                $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
-                                                    phoneNumber: document.getElementById('phoneNumber').value,
-                                                    recaptchaToken: recaptchaToken
-                                                }, function(data, status) {
-
-                                                    if (status === 'success') {
-                                                        alert("hi")
-                                                    }
-                                                }).fail(function(jqXHR, textStatus, errorThrown) {
-
-                                                    console.log(jqXHR)
-                                                });
-                                                */
-
-
-                        }
-                    });
-                } catch (err) {
-                    console.log(err)
-                }
-
-                function sendOTP() {
-                    const sessionId = window.sessionId
-                    const otp = document.getElementById("otp_input").value
-
-                    fetch("http://localhost:3000/api/user/acceptOTP", {
-                            method: "post",
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            mode: 'cors',
-                            cache: 'no-cache',
-                            body: JSON.stringify({
-                                code: otp,
-                                sessionInfo: sessionId
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(res => {
-                            console.dir(res)
-                                // TODO: Well some kind of success or error 
-                        });
-                }
-
-                // render the rapchaVerifier. 
-                window.recaptchaVerifier.render().then(function(widgetId) {
-                    window.recaptchaWidgetId = widgetId;
-                });
-            }
-
-
 
 
 
@@ -260,7 +215,45 @@
 
         <div class="container">
             <h2>Build your profile</h2>
-            <div class="formposition"></div>
+            <div class="formposition">
+                <fieldset>
+                    <div class="form-row">
+                        <div class="form-file">
+                            <input type="file" class="inputfile" name="your_picture" id="your_picture" onchange="readURL(this);" data-multiple-caption="{count} files selected" multiple />
+                            <label for="your_picture">
+                            <figure>
+                                <img src="images/your-picture.png" alt="" class="your_picture_image">
+                            </figure>
+        
+                        </label>
+                        </div>
+                        <div class="form-group-flex">
+                            <div class="form-group">
+                                <input type="text" name="first_name" id="first_name" placeholder="First Name" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="last_name" id="last_name" placeholder="Last Name" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="username" id="username" placeholder="username" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="city" id="city" placeholder="City" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="phone" id="phoneNumber" placeholder="phone" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="age" id="age" placeholder="age" />
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" name="password" id="password" placeholder="password" />
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
             <button id="sendCode" style="display: none;" onclick="next()">Next</button>"
         </div>
 

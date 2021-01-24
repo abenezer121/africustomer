@@ -54,15 +54,21 @@
 
                         return new Promise(function(resolve, reject) {
 
-                            //Your code logic goes here
-                            // console.dir({
-                            //     phoneNumber: document.getElementById('phoneNumber').value,
-                            //     recaptchaToken
-                            // })
-                            console.log(phone)
-
                             var myHeaders = new Headers();
                             myHeaders.append('Content-Type', 'application/json');
+
+                            $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
+                                phoneNumber: phone,
+                                recaptchaToken: recaptchaToken
+                            }, function(data, status) {
+
+                                if (status === 'success') {
+                                    alert("hi")
+                                }
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                                console.log(jqXHR)
+                            });
 
                             //Instead of using 'return false', use reject()
                             //Instead of using 'return' / 'return true', use resolve()
@@ -70,28 +76,6 @@
 
                         }); //end promise
                         // reCAPTCHA solved, send recaptchaToken and phone number to backend.
-
-                        // a REST call to your backend
-
-
-
-
-                        /*
-                                            $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
-                                                phoneNumber: document.getElementById('phoneNumber').value,
-                                                recaptchaToken: recaptchaToken
-                                            }, function(data, status) {
-
-                                                if (status === 'success') {
-                                                    alert("hi")
-                                                }
-                                            }).fail(function(jqXHR, textStatus, errorThrown) {
-
-                                                console.log(jqXHR)
-                                            });
-                                            */
-
-
                     }
                 });
             } catch (err) {

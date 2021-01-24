@@ -143,10 +143,10 @@
                     isEmpty(document.getElementById("age").value) == false) {
                     if (validatePhone(document.getElementById("phoneNumber").value) == true && validateAge(document.getElementById("age").value) == true) {
                         //now disable the button
-                        phone = "asdfasdf"
+
+                        phone = document.getElementById("phoneNumber").value
+                        console.log(phone)
                         document.getElementById("sendCode").style.display = "block"
-
-
                     } else {
                         document.getElementById("sendCode").style.display = "none"
                     }

@@ -11,18 +11,18 @@
     <script type="text/javascript" src="https://www.turnjs.com/lib/turn.min.js "></script>
     <script>
         /*
-                                                                                                                var firebaseConfig = {
-                                                                                                                    apiKey: "AIzaSyBBe_h_aIgSRbT-xwXhlGkSmbUB2zmZGNc",
-                                                                                                                    authDomain: "huluradiox.firebaseapp.com",
-                                                                                                                    databaseURL: "https://huluradiox.firebaseio.com",
-                                                                                                                    projectId: "huluradiox",
-                                                                                                                    storageBucket: "huluradiox.appspot.com",
-                                                                                                                    messagingSenderId: "701196878506",
-                                                                                                                    appId: "1:701196878506:web:09e72de08f77c460ac46d3",
-                                                                                                                    measurementId: "G-Y50XR144GX"
-                                                                                                                };
-                                                                                                                // Initialize Firebase
-                                                                                                                firebase.initializeApp(firebaseConfig);*/
+                                                                                                                                                                        var firebaseConfig = {
+                                                                                                                                                                            apiKey: "AIzaSyBBe_h_aIgSRbT-xwXhlGkSmbUB2zmZGNc",
+                                                                                                                                                                            authDomain: "huluradiox.firebaseapp.com",
+                                                                                                                                                                            databaseURL: "https://huluradiox.firebaseio.com",
+                                                                                                                                                                            projectId: "huluradiox",
+                                                                                                                                                                            storageBucket: "huluradiox.appspot.com",
+                                                                                                                                                                            messagingSenderId: "701196878506",
+                                                                                                                                                                            appId: "1:701196878506:web:09e72de08f77c460ac46d3",
+                                                                                                                                                                            measurementId: "G-Y50XR144GX"
+                                                                                                                                                                        };
+                                                                                                                                                                        // Initialize Firebase
+                                                                                                                                                                        firebase.initializeApp(firebaseConfig);*/
 
         var firebaseConfig = {
             apiKey: "AIzaSyBHaWNZ3mTKou-bZxsvxZ0fGDY8tx9Qkrw",
@@ -39,7 +39,7 @@
         function init() {
 
 
-            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier({
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
                 'size': 'invisible',
                 'callback': function(recaptchaToken) {
                     // reCAPTCHA solved, send recaptchaToken and phone number to backend.

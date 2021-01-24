@@ -50,16 +50,27 @@
                 window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
                     'size': 'invisible',
                     'callback': function(recaptchaToken) {
+
+                        return new Promise(function(resolve, reject) {
+
+                            //Your code logic goes here
+                            console.dir({
+                                phoneNumber: document.getElementById('phoneNumber').value,
+                                recaptchaToken
+                            })
+
+                            var myHeaders = new Headers();
+                            myHeaders.append('Content-Type', 'application/json');
+
+                            //Instead of using 'return false', use reject()
+                            //Instead of using 'return' / 'return true', use resolve()
+                            resolve();
+
+                        }); //end promise
                         // reCAPTCHA solved, send recaptchaToken and phone number to backend.
 
                         // a REST call to your backend
-                        console.dir({
-                            phoneNumber: document.getElementById('phoneNumber').value,
-                            recaptchaToken
-                        })
 
-                        var myHeaders = new Headers();
-                        myHeaders.append('Content-Type', 'application/json');
 
 
 

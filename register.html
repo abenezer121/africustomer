@@ -29,6 +29,7 @@
         let password = ""
         let email = ""
         let age = ""
+        let city = ""
         let code = ""
         let recapthatoken = ""
 
@@ -68,6 +69,7 @@
                                 lastname: lastname,
                                 password: password,
                                 age: age,
+                                city: city,
 
 
                             }, function(data, status) {
@@ -75,7 +77,7 @@
                                 if (status === 'success') {
                                     // sessionInfo()
                                     next()
-                                    recapthatoken = data
+                                    recapthatoken = data.session
                                 }
                             }).fail(function(jqXHR, textStatus, errorThrown) {
 
@@ -152,7 +154,13 @@
                     //     //now disable the button
 
                     phone = document.getElementById("phoneNumber").value
-                    console.log(phone)
+                    firstname = document.getElementById("first_name").value
+                    lastname = document.getElementById("last_name").value
+                    username = document.getElementById("username").value
+                    password = document.getElementById("password").value
+                    city = document.getElementById("city").value
+                    age = document.getElementById("age").value
+
                     document.getElementById("sendCode").style.display = "block"
                         // } else {
                         //     document.getElementById("sendCode").style.display = "none"

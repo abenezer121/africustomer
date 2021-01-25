@@ -89,7 +89,20 @@
 
                 alert("sending")
 
-                // fetch("http://localhost:3000/api/user/acceptOTP", {
+                $.post("https://afrigebeta.herokuapp.com/api/user/acceptOTP", {
+                    code: code,
+                    sessionInfo: sessionId
+                }, function(data, status) {
+
+                    if (status === 'success') {
+                        alert("hi")
+                    }
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                    console.log(jqXHR)
+                });
+
+                // fetch("https://afrigebeta.herokuapp.com/api/user/acceptOTP", {
                 //         method: "post",
                 //         headers: {
                 //             'Content-Type': 'application/json'
@@ -157,18 +170,20 @@
                     document.getElementById("sendCode").style.display = "none"
                 }
 
-                if (isEmpty(document.getElementById("code").value)) {
-                    code = document.getElementById("code").value
-                }
+
+            });
+
+            $(document).on('keyup', '.code', function() {
+                code = $(this).val()
             });
 
         })
 
-        function signup() {
-            alert("signup")
-        }
+
 
         function next() {
+
+            document.getElementById("sendCode").style.display = "none"
 
             $('.formposition').empty()
             let t = ""
@@ -185,7 +200,7 @@
             t = t + "   </div>"
             t = t + " <div class=\"form-group-flex\">"
             t = t + "     <div class=\"form-group\">"
-            t = t + "         <input type=\"text\" name=\"code\" id=\"code\" placeholder=\"Code\" />"
+            t = t + "         <input type=\"text\" class=\"code\" name=\"code\" id=\"code\" placeholder=\"Code\" />"
             t = t + "     </div>"
 
             t = t + "  </div>"

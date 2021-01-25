@@ -96,7 +96,7 @@
             const sessionId = window.sessionId
 
             alert("sending")
-
+            console.log(code)
             $.post("https://afrigebeta.herokuapp.com/api/user/acceptOTP", {
                 code: code,
                 sessionInfo: recapthatoken
@@ -262,3 +262,5 @@
 </body>
 
 </html>
+
+<!--data.responseJSON.message.response.data.message-->

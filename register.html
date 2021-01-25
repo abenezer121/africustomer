@@ -80,26 +80,7 @@
                 console.log(err)
             }
 
-            function sendOTP() {
-                const sessionId = window.sessionId
 
-                alert("sending")
-
-                $.post("https://afrigebeta.herokuapp.com/api/user/acceptOTP", {
-                    code: code,
-                    sessionInfo: sessionId
-                }, function(data, status) {
-
-                    if (status === 'success') {
-                        alert("hi")
-                    }
-                }).fail(function(jqXHR, textStatus, errorThrown) {
-
-                    console.log(jqXHR)
-                });
-
-
-            }
 
             // render the rapchaVerifier. 
             window.recaptchaVerifier.render().then(function(widgetId) {
@@ -107,7 +88,26 @@
             });
         }
 
+        function sendOTP() {
+            const sessionId = window.sessionId
 
+            alert("sending")
+
+            $.post("https://afrigebeta.herokuapp.com/api/user/acceptOTP", {
+                code: code,
+                sessionInfo: sessionId
+            }, function(data, status) {
+
+                if (status === 'success') {
+                    alert("hi")
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                console.log(jqXHR)
+            });
+
+
+        }
         $(document).ready(function() {
 
             function isEmpty(str) {

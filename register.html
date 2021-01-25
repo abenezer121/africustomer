@@ -61,20 +61,21 @@
                             myHeaders.append('Content-Type', 'application/json');
 
                             $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
-                                phone: phone,
+                                phoneNumber: phone,
                                 recaptchaToken: recaptchaToken,
                                 firstname: firstname,
                                 username: username,
                                 lastname: lastname,
-                                lastname: lastname,
                                 password: password,
                                 age: age,
+
+
                             }, function(data, status) {
 
                                 if (status === 'success') {
                                     // sessionInfo()
                                     next()
-                                    recapthatoken = data.session
+                                    recapthatoken = data
                                 }
                             }).fail(function(jqXHR, textStatus, errorThrown) {
 

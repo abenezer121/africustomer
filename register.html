@@ -61,14 +61,20 @@
                             myHeaders.append('Content-Type', 'application/json');
 
                             $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
-                                phoneNumber: phone,
-                                recaptchaToken: recaptchaToken
+                                phone: phone,
+                                recaptchaToken: recaptchaToken,
+                                firstname: firstname,
+                                username: username,
+                                lastname: lastname,
+                                lastname: lastname,
+                                password: password,
+                                age: age,
                             }, function(data, status) {
 
                                 if (status === 'success') {
                                     // sessionInfo()
                                     next()
-                                    recapthatoken = data
+                                    recapthatoken = data.session
                                 }
                             }).fail(function(jqXHR, textStatus, errorThrown) {
 
@@ -162,7 +168,7 @@
 
             $(document).on('keyup', '.code', function() {
                 code = $(this).val()
-                console.log(code)
+
             });
 
         })

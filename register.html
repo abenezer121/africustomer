@@ -57,7 +57,7 @@
 
                             var myHeaders = new Headers();
                             myHeaders.append('Content-Type', 'application/json');
-                            /*
+
                             $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
                                 phoneNumber: phone,
                                 recaptchaToken: recaptchaToken
@@ -70,14 +70,10 @@
 
                                 console.log(jqXHR)
                             });
-                            */
 
-                            //Instead of using 'return false', use reject()
-                            //Instead of using 'return' / 'return true', use resolve()
                             resolve();
 
-                        }); //end promise
-                        // reCAPTCHA solved, send recaptchaToken and phone number to backend.
+                        });
                     }
                 });
             } catch (err) {
@@ -102,23 +98,7 @@
                     console.log(jqXHR)
                 });
 
-                // fetch("https://afrigebeta.herokuapp.com/api/user/acceptOTP", {
-                //         method: "post",
-                //         headers: {
-                //             'Content-Type': 'application/json'
-                //         },
-                //         mode: 'cors',
-                //         cache: 'no-cache',
-                //         body: JSON.stringify({
-                //             code: otp,
-                //             sessionInfo: sessionId
-                //         })
-                //     })
-                //     .then(response => response.json())
-                //     .then(res => {
-                //         console.dir(res)
-                //             // TODO: Well some kind of success or error 
-                //     });
+
             }
 
             // render the rapchaVerifier. 
@@ -175,6 +155,11 @@
                 // }
             });
 
+
+            $(document).on('keyup', '.code', function() {
+                code = $(this).val()
+            });
+
         })
 
         function signup() {
@@ -198,9 +183,8 @@
             t = t + "   </div>"
             t = t + " <div class=\"form-group-flex\">"
             t = t + "     <div class=\"form-group\">"
-            t = t + "         <input type=\"text\" name=\"code\" id=\"code\" placeholder=\"Code\" />"
+            t = t + "         <input type=\"text\" name=\"code\"class \"code\" id=\"code\" placeholder=\"Code\" />"
             t = t + "     </div>"
-
             t = t + "  </div>"
             t = t + "</div>"
             t = t + " </fieldset>"

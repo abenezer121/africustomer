@@ -55,7 +55,7 @@
                     'callback': function(recaptchaToken) {
 
                         return new Promise(function(resolve, reject) {
-                            recapthatoken = response.data.sessionInfo;
+
 
                             var myHeaders = new Headers();
                             myHeaders.append('Content-Type', 'application/json');
@@ -66,7 +66,7 @@
                             }, function(data, status) {
 
                                 if (status === 'success') {
-                                    alert("hi")
+                                    recapthatoken = data
                                 }
                             }).fail(function(jqXHR, textStatus, errorThrown) {
 

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="colorlib.com">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form</title>
+
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <link rel="stylesheet" href="css/registerstyle.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script>
+        let firstname = ""
+        let username = ""
+        let lastname = ""
+        let phone = ""
+        let password = ""
+        let email = ""
+        let age = ""
+        let code = ""
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyBBe_h_aIgSRbT-xwXhlGkSmbUB2zmZGNc",
+            authDomain: "huluradiox.firebaseapp.com",
+            databaseURL: "https://huluradiox.firebaseio.com",
+            projectId: "huluradiox",
+            storageBucket: "huluradiox.appspot.com",
+            messagingSenderId: "701196878506",
+            appId: "1:701196878506:web:09e72de08f77c460ac46d3",
+            measurementId: "G-Y50XR144GX"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        function init() {
+
+            try {
+
+
+                window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
+                    'size': 'invisible',
+                    'callback': function(recaptchaToken) {
+
+                        return new Promise(function(resolve, reject) {
+
+                            var myHeaders = new Headers();
+                            myHeaders.append('Content-Type', 'application/json');
+
+                            $.post("https://afrigebeta.herokuapp.com/api/user/sendCode", {
+                                phoneNumber: phone,
+                                recaptchaToken: recaptchaToken
+                            }, function(data, status) {
+
+                                if (status === 'success') {
+                                    alert("hi")
+                                }
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                                console.log(jqXHR)
+                            });
+
+                            resolve();
+
+                        });
+                    }
+                });
+            } catch (err) {
+                console.log(err)
+            }
+
+            function sendOTP() {
+                const sessionId = window.sessionId
+
+                alert("sending")
+
+                $.post("https://afrigebeta.herokuapp.com/api/user/acceptOTP", {
+                    code: code,
+                    sessionInfo: sessionId
+                }, function(data, status) {
+
+                    if (status === 'success') {
+                        alert("hi")
+                    }
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                    console.log(jqXHR)
+                });
+
+
+            }
+
+            // render the rapchaVerifier. 
+            window.recaptchaVerifier.render().then(function(widgetId) {
+                window.recaptchaWidgetId = widgetId;
+            });
+        }
+
+
+        $(document).ready(function() {
+
+            function isEmpty(str) {
+                return (!str || /^\s*$/.test(str));
+            }
+
+            function validatePhone(value) {
+                var re = /^[0-9]{10}$/;
+                var re2 = /^[0-9,+]{13}$/;
+                var re3 = /^251[0-9]{9}$/;
+                if (value.match(re) || value.match(re2) || value.match(re3)) return true;
+                else return false
+            }
+
+            function validateAge(value) {
+                var re = /^\d+$/;
+                if (value.match(re)) return true;
+                else return false
+            }
+
+
+            $("input[type='text']").on("input", function() {
+                if (isEmpty(document.getElementById("first_name").value) == false &&
+                    isEmpty(document.getElementById("last_name").value) == false &&
+                    isEmpty(document.getElementById("username").value) == false &&
+                    isEmpty(document.getElementById("password").value) == false &&
+                    isEmpty(document.getElementById("phoneNumber").value) == false &&
+                    isEmpty(document.getElementById("city").value) == false &&
+                    isEmpty(document.getElementById("age").value) == false) {
+                    if (validatePhone(document.getElementById("phoneNumber").value) == true && validateAge(document.getElementById("age").value) == true) {
+                        //now disable the button
+
+                        phone = document.getElementById("phoneNumber").value
+                        console.log(phone)
+                        document.getElementById("sendCode").style.display = "block"
+                    } else {
+                        document.getElementById("sendCode").style.display = "none"
+                    }
+                } else {
+                    document.getElementById("sendCode").style.display = "none"
+                }
+
+                // if (isEmpty(document.getElementById("code").value)) {
+                //     code = document.getElementById("code").value
+                // }
+            });
+
+
+            $(document).on('keyup', '.code', function() {
+                code = $(this).val()
+            });
+
+        })
+
+        function signup() {
+            alert("signup")
+        }
+
+        function next() {
+
+            $('.formposition').empty()
+            let t = ""
+            t = t + " <fieldset>"
+            t = t + "   <div class=\"form-row\">"
+            t = t + "       <div class=\"form-file\">"
+            t = t + "           <input type=\"file\" class=\"inputfile\" name=\"your_picture\" id=\"your_picture\" onchange=\"readURL(this);\" data-multiple-caption=\"{count} files selected\" multiple />"
+            t = t + "           <label for=\"your_picture\">"
+            t = t + "           <figure>"
+            t = t + "               <img src=\"images/your-picture.png\" alt=\"\" class=\"your_picture_image\">"
+            t = t + "           </figure>"
+
+            t = t + "       </label>"
+            t = t + "   </div>"
+            t = t + " <div class=\"form-group-flex\">"
+            t = t + "     <div class=\"form-group\">"
+            t = t + "         <input type=\"text\" name=\"code\"class \"code\" id=\"code\" placeholder=\"Code\" />"
+            t = t + "     </div>"
+            t = t + "  </div>"
+            t = t + "</div>"
+            t = t + " </fieldset>"
+            t = t + "<button onclick=\"sendOTP()\">Sign Up</button>"
+
+            $('.formposition').append(t)
+        }
+    </script>
+
+</head>
+
+<body onload="init()">
+    <div id="re-container"></div>
+
+    <div class="main">
+
+        <div class="container">
+            <h2>Build your profile</h2>
+            <div class="formposition">
+                <fieldset>
+                    <div class="form-row">
+                        <div class="form-file">
+                            <input type="file" class="inputfile" name="your_picture" id="your_picture" onchange="readURL(this);" data-multiple-caption="{count} files selected" multiple />
+                            <label for="your_picture">
+                            <figure>
+                                <img src="images/your-picture.png" alt="" class="your_picture_image">
+                            </figure>
+        
+                        </label>
+                        </div>
+                        <div class="form-group-flex">
+                            <div class="form-group">
+                                <input type="text" name="first_name" id="first_name" placeholder="First Name" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="last_name" id="last_name" placeholder="Last Name" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="username" id="username" placeholder="username" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="city" id="city" placeholder="City" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="phone" id="phoneNumber" placeholder="phone" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="age" id="age" placeholder="age" />
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" name="password" id="password" placeholder="password" />
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <button id="sendCode" style="display: none;" onclick="next()">Next</button>"
+        </div>
+
+    </div>
+
+
+    <script src="vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="vendor/jquery-validation/dist/additional-methods.min.js"></script>
+
+</body>
+
+</html>

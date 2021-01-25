@@ -170,20 +170,18 @@
                     document.getElementById("sendCode").style.display = "none"
                 }
 
-
+                // if (isEmpty(document.getElementById("code").value)) {
+                //     code = document.getElementById("code").value
+                // }
             });
-
-            // $(document).on('keyup', '.code', function() {
-            //     code = $(this).val()
-            // });
 
         })
 
-
+        function signup() {
+            alert("signup")
+        }
 
         function next() {
-
-            document.getElementById("sendCode").style.display = "none"
 
             $('.formposition').empty()
             let t = ""
@@ -200,7 +198,7 @@
             t = t + "   </div>"
             t = t + " <div class=\"form-group-flex\">"
             t = t + "     <div class=\"form-group\">"
-            t = t + "         <input type=\"text\" class=\"code\" name=\"code\" id=\"code\" placeholder=\"Code\" />"
+            t = t + "         <input type=\"text\" name=\"code\" id=\"code\" placeholder=\"Code\" />"
             t = t + "     </div>"
 
             t = t + "  </div>"

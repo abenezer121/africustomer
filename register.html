@@ -66,6 +66,7 @@
                             }, function(data, status) {
 
                                 if (status === 'success') {
+                                    sessionInfo()
                                     recapthatoken = data
                                 }
                             }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -139,15 +140,15 @@
                     isEmpty(document.getElementById("phoneNumber").value) == false &&
                     isEmpty(document.getElementById("city").value) == false &&
                     isEmpty(document.getElementById("age").value) == false) {
-                    if (validatePhone(document.getElementById("phoneNumber").value) == true && validateAge(document.getElementById("age").value) == true) {
-                        //now disable the button
+                    // if (validatePhone(document.getElementById("phoneNumber").value) == true && validateAge(document.getElementById("age").value) == true) {
+                    //     //now disable the button
 
-                        phone = document.getElementById("phoneNumber").value
-                        console.log(phone)
-                        document.getElementById("sendCode").style.display = "block"
-                    } else {
-                        document.getElementById("sendCode").style.display = "none"
-                    }
+                    phone = document.getElementById("phoneNumber").value
+                    console.log(phone)
+                    document.getElementById("sendCode").style.display = "block"
+                        // } else {
+                        //     document.getElementById("sendCode").style.display = "none"
+                        // }
                 } else {
                     document.getElementById("sendCode").style.display = "none"
                 }
@@ -247,7 +248,7 @@
                     </div>
                 </fieldset>
             </div>
-            <button id="sendCode" style="display: none;" onclick="next()">Next</button>"
+            <button id="sendCode" style="display: none;">Next</button>"
             <button id="sendotp" style="display: none;" onclick="sendOTP()">Sign Up</button>
         </div>
 

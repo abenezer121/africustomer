@@ -30,6 +30,7 @@
         let email = ""
         let age = ""
         let code = ""
+        let recapthatoken = ""
 
         var firebaseConfig = {
             apiKey: "AIzaSyBBe_h_aIgSRbT-xwXhlGkSmbUB2zmZGNc",
@@ -54,6 +55,7 @@
                     'callback': function(recaptchaToken) {
 
                         return new Promise(function(resolve, reject) {
+                            recapthatoken = response.data.sessionInfo;
 
                             var myHeaders = new Headers();
                             myHeaders.append('Content-Type', 'application/json');
@@ -95,7 +97,7 @@
 
             $.post("https://afrigebeta.herokuapp.com/api/user/acceptOTP", {
                 code: code,
-                sessionInfo: sessionId
+                sessionInfo: recapthatoken
             }, function(data, status) {
 
                 if (status === 'success') {

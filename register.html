@@ -104,15 +104,21 @@
         function sendOTP() {
             const sessionId = window.sessionId
 
-            alert("sending")
-            console.log(code)
+
             $.post("https://afrigebeta.herokuapp.com/api/user/acceptOTP", {
                 code: code,
-                sessionInfo: recapthatoken
+                sessionInfo: recapthatoken,
+                phone: phone
             }, function(data, status) {
 
                 if (status === 'success') {
-                    alert("hi")
+
+                    let userid = localStorage.setItem('userid', data.user);
+                    let username = localStorage.setItem('username', data.name)
+
+                    let token = localStorage.setItem('token', data.token);
+                    window.location.href = "main.html";
+
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
 

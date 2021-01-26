@@ -151,7 +151,8 @@
 
 
 
-            $("input").keypress(function() {
+            $("input").on('change keyup paste', function() {
+
                 if (isEmpty(document.getElementById("first_name").value) == false &&
                     isEmpty(document.getElementById("last_name").value) == false &&
                     isEmpty(document.getElementById("username").value) == false &&
@@ -260,7 +261,7 @@
                                 <input type="text" name="city" id="city" placeholder="City" />
                             </div>
                             <div class="form-group">
-                                <input type="text" name="phone" id="phoneNumber" placeholder="phone" />
+                                <input type="number" name="phone" id="phoneNumber" placeholder="phone" />
                             </div>
                             <div class="form-group">
                                 <input type="number" name="age" id="age" placeholder="age" />

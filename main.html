@@ -152,9 +152,7 @@
         }
 
         function logout() {
-            console.log(localStorage.getItem('storeid'))
-            localStorage.setItem('storeid', "this");
-
+            localStorage.setItem('token', "this");
             window.location.href = "login.html";
         }
     </script>

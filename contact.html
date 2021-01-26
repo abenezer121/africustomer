@@ -36,6 +36,10 @@
             window.location.href = "menu.html";
         }
 
+        function logout() {
+            localStorage.setItem('storeid', "");
+            window.location.href = "login.html";
+        }
 
         $(document).ready(function() {
 
@@ -93,7 +97,7 @@
                             <div class="dropdown-menu" aria-labelledby="dropdown-a">
                                 <a class="dropdown-item" href="profile.html">Profile</a>
                                 <a class="dropdown-item" href="myaccount.html">Orders</a>
-                                <a class="dropdown-item" href="stuff.html">logout</a>
+                                <a class="dropdown-item" onclick="logout()" href="#">logout</a>
                             </div>
                         </li>
                         <li class="nav-item">
@@ -123,7 +127,7 @@
     </div>
     <a href="#" onclick="loaddata()" data-toggle="modal" data-target="#exampleModal" class="float">
         <i class="fa fa-shopping-cart my-float"></i>
-        </a>
+    </a>
     <div class="contact-box">
         <div class="container">
             <div class="row">

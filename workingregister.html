@@ -158,6 +158,7 @@
 
             $(document).on('keyup', '.code', function() {
                 code = $(this).val()
+                console.log(code)
             });
 
         })
@@ -168,6 +169,8 @@
 
         function next() {
 
+            document.getElementById("sendCode").style.display = "none"
+            document.getElementById("sendotp").style.display = "block"
             $('.formposition').empty()
             let t = ""
             t = t + " <fieldset>"
@@ -188,7 +191,7 @@
             t = t + "  </div>"
             t = t + "</div>"
             t = t + " </fieldset>"
-            t = t + "<button onclick=\"sendOTP()\">Sign Up</button>"
+
 
             $('.formposition').append(t)
         }
@@ -243,6 +246,7 @@
                 </fieldset>
             </div>
             <button id="sendCode" style="display: none;" onclick="next()">Next</button>"
+            <button id="sendotp" style="display: none;" onclick="sendOTP()">Sign Up</button>
         </div>
 
     </div>

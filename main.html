@@ -152,7 +152,9 @@
         }
 
         function logout() {
-            localStorage.setItem('storeid', "");
+            console.log(localStorage.getItem('storeid'))
+            localStorage.setItem('storeid', "this");
+
             window.location.href = "login.html";
         }
     </script>

@@ -113,16 +113,10 @@
 
                 if (status === 'success') {
 
-                    let userid = localStorage.setItem('userid', data.user);
-                    let username = localStorage.setItem('username', data.name)
-
-                    let token = localStorage.setItem('token', data.token);
-                    window.location.href = "main.html";
-
+                    window.location.href = "login.html";
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
-
-                console.log(jqXHR)
+                alert("invlaid code")
             });
 
 

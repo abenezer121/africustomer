@@ -150,7 +150,7 @@
 
 
             $("input").on('change keyup paste', function() {
-                console.log("+251" + document.getElementById("pno").value)
+
                 if (isEmpty(document.getElementById("first_name").value) == false &&
                     isEmpty(document.getElementById("last_name").value) == false &&
                     isEmpty(document.getElementById("username").value) == false &&
@@ -163,7 +163,7 @@
                     if (isEmpty(document.getElementById("email").value) == false) {
                         email = document.getElementById("age").value
                     }
-                    phone = document.getElementById("pno").value
+                    phone = "+251" + document.getElementById("pno").value
                     firstname = document.getElementById("first_name").value
                     lastname = document.getElementById("last_name").value
                     username = document.getElementById("username").value

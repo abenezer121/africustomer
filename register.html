@@ -112,7 +112,7 @@
                 code: code,
                 sessionInfo: recapthatoken,
                 phone: phone
-            }, function(data, status) {
+            }, function(data, status) { // document.getElementById("wrongphone").style.display = "block"
 
                 if (status === 'success') {
 
@@ -131,10 +131,8 @@
             }
 
             function validatePhone(value) {
-                var re = /^[0-9]{10}$/;
-                var re2 = /^[0-9,+]{13}$/;
-                var re3 = /^251[0-9]{9}$/;
-                if (value.match(re) || value.match(re2) || value.match(re3)) return true;
+
+                if (value.length == 9) return true;
                 else return false
             }
 
@@ -152,21 +150,20 @@
 
 
             $("input").on('change keyup paste', function() {
-
+                console.log("+251" + document.getElementById("pno").value)
                 if (isEmpty(document.getElementById("first_name").value) == false &&
                     isEmpty(document.getElementById("last_name").value) == false &&
                     isEmpty(document.getElementById("username").value) == false &&
                     isEmpty(document.getElementById("password").value) == false &&
-                    isEmpty(document.getElementById("phoneNumber").value) == false &&
+                    isEmpty(document.getElementById("pno").value) == false &&
                     isEmpty(document.getElementById("city").value) == false &&
                     isEmpty(document.getElementById("age").value) == false) {
-                    // if (validatePhone(document.getElementById("phoneNumber").value) == true && validateAge(document.getElementById("age").value) == true) {
-                    //     //now disable the button
-                    console.log("empty")
+                    //if (validatePhone(document.getElementById("phoneNumber").value)) {
+
                     if (isEmpty(document.getElementById("email").value) == false) {
                         email = document.getElementById("age").value
                     }
-                    phone = document.getElementById("phoneNumber").value
+                    phone = document.getElementById("pno").value
                     firstname = document.getElementById("first_name").value
                     lastname = document.getElementById("last_name").value
                     username = document.getElementById("username").value
@@ -180,6 +177,7 @@
                         // }
                 } else {
                     document.getElementById("sendCode").style.display = "none"
+                        // document.getElementById("wrongphone").style.display = "block"
                 }
 
                 // if (isEmpty(document.getElementById("code").value)) {
@@ -225,10 +223,30 @@
         }
     </script>
 
+    <style>
+        #input-wrapper * {
+            position: absolute;
+        }
+        
+        #input-wrapper label {
+            z-index: 99;
+            line-height: 25px;
+            padding: 10px;
+            margin-left: 5px;
+        }
+        
+        #input-wrapper input {
+            height: 50px;
+            text-indent: 35px;
+        }
+    </style>
+
 </head>
 
-<body>
+<body onload="init()">
     <div id="re-container"></div>
+
+
 
     <div class="main">
 
@@ -238,52 +256,113 @@
             <div class="formposition">
                 <fieldset>
                     <div class="form-row">
-                        <div class="form-file">
-                            <img src="images/afrigebeta.jpg" alt="" class="your_picture_image">
-                        </div>
-                        <div class="form-group-flex">
-                            <div class="form-group">
-                                <input type="text" name="first_name" id="first_name" placeholder="First Name" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="last_name" id="last_name" placeholder="Last Name" />
-                            </div>
-
-                            <div class="form-group">
-                                <input type="text" name="email" id="email" placeholder="email" />
-                            </div>
-
-
-                            <div class="form-group">
-                                <input type="text" name="username" id="username" placeholder="username" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="city" id="city" placeholder="City" />
-                            </div>
-                            <div class="form-group">
-                                <input type="number" name="phone" id="phoneNumber" placeholder="phone" />
-                            </div>
-                            <div class="form-group">
-                                <input type="number" name="age" id="age" placeholder="age" />
-                            </div>
-
-                            <div class="form-group">
-                                <input type="text" name="password" id="password" placeholder="password" />
+                        <!-- <div class="row"> -->
+                        <div class="col-md-6">
+                            <div class="form-file">
+                                <img width="100%" src="images/afrigebeta.jpg" alt="" class="your_picture_image">
                             </div>
                         </div>
-                    </div>
+                        <div class="col-md-6">
+                            <div class="form-group-flex">
+                                <div class="form-group">
+                                    <input type="text" name="first_name" id="first_name" placeholder="First Name" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="last_name" id="last_name" placeholder="Last Name" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="username" id="username" placeholder="username" />
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" name="email" id="email" placeholder="email" />
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" name="city" id="city" placeholder="City" />
+                                </div>
+                                <div class="form-group">
+                                    <!-- <p style="display: inline;">+251</p>
+                                <input type="text" class="phoneNumber" name="phone" id="phoneNumber" style="width:3.5em;padding-left:1.5em;font:inherit"><span style="margin-left:-3em;margin-right:10em;">+251</span> -->
+
+                                    <div id="input-wrapper">
+
+                                        <label for="pno">+251</label>
+                                        <input type="number" name="pno" id="pno" tabindex="1" class="form-control" placeholder="Phone Number" />
+                                        <br><br><br>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="number" name="age" id="age" placeholder="age" />
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="password" name="password" id="password" placeholder="password" />
+                                </div>
+                            </div>
+                        </div>
                 </fieldset>
-            </div>
-            <button id="sendCode" type="button" class="buttons" style="display: none;">Next</button>
-            <button id="sendotp" type="button" class="buttons" style="display: none;" onclick="sendOTP()">Sign Up</button>
+                </div>
 
+                <button id="sendCode" type="button" class="buttons" style="display: none;">Next</button>
+                <button id="sendotp" type="button" class="buttons" style="display: none;" onclick="sendOTP()">Sign Up</button>
+
+            </div>
         </div>
 
-    </div>
+        <!-- <div class="main">
+
+                    <div class="container">
+                        <h2>Register</h2>
+
+                        <div class="formposition">
+                            <fieldset>
+                                <div class="form-row">
+                                    <div class="form-file">
+                                        <img src="images/afrigebeta.jpg" alt="" class="your_picture_image">
+                                    </div>
+                                    <div class="form-group-flex">
+                                        <div class="form-group">
+                                            <input type="text" name="first_name" id="first_name" placeholder="First Name" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="last_name" id="last_name" placeholder="Last Name" />
+                                        </div>
+                                        <lable id="wrongemail" style="display: none; color:red"> Email</lable>
+                                        <div class="form-group">
+                                            <input type="text" name="email" id="email" placeholder="email" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="username" id="username" placeholder="username" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="city" id="city" placeholder="City" />
+                                        </div>
+                                        <lable id="wrongphone" style="color:red; display : none"> Wrong Phone</lable>
+                                        <div class="form-group">
+                                            <input type="number" name="phone" id="phoneNumber" placeholder="phone" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="number" name="age" id="age" placeholder="age" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="text" name="password" id="password" placeholder="password" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <button id="sendCode" type="button" class="buttons" style="display: none;">Next</button>
+                        <button id="sendotp" type="button" class="buttons" style="display: none;" onclick="sendOTP()">Sign Up</button>
+
+                    </div>
+
+                </div> -->
 
 
-    <script src="vendor/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="vendor/jquery-validation/dist/additional-methods.min.js"></script>
+        <script src="vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="vendor/jquery-validation/dist/additional-methods.min.js"></script>
 
 </body>
 

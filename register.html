@@ -212,7 +212,7 @@
             t = t + "   <div class=\"form-row\">"
             t = t + "       <div class=\"form-file\">"
 
-            t = t + "  <img src=\"images/afrigebeta.jpg\" alt=\"\" class=\"your_picture_image\">"
+            t = t + "  <img width=\"100%\" src=\"images/afrigebeta.jpg\" alt=\"\" class=\"your_picture_image\">"
 
             t = t + "   </div>"
             t = t + " <div class=\"form-group-flex\">"
@@ -284,7 +284,14 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="text" name="city" id="city" placeholder="City" />
+                                    <!-- <input type="text" name="city" id="city" placeholder="City" /> -->
+                                    <select name="city" aria-placeholder="Select City" class="form-control">
+                                        <option disabled selected hidden> Select City</option>
+                                           <option value='sheger'>Addis Ababa</option>
+                                        <option value='adama'>Adama</option>
+                                        <option value='dire'>Dire Dawa</option>
+                                      
+                                       </select>
                                 </div>
                                 <div class="form-group">
                                     <!-- <p style="display: inline;">+251</p>
@@ -308,10 +315,12 @@
                         </div>
                 </fieldset>
                 </div>
-
+                <div class="form-group">
                 <button id="sendCode" type="button" class="buttons" style="display: none;">Next</button>
-                <button id="sendotp" type="button" class="buttons" style="display: none;" onclick="sendOTP()">Sign Up</button>
-
+                </div>
+                <div class="form-group">
+                 <button id="sendotp" type="button" class="buttons" style="display: none;" onclick="sendOTP()">Sign Up</button>
+                </div>
             </div>
         </div>
 

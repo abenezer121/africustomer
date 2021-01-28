@@ -58,6 +58,26 @@
             color: white;
             text-decoration: none;
         }
+        .badge {
+  padding-left: 9px;
+  padding-right: 9px;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+
+.label-warning[href],
+.badge-warning[href] {
+  background-color: #c67605;
+}
+#lblCartCount {
+    font-size: 16px;
+    background: #ff0000;
+    color: #fff;
+    padding: 0 5px;
+    vertical-align: top;
+    margin-left: -10px; 
+}
     </style>
 
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -841,6 +861,8 @@
                         <li class="nav-item">
                             <a class="nav-link" href="menu.html">
                                 <a href="#" onclick="loaddata()" data-toggle="modal" data-target="#exampleModal" style="font-size:24px"> <i class="fa fa-shopping-cart"></i></button>
+                                    <span class="badge badge-warning" id="lblCartCount">0</span>
+   
                                 </a>
                         </li>
                     </ul>
@@ -852,6 +874,7 @@
 
     <a href="#" onclick="loaddata()" data-toggle="modal" data-target="#exampleModal" class="float">
         <i class="fa fa-shopping-cart my-float"></i>
+        <span class="badge badge-warning" id="lblCartCount">0</span>
     </a>
     <!-- Start All Pages -->
     <div class="all-page-title page-breadcrumb">

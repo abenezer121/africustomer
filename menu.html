@@ -125,9 +125,9 @@
                         t = t + "           <div class=\"mask-icon\">"
                         t = t + "               <ul>"
                         t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
-                        t = t + "                   <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li>"
+                        t = t + "                   <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li>"
                         t = t + "               </ul>"
-                        t = t + "               <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
+                        t = t + "               <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"\">Add to Cart</a>"
                         t = t + "           </div>"
                         t = t + "       </div>"
                         t = t + "       <div class=\"why-text\">"
@@ -366,9 +366,9 @@
 
                             t = t + "<div class=\"mask-icon\">"
                             t = t + " <ul>"
-                            t = t + "    <!-- <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
-                            t = t + "    <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Compare\"><i class=\"fas fa-sync-alt\"></i></a></li>"
-                            t = t + " <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li> -->"
+                            t = t + "    <!-- <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                            t = t + "    <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Compare\"><i class=\"fas fa-sync-alt\"></i></a></li>"
+                            t = t + " <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li> -->"
                             t = t + "</ul>"
                             t = t + "  <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
 
@@ -442,7 +442,7 @@
 
             let names = JSON.parse(localStorage.getItem('stores'));
             for (let i = 0; i < names.length; i++) {
-                t = t + " <a class=\"dropdown-item\" onclick=\"openStore('" + names[i].id + "')\" href=\"#\">" + names[i].name + "</a>"
+                t = t + " <a class=\"dropdown-item\" onclick=\"openStore('" + names[i].id + "')\" href=\"\">" + names[i].name + "</a>"
             }
             t = t + "</div>"
 
@@ -465,7 +465,7 @@
                         t = t + " <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">"
 
                         for (let j = 0; j < data[i]._id.subcategory.length; j++) {
-                            t = t + "     <a class=\"dropdown-item\" onclick = \" searchsubcath('" + data[i]._id.name + "','" + data[i]._id.subcategory[j] + "','" + 1 + "')\" href=\"#\">" + data[i]._id.subcategory[j] + "</a>"
+                            t = t + "     <a class=\"dropdown-item\" onclick = \" searchsubcath('" + data[i]._id.name + "','" + data[i]._id.subcategory[j] + "','" + 1 + "')\" href=\"\">" + data[i]._id.subcategory[j] + "</a>"
                         }
 
                         t = t + " </div>"
@@ -511,11 +511,11 @@
 
                             t = t + "<div class=\"mask-icon\">"
                             t = t + " <ul>"
-                            t = t + "    <!-- <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
-                            t = t + "    <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Compare\"><i class=\"fas fa-sync-alt\"></i></a></li>"
-                            t = t + " <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li> -->"
+                            t = t + "    <!-- <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                            t = t + "    <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Compare\"><i class=\"fas fa-sync-alt\"></i></a></li>"
+                            t = t + " <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li> -->"
                             t = t + "</ul>"
-                            t = t + "  <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
+                            t = t + "  <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"\">Add to Cart</a>"
 
                             t = t + " </div>"
                             t = t + " </div>"
@@ -703,9 +703,9 @@
 
                             t = t + "<div class=\"mask-icon\">"
                             t = t + " <ul>"
-                            t = t + "    <!-- <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
-                            t = t + "    <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Compare\"><i class=\"fas fa-sync-alt\"></i></a></li>"
-                            t = t + " <li><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li> -->"
+                            t = t + "    <!-- <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
+                            t = t + "    <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Compare\"><i class=\"fas fa-sync-alt\"></i></a></li>"
+                            t = t + " <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li> -->"
                             t = t + "</ul>"
                             t = t + "  <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
 
@@ -818,7 +818,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-12 d-flex shopping-box"><a href="#" style="background-color: #fd8000;" onclick="orderCheckOut()" class="ml-auto btn hvr-hover">Checkout</a> </div>
+                                <div class="col-12 d-flex shopping-box"><a href="" style="background-color: #fd8000;" onclick="orderCheckOut()" class="ml-auto btn hvr-hover">Checkout</a> </div>
                             </div>
 
                         </div>
@@ -854,7 +854,7 @@
 
                                 <a class="dropdown-item" href="profile.html">Profile</a>
                                 <a class="dropdown-item" href="Orders.html">Orders</a>
-                                <a class="dropdown-item" onclick="logout()" href="#">logout</a>
+                                <a class="dropdown-item" onclick="logout()" href="">logout</a>
                             </div>
                         </li>
 

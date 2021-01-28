@@ -83,8 +83,10 @@
                                     recapthatoken = data.session
                                 }
                             }).fail(function(jqXHR, textStatus, errorThrown) {
-
-                                console.log(jqXHR)
+                                if (jqXHR.responseText === "Invalid Phone") {
+                                    alert("Invalid Phone")
+                                }
+                                //console.log(jqXHR)
                             });
 
                             resolve();
@@ -119,7 +121,10 @@
                     window.location.href = "login.html";
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert("invlaid code")
+
+                if (jqXHR.responseText === "Invalid Code") {
+                    alert("Invalid Code")
+                }
             });
 
 
@@ -369,3 +374,5 @@
 </html>
 
 <!--data.responseJSON.message.response.data.message-->
+
+<!--responseText-->

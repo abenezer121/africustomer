@@ -161,6 +161,7 @@
                     isEmpty(document.getElementById("username").value) == false &&
                     isEmpty(document.getElementById("password").value) == false &&
                     isEmpty(document.getElementById("pno").value) == false &&
+                    isEmpty($( "#city option:selected" ).text()) == false &&
                
                     isEmpty(document.getElementById("age").value) == false) {
                     //if (validatePhone(document.getElementById("phoneNumber").value)) {
@@ -173,7 +174,7 @@
                     lastname = document.getElementById("last_name").value
                     username = document.getElementById("username").value
                     password = document.getElementById("password").value
-                    city = document.getElementById("city").value
+                    city = $( "#city option:selected" ).text()
                     age = document.getElementById("age").value
 
                     document.getElementById("sendCode").style.display = "block"

@@ -58,26 +58,28 @@
             color: white;
             text-decoration: none;
         }
+        
         .badge {
-  padding-left: 9px;
-  padding-right: 9px;
-  -webkit-border-radius: 9px;
-  -moz-border-radius: 9px;
-  border-radius: 9px;
-}
-
-.label-warning[href],
-.badge-warning[href] {
-  background-color: #c67605;
-}
-#lblCartCount {
-    font-size: 16px;
-    background: #ff0000;
-    color: #fff;
-    padding: 0 5px;
-    vertical-align: top;
-    margin-left: -10px; 
-}
+            padding-left: 9px;
+            padding-right: 9px;
+            -webkit-border-radius: 9px;
+            -moz-border-radius: 9px;
+            border-radius: 9px;
+        }
+        
+        .label-warning[href],
+        .badge-warning[href] {
+            background-color: #c67605;
+        }
+        
+        #lblCartCount {
+            font-size: 16px;
+            background: #ff0000;
+            color: #fff;
+            padding: 0 5px;
+            vertical-align: top;
+            margin-left: -10px;
+        }
     </style>
 
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -95,8 +97,8 @@
             //search here
             $.get(url,
                 function(data, status) {
-		    
-		    console.log(data)
+
+                    console.log(data)
                     displayedItems.length = 0
                     let images = []
                     let counter = 0;
@@ -129,7 +131,7 @@
                         t = t + "                   <li><a href=\"shop-detail.html\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"View\"><i class=\"fas fa-eye\"></i></a></li>"
                         t = t + "                   <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li>"
                         t = t + "               </ul>"
-                        t = t + "               <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"\">Add to Cart</a>"
+                        t = t + "               <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
                         t = t + "           </div>"
                         t = t + "       </div>"
                         t = t + "       <div class=\"why-text\">"
@@ -340,12 +342,12 @@
             let url = 'https://afrigebeta.herokuapp.com/api/user/filterbysubcath/' + storeid + '/' + cathname + '/' + subcathname + '/' + page + '/' + localStorage.getItem('token');
 
             //search here
-		
-		
+
+
             $.get(url,
                     function(data, status) {
 
-		    	console.log(data)
+                        console.log(data)
                         displayedItems.length = 0
                         let images = []
                         let counter = 0;
@@ -447,7 +449,7 @@
 
             let names = JSON.parse(localStorage.getItem('stores'));
             for (let i = 0; i < names.length; i++) {
-                t = t + " <a class=\"dropdown-item\" onclick=\"openStore('" + names[i].id + "')\" href=\"\">" + names[i].name + "</a>"
+                t = t + " <a class=\"dropdown-item\" onclick=\"openStore('" + names[i].id + "')\" href=\"#\">" + names[i].name + "</a>"
             }
             t = t + "</div>"
 
@@ -459,7 +461,7 @@
             $.get(url,
                 function(data, status) {
                     let t = ""
-		    console.log(data)
+                    console.log(data)
 
                     for (let i = 0; i < data.length; i++) {
 
@@ -471,7 +473,7 @@
                         t = t + " <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">"
 
                         for (let j = 0; j < data[i]._id.subcategory.length; j++) {
-                            t = t + "     <a class=\"dropdown-item\" onclick = \" searchsubcath('" + data[i]._id.name + "','" + data[i]._id.subcategory[j] + "','" + 1 + "')\" href=\"\">" + data[i]._id.subcategory[j] + "</a>"
+                            t = t + "     <a class=\"dropdown-item\" onclick = \" searchsubcath('" + data[i]._id.name + "','" + data[i]._id.subcategory[j] + "','" + 1 + "')\" href=\"#\">" + data[i]._id.subcategory[j] + "</a>"
                         }
 
                         t = t + " </div>"
@@ -521,7 +523,7 @@
                             t = t + "    <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Compare\"><i class=\"fas fa-sync-alt\"></i></a></li>"
                             t = t + " <li><a href=\"\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Add to Wishlist\"><i class=\"far fa-heart\"></i></a></li> -->"
                             t = t + "</ul>"
-                            t = t + "  <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"\">Add to Cart</a>"
+                            t = t + "  <a class=\"cart\" onclick = \"addtocart(" + counter + ")\" href=\"#\">Add to Cart</a>"
 
                             t = t + " </div>"
                             t = t + " </div>"
@@ -868,7 +870,7 @@
                             <a class="nav-link" href="menu.html">
                                 <a href="#" onclick="loaddata()" data-toggle="modal" data-target="#exampleModal" style="font-size:24px"> <i class="fa fa-shopping-cart"></i></button>
                                     <span class="badge badge-warning" id="lblCartCount">0</span>
-   
+
                                 </a>
                         </li>
                     </ul>

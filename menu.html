@@ -555,6 +555,7 @@
                     //     })
                     //now use for loop to get the images 
 
+                    console.log(images)
                     for (let i = 0; i < images.length; i++) {
 
                         $.get('https://afrigebeta.herokuapp.com/api/store/loadImage/' + images[i].images, function(data, success) {

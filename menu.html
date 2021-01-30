@@ -95,6 +95,8 @@
             //search here
             $.get(url,
                 function(data, status) {
+		    
+		    console.log(data)
                     displayedItems.length = 0
                     let images = []
                     let counter = 0;
@@ -338,9 +340,12 @@
             let url = 'https://afrigebeta.herokuapp.com/api/user/filterbysubcath/' + storeid + '/' + cathname + '/' + subcathname + '/' + page + '/' + localStorage.getItem('token');
 
             //search here
+		
+		
             $.get(url,
                     function(data, status) {
 
+		    	console.log(data)
                         displayedItems.length = 0
                         let images = []
                         let counter = 0;

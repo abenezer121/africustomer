@@ -75,7 +75,7 @@
             console.log("confirm" + "---" + $('#password').val())
 
             //make post request
-            if ($('#confirmPass').val() == isEmpty($('#password').val())) {
+            if ($('#confirmPass').val() == $('#password').val()) {
                 $.post("https://afrigebeta.herokuapp.com/api/user/changepass", {
                     password: $('#confirmPass').val(),
                     token: localStorage.getItem('token')

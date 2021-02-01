@@ -293,6 +293,7 @@
             let subcath = $("#productsubcath" + i).text()
             let price = $('#productprice' + i).text();
             console.log(subcath)
+
             for (let i = 0; i < displayedItems.length; i++) {
 
                 if (displayedItems[i].name == name && displayedItems[i].subCategory == subcath) {
@@ -311,9 +312,14 @@
                         subcath: subcath,
                         quantity: 1
                     }
+
+                    $("#lblCartCount").empty();
+                    $("#lblCartCount").append(Object.keys(cartData).length);
                 }
 
             }
+
+
 
             //Object.keys(cartData).length + 1
             // console.log(name)
@@ -442,6 +448,9 @@
         }
 
         $(document).ready(function() {
+
+            $("#lblCartCount").empty();
+            $("#lblCartCount").append(Object.keys(cartData).length);
 
             $('#username').text(localStorage.getItem('username'));
             let t = ""
@@ -870,7 +879,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="menu.html">
                                 <a href="#" onclick="loaddata()" data-toggle="modal" data-target="#exampleModal" style="font-size:24px"> <i class="fa fa-shopping-cart"></i></button>
-                                    <span class="badge badge-warning" id="lblCartCount">0</span>
+                                    <span class="badge badge-warning" id="lblCartCount"></span>
 
                                 </a>
                         </li>

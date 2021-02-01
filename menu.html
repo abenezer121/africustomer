@@ -283,7 +283,8 @@
         function removeFromCart(id) {
 
             delete cartData[id]
-                //remove the item and reload
+            $("#lblCartCount").empty();
+            $("#lblCartCount").append(Object.keys(cartData).length);
             loaddata();
         }
 
@@ -866,11 +867,13 @@
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">stores</a>
 
                         </li>
+
+
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown" id="username"></a>
                             <div class="dropdown-menu" aria-labelledby="dropdown-a">
-
-                                <a class="dropdown-item" href="profile.html">Profile</a>
+                                <a class="dropdown-item" href="PassChange.html">Change Password</a>
+                                <a class="dropdown-item" href="profile.html">Change Profile</a>
                                 <a class="dropdown-item" href="Orders.html">Orders</a>
                                 <a class="dropdown-item" onclick="logout()" href="#">logout</a>
                             </div>
@@ -892,7 +895,7 @@
 
     <a href="#" onclick="loaddata()" data-toggle="modal" data-target="#exampleModal" class="float">
         <i class="fa fa-shopping-cart my-float"></i>
-        <span class="badge badge-warning" id="lblCartCount">0</span>
+        <span class="badge badge-warning" id="lblCartCount"></span>
     </a>
     <!-- Start All Pages -->
     <div class="all-page-title page-breadcrumb">

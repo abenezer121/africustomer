@@ -68,7 +68,12 @@
             if (isEmpty($('#confirmPass').val())) {
                 alert("enter password");
                 return;
+
             }
+
+            console.log("confirm" + "---" + $('#confirmPass').val())
+            console.log("confirm" + "---" + $('#password').val())
+
             //make post request
             if ($('#confirmPass').val() == isEmpty($('#password').val())) {
                 $.post("https://afrigebeta.herokuapp.com/api/user/changepass", {

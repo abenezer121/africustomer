@@ -107,6 +107,7 @@
                     t = t + " <table class=\"table\">"
                     t = t + "<thead>"
                     t = t + "<tr>"
+                    t = t + "<th>OrderNumber</th>"
                     t = t + "<th>OrderStatus</th>"
                     t = t + "<th>Products</th>"
                     t = t + "<th>OrderedTo</th>"
@@ -120,12 +121,20 @@
                     for (let i = 0; i < data.data.length; i++) {
 
                         t = t + "<tr>"
+
+                        t = t + "<td class=\"name-pr\">"
+
+                        t = t + "<p>" + data.data[i].OrderNumber + "</p>"
+                        t = t + "</td>"
                         t = t + "<td class=\"thumbnail-img\">"
 
                         t = t + "<a href=\"#\">"
                         t = t + data.data[i].OrderStatus
                         t = t + "</a>"
                         t = t + "</td>"
+
+
+
                         t = t + "<td class=\"name-pr\">"
 
                         t = t + "<button type=\"button\" onclick=\"returnModalData('" + i + "')\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\".bd-example-modal-lg\"> View </button>"
@@ -224,6 +233,10 @@
                 t = t + " <h3><span>Category: </span> " + productData[i].productid.category + "</h3>"
                 t = t + " </div>"
 
+                t = t + "<div class=\"col-lg-12 col-md-12 col-sm-12\">"
+                t = t + " <h3><span>Sub Category: </span> " + productData[i].productid.subCategory + "</h3>"
+                t = t + " </div>"
+
                 t = t + " <div class=\"col-lg-12 col-md-12 col-sm-12\">"
                 t = t + "     <h3><span>Total Amount: </span> " + productData[i].amount + "</h3>"
                 t = t + " </div>"
@@ -304,7 +317,8 @@
                             <a href="#" class="nav-link dropdown-toggle arrow " data-toggle="dropdown" id="username"></a>
                             <div class="dropdown-menu" aria-labelledby="dropdown-a">
 
-                                <a class="dropdown-item" href="profile.html">Profile</a>
+                                <a class="dropdown-item" href="PassChange.html">Change Password</a>
+                                <a class="dropdown-item" href="profile.html">Change Profile</a>
                                 <a class="dropdown-item" href="Orders.html">Orders</a>
                                 <a class="dropdown-item" onclick="logout()" href="#">logout</a>
                             </div>
